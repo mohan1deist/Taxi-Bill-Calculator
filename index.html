@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Travel Bill Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inconsolata:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0F1117;
+  --surface: #181C25;
+  --surface2: #1F2435;
+  --border: #2A3045;
+  --accent: #4F8EF7;
+  --accent2: #F7A24F;
+  --green: #3FCF8E;
+  --red: #F75F5F;
+  --yellow: #F7D44F;
+  --text: #E8EAF0;
+  --muted: #6B738C;
+  --font: 'Syne', sans-serif;
+  --mono: 'Inconsolata', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 36px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
+.nav-logo{font-size:1.2rem;font-weight:800;letter-spacing:1px;color:var(--accent);}
+.nav-logo span{color:var(--accent2);}
+.tab-btns{display:flex;gap:6px;}
+.tab-btn{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:var(--font);font-size:0.82rem;font-weight:600;padding:7px 18px;border-radius:6px;cursor:pointer;transition:all 0.2s;}
+.tab-btn.active,.tab-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,0.08);}
+
+/* LAYOUT */
+.page{display:none;max-width:820px;margin:0 auto;padding:36px 24px 80px;}
+.page.active{display:block;animation:fadeIn 0.35s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGE TITLE */
+.page-title{font-size:1.8rem;font-weight:800;margin-bottom:6px;}
+.page-sub{color:var(--muted);font-size:0.88rem;margin-bottom:32px;}
+
+/* FORM CARD */
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:20px;}
+.section-label{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.form-row{display:grid;gap:14px;margin-bottom:14px;}
+.form-row.col2{grid-template-columns:1fr 1fr;}
+.form-row.col3{grid-template-columns:1fr 1fr 1fr;}
+.form-row.col1{grid-template-columns:1fr;}
+label{font-size:0.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:5px;letter-spacing:0.5px;}
+input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);font-family:var(--font);font-size:0.9rem;padding:10px 14px;border-radius:8px;outline:none;transition:border 0.2s;}
+input:focus,select:focus{border-color:var(--accent);}
+select option{background:var(--surface2);}
+.hidden{display:none!important;}
+
+/* CALCULATION RESULT */
+.result-card{background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;}
+.result-title{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
+.result-line{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.88rem;}
+.result-line:last-of-type{border-bottom:none;}
+.result-line .lbl{color:var(--muted);}
+.result-line .val{font-family:var(--mono);font-weight:600;}
+.result-line .val.green{color:var(--green);}
+.result-line .val.yellow{color:var(--yellow);}
+.result-line .val.red{color:var(--red);}
+.divider-line{border:none;border-top:2px solid var(--border);margin:10px 0;}
+.payable-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(63,207,142,0.1);border:1.5px solid var(--green);border-radius:10px;margin-top:14px;}
+.payable-row .lbl{font-weight:700;font-size:1rem;}
+.payable-row .val{font-family:var(--mono);font-weight:800;font-size:1.4rem;color:var(--green);}
+.note-box{background:rgba(247,162,79,0.08);border:1px solid rgba(247,162,79,0.3);border-radius:8px;padding:10px 14px;font-size:0.82rem;color:var(--accent2);margin-top:12px;line-height:1.6;}
+.note-box ul{margin-left:16px;}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
+.btn{font-family:var(--font);font-weight:700;font-size:0.88rem;padding:12px 24px;border-radius:8px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:#3a7de8;}
+.btn-success{background:var(--green);color:#0F1117;}
+.btn-success:hover{background:#2fb87a;}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.btn-danger{background:none;border:1.5px solid var(--red);color:var(--red);font-size:0.78rem;padding:6px 12px;}
+.btn-danger:hover{background:var(--red);color:#fff;}
+
+/* HISTORY */
+.history-empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.history-empty .icon{font-size:3rem;margin-bottom:12px;}
+.history-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:14px;cursor:pointer;transition:border 0.2s;position:relative;}
+.history-item:hover{border-color:var(--accent);}
+.history-item.expanded{border-color:var(--accent);}
+.hi-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.hi-meta{flex:1;}
+.hi-bill{font-family:var(--mono);font-size:0.8rem;color:var(--muted);margin-bottom:4px;}
+.hi-title{font-weight:700;font-size:1rem;margin-bottom:4px;}
+.hi-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.tag{font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(79,142,247,0.12);color:var(--accent);border:1px solid rgba(79,142,247,0.2);}
+.tag.green{background:rgba(63,207,142,0.12);color:var(--green);border-color:rgba(63,207,142,0.2);}
+.tag.yellow{background:rgba(247,212,79,0.12);color:var(--yellow);border-color:rgba(247,212,79,0.2);}
+.hi-amount{text-align:right;}
+.hi-amount .payable{font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green);}
+.hi-amount .label{font-size:0.72rem;color:var(--muted);}
+.hi-detail{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:none;}
+.hi-detail.show{display:block;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;}
+.dg-item .dg-lbl{font-size:0.72rem;color:var(--muted);margin-bottom:2px;}
+.dg-item .dg-val{font-size:0.88rem;font-weight:600;}
+.hi-actions{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;}
+
+/* EXPORT */
+.export-bar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+.count-badge{font-family:var(--mono);font-size:0.85rem;color:var(--muted);}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .nav{padding:14px 16px;}
+  .page{padding:24px 14px 60px;}
+  .form-row.col2,.form-row.col3{grid-template-columns:1fr;}
+  .detail-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">Travel<span>Bill</span></div>
+  <div class="tab-btns">
+    <button class="tab-btn active" onclick="showTab('calculator')">⊕ New Entry</button>
+    <button class="tab-btn" onclick="showTab('history')">☰ History</button>
+  </div>
+</div>
+
+<!-- ══════════════════ CALCULATOR PAGE ══════════════════ -->
+<div class="page active" id="tab-calculator">
+  <div class="page-title">New Bill Entry</div>
+  <div class="page-sub">Fill in journey details to calculate the payable amount.</div>
+
+  <!-- BASIC INFO -->
+  <div class="form-card">
+    <div class="section-label">Basic Information</div>
+    <div class="form-row col2">
+      <div>
+        <label>Vendor Name</label>
+        <select id="vendorSelect" onchange="handleVendorChange()">
+          <option value="">— Select Vendor —</option>
+          <option>Mavi Tour &amp; Travels</option>
+          <option>Samrat Taxi</option>
+          <option>Mohan Travels</option>
+          <option value="__other__">Other (enter name)</option>
+        </select>
+        <input type="text" id="vendorOther" class="hidden" placeholder="Enter vendor name…" style="margin-top:8px;"/>
+      </div>
+      <div>
+        <label>Bill No.</label>
+        <input type="text" id="billNo" placeholder="e.g. INV-2024-001"/>
+      </div>
+    </div>
+    <div class="form-row col2">
+      <div>
+        <label>Passenger Name(s)</label>
+        <input type="text" id="passengers" placeholder="e.g. Rajesh Kumar, Priya Singh"/>
+      </div>
+      <div>
+        <label>Destination</label>
+        <input type="text" id="destination" placeholder="e.g. Mussoorie, Agra"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOURNEY DETAILS -->
+  <div class="form-card">
+    <div class="section-label">Journey Details</div>
+    <div class="form-row col2">
+      <div>
+        <label>Type of Service</label>
+        <select id="serviceType" onchange="handleServiceChange()">
+          <option value="">— Select Service —</option>
+          <option value="local">Local</option>
+          <option value="outstation_plain">Outstation (Plain)</option>
+          <option value="outstation_hilly">Outstation (Hilly)</option>
+        </select>
+      </div>
+      <div>
+        <label>Type of Vehicle</label>
+        <select id="vehicleType" onchange="recalculate()">
+          <option value="">— Select Vehicle —</option>
+          <option value="sedan">Sedan</option>
+          <option value="crysta">Crysta</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Journey Dates -->
+    <div class="form-row col2">
+      <div>
+        <label>Journey Start (Date &amp; Time)</label>
+        <input type="datetime-local" id="journeyStart" onchange="recalculate()"/>
+      </div>
+      <div>
+        <label>Journey End (Date &amp; Time)</label>
+        <input type="datetime-local" id="journeyEnd" onchange="recalculate()"/>
+      </div>
+    </div>
+
+    <!-- LOCAL FIELDS -->
+    <div id="localFields" class="hidden">
+      <div class="form-row col2">
+        <div>
+          <label>Kilometers Travelled</label>
+          <input type="number" id="localKm" min="0" placeholder="e.g. 95" oninput="recalculate()"/>
+        </div>
+        <div>
+          <label>Hours Used</label>
+          <input type="number" id="localHrs" min="0" step="0.5" placeholder="e.g. 9" oninput="recalculate()"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTSTATION FIELDS -->
+    <div id="outstationFields" class="hidden">
+      <div class="form-row col1">
+        <div>
+          <label>Total Kilometers Travelled</label>
+          <input type="number" id="outstationKm" min="0" placeholder="e.g. 320" oninput="recalculate()"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row col1" style="margin-top:4px;">
+      <div>
+        <label>Amount Claimed by Vendor (₹)</label>
+        <input type="number" id="vendorClaimed" min="0" placeholder="e.g. 3200" oninput="recalculate()"/>
+      </div>
+    </div>
+    <div class="form-row col2" style="margin-top:4px;">
+      <div>
+        <label>GST (%)</label>
+        <input type="number" id="gstPercent" min="0" max="100" step="0.01" placeholder="e.g. 5 or 12 (leave 0 if none)" oninput="recalculate()"/>
+      </div>
+      <div>
+        <label>Toll Tax / Parking Charges (₹) <span style="font-weight:400;color:var(--muted);font-size:0.72rem;">— GST not applicable</span></label>
+        <input type="number" id="tollParking" min="0" placeholder="e.g. 250 (leave 0 if none)" oninput="recalculate()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-card hidden" id="resultCard">
+    <div class="result-title">📊 Calculation Breakdown</div>
+    <div id="resultLines"></div>
+    <div class="payable-row">
+      <div class="lbl">Amount Payable</div>
+      <div class="val" id="payableAmount">₹0</div>
+    </div>
+    <div class="note-box hidden" id="noteBox"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="recalculate()">⟳ Calculate</button>
+    <button class="btn btn-success hidden" id="saveBtn" onclick="saveEntry()">✓ Save Entry</button>
+    <button class="btn btn-outline" onclick="clearForm()">✕ Clear</button>
+  </div>
+</div>
+
+<!-- ══════════════════ HISTORY PAGE ══════════════════ -->
+<div class="page" id="tab-history">
+  <div class="page-title">Bill History</div>
+  <div class="page-sub">All saved entries. Click any entry to expand details.</div>
+  <div class="export-bar">
+    <span class="count-badge" id="countBadge">0 entries saved</span>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-outline" onclick="exportCSV()">↓ Export CSV</button>
+      <button class="btn btn-outline" onclick="exportJSON()">↓ Export JSON</button>
+    </div>
+  </div>
+  <div id="historyList"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  CONFIG — paste your Google Apps Script URL below
+// ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+//  CONFIG — Google Sheets Integration
+// ══════════════════════════════════════════════════════
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyOyOcN3uCi2Igug1EHQ5dslfjHSqWIS7vG4V4zRGLutqhAa1VU7BLwmtUrh8HOg34R8Q/exec';
+
+// ══════════════════════════════════════════════════════
+//  STATE & STORAGE
+// ══════════════════════════════════════════════════════
+let entries = JSON.parse(localStorage.getItem('travelbill_entries') || '[]');
+let currentCalc = null;
+
+// ══════════════════════════════════════════════════════
+//  TAB NAVIGATION
+// ══════════════════════════════════════════════════════
+function showTab(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'history') renderHistory();
+}
+
+// ══════════════════════════════════════════════════════
+//  FORM HANDLERS
+// ══════════════════════════════════════════════════════
+function handleVendorChange() {
+  const v = document.getElementById('vendorSelect').value;
+  const other = document.getElementById('vendorOther');
+  v === '__other__' ? other.classList.remove('hidden') : other.classList.add('hidden');
+}
+
+function handleServiceChange() {
+  const svc = document.getElementById('serviceType').value;
+  const lf = document.getElementById('localFields');
+  const of = document.getElementById('outstationFields');
+  lf.classList.add('hidden');
+  of.classList.add('hidden');
+  if (svc === 'local') lf.classList.remove('hidden');
+  if (svc.startsWith('outstation')) of.classList.remove('hidden');
+  recalculate();
+}
+
+function getVendorName() {
+  const sel = document.getElementById('vendorSelect').value;
+  if (sel === '__other__') return document.getElementById('vendorOther').value.trim();
+  return sel;
+}
+
+// ══════════════════════════════════════════════════════
+//  NIGHT ALLOWANCE LOGIC
+// ══════════════════════════════════════════════════════
+function isNightTime(dt) {
+  if (!dt) return false;
+  const h = dt.getHours();
+  // Night = 22:00 - 06:00
+  return h >= 22 || h < 6;
+}
+
+function checkNightAllowance(startStr, endStr) {
+  if (!startStr || !endStr) return false;
+  const start = new Date(startStr);
+  const end   = new Date(endStr);
+  return isNightTime(start) || isNightTime(end);
+}
+
+function getDaysBetween(startStr, endStr) {
+  if (!startStr || !endStr) return 0;
+  const start = new Date(startStr);
+  const end   = new Date(endStr);
+  const diffMs = end - start;
+  if (diffMs <= 0) return 0;
+  // Number of overnight stays (calendar days difference)
+  const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const endDay   = new Date(end.getFullYear(),   end.getMonth(),   end.getDate());
+  return Math.floor((endDay - startDay) / 86400000);
+}
+
+// ══════════════════════════════════════════════════════
+//  CALCULATION ENGINE
+// ══════════════════════════════════════════════════════
+function recalculate() {
+  const svc = document.getElementById('serviceType').value;
+  const veh = document.getElementById('vehicleType').value;
+  const claimed = parseFloat(document.getElementById('vendorClaimed').value) || 0;
+  const startStr = document.getElementById('journeyStart').value;
+  const endStr   = document.getElementById('journeyEnd').value;
+
+  if (!svc || !veh) { hideResult(); return; }
+
+  let breakdown = [];
+  let calculated = 0;
+  let notes = [];
+
+  if (svc === 'local') {
+    const km  = parseFloat(document.getElementById('localKm').value)  || 0;
+    const hrs = parseFloat(document.getElementById('localHrs').value) || 0;
+    if (!km && !hrs) { hideResult(); return; }
+
+    // Base package
+    const baseKm  = 80;
+    const baseHrs = 8;
+    let baseRate, extraKmRate, extraHrRate;
+
+    if (veh === 'sedan') {
+      baseRate     = 2100;
+      extraKmRate  = 18;
+      extraHrRate  = 150;
+    } else {
+      baseRate     = 2500;
+      extraKmRate  = 24;
+      extraHrRate  = 225;
+    }
+
+    breakdown.push({ lbl: `Base Package (${baseHrs} hrs / ${baseKm} km)`, val: `₹${baseRate.toLocaleString()}` });
+    calculated += baseRate;
+
+    // Extra km
+    const extraKm = Math.max(0, km - baseKm);
+    if (extraKm > 0) {
+      const extraKmAmt = extraKm * extraKmRate;
+      breakdown.push({ lbl: `Extra Km: ${extraKm} km × ₹${extraKmRate}`, val: `+₹${extraKmAmt.toLocaleString()}` });
+      calculated += extraKmAmt;
+    }
+
+    // Extra hours
+    const extraHrs = Math.max(0, hrs - baseHrs);
+    if (extraHrs > 0) {
+      const extraHrAmt = extraHrs * extraHrRate;
+      breakdown.push({ lbl: `Extra Hours: ${extraHrs} hrs × ₹${extraHrRate}`, val: `+₹${extraHrAmt.toLocaleString()}` });
+      calculated += extraHrAmt;
+    }
+
+  } else {
+    // OUTSTATION
+    const km = parseFloat(document.getElementById('outstationKm').value) || 0;
+    if (!km) { hideResult(); return; }
+
+    let pricePerKm;
+    const minKm = 250;
+
+    if (svc === 'outstation_plain') {
+      pricePerKm = veh === 'sedan' ? 18 : 24;
+    } else {
+      pricePerKm = veh === 'sedan' ? 21 : 28;
+    }
+
+    const billedKm = Math.max(km, minKm);
+    const kmCharge = billedKm * pricePerKm;
+
+    if (km < minKm) {
+      notes.push(`Minimum billing applied: ${minKm} km (actual: ${km} km)`);
+      breakdown.push({ lbl: `Distance: ${minKm} km (min) × ₹${pricePerKm}/km`, val: `₹${kmCharge.toLocaleString()}` });
+    } else {
+      breakdown.push({ lbl: `Distance: ${km} km × ₹${pricePerKm}/km`, val: `₹${kmCharge.toLocaleString()}` });
+    }
+    calculated += kmCharge;
+
+    // Night allowance
+    const nightApplies = checkNightAllowance(startStr, endStr);
+    if (nightApplies) {
+      const nightAmt = 300;
+      breakdown.push({ lbl: 'Night Allowance (journey before 6AM / after 10PM)', val: `+₹${nightAmt}`, cls: 'yellow' });
+      calculated += nightAmt;
+      notes.push('Night allowance applied (journey start or end falls between 10 PM – 6 AM).');
+    }
+
+    // Vehicle holding days (overnight stays)
+    const holdDays = getDaysBetween(startStr, endStr);
+    if (holdDays > 0) {
+      const holdAmt = holdDays * 300;
+      breakdown.push({ lbl: `Vehicle Holding (${holdDays} day${holdDays > 1 ? 's' : ''} × ₹300)`, val: `+₹${holdAmt.toLocaleString()}`, cls: 'yellow' });
+      calculated += holdAmt;
+      notes.push(`Vehicle holding charge: ${holdDays} night(s) × ₹300 = ₹${holdAmt} (vehicle stayed overnight).`);
+    }
+  }
+
+  const gstPercent  = parseFloat(document.getElementById('gstPercent').value)  || 0;
+  const tollParking = parseFloat(document.getElementById('tollParking').value) || 0;
+
+  // Comparison: vendor claimed vs. calculated (transport only, before GST & toll)
+  breakdown.push({ divider: true });
+  breakdown.push({ lbl: 'Sub-total (Transport)', val: `₹${calculated.toLocaleString()}`, cls: 'green' });
+
+  // GST on transport sub-total only
+  let gstAmount = 0;
+  if (gstPercent > 0) {
+    gstAmount = Math.round(calculated * gstPercent / 100);
+    breakdown.push({ lbl: `GST @ ${gstPercent}% (on transport)`, val: `+₹${gstAmount.toLocaleString()}`, cls: 'yellow' });
+  }
+
+  const calculatedWithGST = calculated + gstAmount;
+
+  // Toll / Parking (no GST)
+  if (tollParking > 0) {
+    breakdown.push({ lbl: 'Toll Tax / Parking (GST exempt)', val: `+₹${tollParking.toLocaleString()}`, cls: 'yellow' });
+  }
+
+  const calculatedTotal = calculatedWithGST + tollParking;
+
+  if (claimed > 0) {
+    breakdown.push({ divider: true });
+    // Compare vendor claimed vs calculated+gst+toll
+    const diff = claimed - calculatedTotal;
+    breakdown.push({ lbl: 'Vendor Claimed Amount', val: `₹${claimed.toLocaleString()}`, cls: diff > 0 ? 'red' : 'green' });
+    breakdown.push({ lbl: 'Calculated Total (incl. GST + Toll)', val: `₹${calculatedTotal.toLocaleString()}`, cls: 'green' });
+    if (diff > 0) notes.push(`Vendor claimed ₹${diff.toLocaleString()} more than calculated total. Payable is capped at calculated amount.`);
+    if (diff < 0) notes.push(`Vendor claimed ₹${Math.abs(diff).toLocaleString()} less than calculated total. Payable is vendor's claimed amount.`);
+    if (diff === 0) notes.push('Vendor claimed amount matches the calculated total exactly.');
+  }
+
+  const payable = claimed > 0 ? Math.min(calculatedTotal, claimed) : calculatedTotal;
+
+  currentCalc = {
+    vendor: getVendorName(),
+    billNo: document.getElementById('billNo').value.trim(),
+    passengers: document.getElementById('passengers').value.trim(),
+    destination: document.getElementById('destination').value.trim(),
+    serviceType: svc,
+    vehicleType: veh,
+    journeyStart: startStr,
+    journeyEnd: endStr,
+    km: svc === 'local'
+          ? (parseFloat(document.getElementById('localKm').value) || 0)
+          : (parseFloat(document.getElementById('outstationKm').value) || 0),
+    hrs: svc === 'local' ? (parseFloat(document.getElementById('localHrs').value) || 0) : null,
+    vendorClaimed: claimed,
+    gstPercent,
+    gstAmount,
+    tollParking,
+    calculatedAmount: calculated,
+    calculatedTotal,
+    payableAmount: payable,
+    breakdown,
+    notes,
+    savedAt: null
+  };
+
+  showResult(breakdown, payable, notes);
+}
+
+function showResult(breakdown, payable, notes) {
+  const rc = document.getElementById('resultCard');
+  const rl = document.getElementById('resultLines');
+  const nb = document.getElementById('noteBox');
+
+  rc.classList.remove('hidden');
+  document.getElementById('saveBtn').classList.remove('hidden');
+  document.getElementById('payableAmount').textContent = '₹' + payable.toLocaleString();
+
+  rl.innerHTML = '';
+  breakdown.forEach(b => {
+    if (b.divider) {
+      const hr = document.createElement('hr');
+      hr.className = 'divider-line';
+      rl.appendChild(hr);
+      return;
+    }
+    const row = document.createElement('div');
+    row.className = 'result-line';
+    row.innerHTML = `<span class="lbl">${b.lbl}</span><span class="val ${b.cls||''}">${b.val}</span>`;
+    rl.appendChild(row);
+  });
+
+  if (notes.length) {
+    nb.classList.remove('hidden');
+    nb.innerHTML = '<strong>ℹ Notes:</strong><ul>' + notes.map(n => `<li>${n}</li>`).join('') + '</ul>';
+  } else {
+    nb.classList.add('hidden');
+  }
+}
+
+function hideResult() {
+  document.getElementById('resultCard').classList.add('hidden');
+  document.getElementById('saveBtn').classList.add('hidden');
+  currentCalc = null;
+}
+
+// ══════════════════════════════════════════════════════
+//  SAVE ENTRY
+// ══════════════════════════════════════════════════════
+function saveEntry() {
+  if (!currentCalc) return;
+  if (!currentCalc.vendor) { alert('Please select a vendor.'); return; }
+  if (!currentCalc.billNo) { alert('Please enter a Bill No.'); return; }
+
+  currentCalc.savedAt = new Date().toISOString();
+  currentCalc.id = Date.now();
+  entries.unshift(currentCalc);
+  localStorage.setItem('travelbill_entries', JSON.stringify(entries));
+
+  const btn = document.getElementById('saveBtn');
+
+  // Push to Google Sheets if URL is configured
+  if (GOOGLE_SHEET_URL && GOOGLE_SHEET_URL.trim() !== '') {
+    btn.textContent = '⏳ Saving…';
+    btn.disabled = true;
+
+    fetch(GOOGLE_SHEET_URL, {
+      method: 'POST',
+      body: JSON.stringify(currentCalc),
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors'  // required for Apps Script
+    })
+    .then(() => {
+      btn.textContent = '✓ Saved to Sheet!';
+      btn.style.background = '#3FCF8E';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = '✓ Save Entry'; btn.style.background = ''; }, 3000);
+    })
+    .catch(() => {
+      btn.textContent = '✓ Saved locally (Sheet offline)';
+      btn.style.background = '#F7A24F';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = '✓ Save Entry'; btn.style.background = ''; }, 3000);
+    });
+  } else {
+    btn.textContent = '✓ Saved!';
+    btn.style.background = '#3FCF8E';
+    setTimeout(() => { btn.textContent = '✓ Save Entry'; btn.style.background = ''; }, 2000);
+  }
+}
+
+function clearForm() {
+  document.getElementById('vendorSelect').value = '';
+  document.getElementById('vendorOther').value = '';
+  document.getElementById('vendorOther').classList.add('hidden');
+  document.getElementById('billNo').value = '';
+  document.getElementById('passengers').value = '';
+  document.getElementById('destination').value = '';
+  document.getElementById('serviceType').value = '';
+  document.getElementById('vehicleType').value = '';
+  document.getElementById('journeyStart').value = '';
+  document.getElementById('journeyEnd').value = '';
+  document.getElementById('localKm').value = '';
+  document.getElementById('localHrs').value = '';
+  document.getElementById('outstationKm').value = '';
+  document.getElementById('vendorClaimed').value = '';
+  document.getElementById('gstPercent').value = '';
+  document.getElementById('tollParking').value = '';
+  document.getElementById('localFields').classList.add('hidden');
+  document.getElementById('outstationFields').classList.add('hidden');
+  hideResult();
+}
+
+// ══════════════════════════════════════════════════════
+//  HISTORY
+// ══════════════════════════════════════════════════════
+function svcLabel(s) {
+  if (s === 'local') return 'Local';
+  if (s === 'outstation_plain') return 'Outstation (Plain)';
+  if (s === 'outstation_hilly') return 'Outstation (Hilly)';
+  return s;
+}
+
+function fmtDt(str) {
+  if (!str) return '—';
+  return new Date(str).toLocaleString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const badge = document.getElementById('countBadge');
+  badge.textContent = entries.length + ' entr' + (entries.length === 1 ? 'y' : 'ies') + ' saved';
+
+  if (!entries.length) {
+    list.innerHTML = `<div class="history-empty"><div class="icon">🗂️</div><div>No entries saved yet.</div><div style="margin-top:8px;font-size:0.82rem;">Calculate and save a bill to see it here.</div></div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  entries.forEach((e, i) => {
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.id = 'hi_' + i;
+
+    const saved = new Date(e.savedAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+    const diff = e.vendorClaimed ? e.vendorClaimed - e.calculatedAmount : 0;
+    const diffTag = e.vendorClaimed
+      ? (diff > 0 ? `<span class="tag">Saved ₹${diff.toLocaleString()}</span>` : (diff < 0 ? `<span class="tag green">Vendor Under-billed</span>` : ''))
+      : '';
+
+    item.innerHTML = `
+      <div class="hi-top" onclick="toggleExpand(${i})">
+        <div class="hi-meta">
+          <div class="hi-bill">Bill #${e.billNo || '—'} · ${saved}</div>
+          <div class="hi-title">${e.vendor || '—'} → ${e.destination || '—'}</div>
+          <div class="hi-tags">
+            <span class="tag">${svcLabel(e.serviceType)}</span>
+            <span class="tag">${e.vehicleType === 'sedan' ? 'Sedan' : 'Crysta'}</span>
+            ${e.passengers ? `<span class="tag green">${e.passengers}</span>` : ''}
+            ${diffTag}
+          </div>
+        </div>
+        <div class="hi-amount">
+          <div class="payable">₹${e.payableAmount.toLocaleString()}</div>
+          <div class="label">Payable</div>
+        </div>
+      </div>
+      <div class="hi-detail" id="hid_${i}">
+        <div class="detail-grid">
+          <div class="dg-item"><div class="dg-lbl">Passengers</div><div class="dg-val">${e.passengers || '—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Destination</div><div class="dg-val">${e.destination || '—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Journey Start</div><div class="dg-val">${fmtDt(e.journeyStart)}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Journey End</div><div class="dg-val">${fmtDt(e.journeyEnd)}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Km Travelled</div><div class="dg-val">${e.km} km</div></div>
+          ${e.hrs !== null ? `<div class="dg-item"><div class="dg-lbl">Hours Used</div><div class="dg-val">${e.hrs} hrs</div></div>` : ''}
+          <div class="dg-item"><div class="dg-lbl">Vendor Claimed</div><div class="dg-val">₹${e.vendorClaimed ? e.vendorClaimed.toLocaleString() : '—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Transport Sub-total</div><div class="dg-val">₹${e.calculatedAmount.toLocaleString()}</div></div>
+          ${e.gstPercent ? `<div class="dg-item"><div class="dg-lbl">GST (${e.gstPercent}%)</div><div class="dg-val">₹${(e.gstAmount||0).toLocaleString()}</div></div>` : ''}
+          ${e.tollParking ? `<div class="dg-item"><div class="dg-lbl">Toll / Parking</div><div class="dg-val">₹${e.tollParking.toLocaleString()}</div></div>` : ''}
+          <div class="dg-item"><div class="dg-lbl">Calculated Total</div><div class="dg-val">₹${(e.calculatedTotal||e.calculatedAmount).toLocaleString()}</div></div>
+          <div class="dg-item"><div class="dg-lbl" style="color:var(--green)">Amount Payable</div><div class="dg-val" style="color:var(--green);font-size:1.1rem;">₹${e.payableAmount.toLocaleString()}</div></div>
+        </div>
+        ${e.notes && e.notes.length ? `<div class="note-box" style="margin-top:12px;">${e.notes.map(n=>`• ${n}`).join('<br/>')}</div>` : ''}
+        <div class="hi-actions">
+          <button class="btn btn-danger" onclick="deleteEntry(${i})">🗑 Delete</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function toggleExpand(i) {
+  const detail = document.getElementById('hid_' + i);
+  const item = document.getElementById('hi_' + i);
+  const isOpen = detail.classList.contains('show');
+  document.querySelectorAll('.hi-detail').forEach(d => d.classList.remove('show'));
+  document.querySelectorAll('.history-item').forEach(d => d.classList.remove('expanded'));
+  if (!isOpen) {
+    detail.classList.add('show');
+    item.classList.add('expanded');
+  }
+}
+
+function deleteEntry(i) {
+  if (!confirm('Delete this entry?')) return;
+  entries.splice(i, 1);
+  localStorage.setItem('travelbill_entries', JSON.stringify(entries));
+  renderHistory();
+}
+
+// ══════════════════════════════════════════════════════
+//  EXPORT
+// ══════════════════════════════════════════════════════
+function exportCSV() {
+  if (!entries.length) { alert('No entries to export.'); return; }
+  const headers = ['ID','Saved Date','Vendor','Bill No','Passengers','Destination','Service','Vehicle','Journey Start','Journey End','Km','Hours','Vendor Claimed','Transport Sub-total','GST %','GST Amount','Toll/Parking','Calculated Total','Payable Amount'];
+  const rows = entries.map(e => [
+    e.id, new Date(e.savedAt).toLocaleString('en-IN'), e.vendor, e.billNo,
+    e.passengers, e.destination, svcLabel(e.serviceType),
+    e.vehicleType === 'sedan' ? 'Sedan' : 'Crysta',
+    fmtDt(e.journeyStart), fmtDt(e.journeyEnd),
+    e.km, e.hrs ?? '', e.vendorClaimed, e.calculatedAmount,
+    e.gstPercent ?? 0, e.gstAmount ?? 0, e.tollParking ?? 0,
+    e.calculatedTotal ?? e.calculatedAmount, e.payableAmount
+  ].map(v => `"${String(v ?? '').replace(/"/g,'""')}"`));
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  download('travelbill_export.csv', csv, 'text/csv');
+}
+
+function exportJSON() {
+  if (!entries.length) { alert('No entries to export.'); return; }
+  download('travelbill_export.json', JSON.stringify(entries, null, 2), 'application/json');
+}
+
+function download(filename, content, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type }));
+  a.download = filename;
+  a.click();
+}
+</script>
+</body>
+</html>
