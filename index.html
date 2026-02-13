@@ -426,12 +426,15 @@ function recalculate() {
       pricePerKm = veh === 'sedan' ? 21 : 28;
     }
 
-    const billedKm = Math.max(km, minKm);
+    // Minimum 250 km PER DAY
+    const tripDays = Math.max(1, getDaysBetween(startStr, endStr) + 1);
+    const minKmTotal = minKm * tripDays;
+    const billedKm = Math.max(km, minKmTotal);
     const kmCharge = billedKm * pricePerKm;
 
-    if (km < minKm) {
-      notes.push(`Minimum billing applied: ${minKm} km (actual: ${km} km)`);
-      breakdown.push({ lbl: `Distance: ${minKm} km (min) × ₹${pricePerKm}/km`, val: `₹${kmCharge.toLocaleString()}` });
+    if (km < minKmTotal) {
+      notes.push(`Minimum billing applied: ${minKm} km/day × ${tripDays} day${tripDays > 1 ? 's' : ''} = ${minKmTotal} km (actual: ${km} km)`);
+      breakdown.push({ lbl: `Distance: ${minKmTotal} km (min ${minKm}×${tripDays} days) × ₹${pricePerKm}/km`, val: `₹${kmCharge.toLocaleString()}` });
     } else {
       breakdown.push({ lbl: `Distance: ${km} km × ₹${pricePerKm}/km`, val: `₹${kmCharge.toLocaleString()}` });
     }
