@@ -503,9 +503,10 @@ function handleServiceChange() {
 }
 
 function getVendorName() {
-  const sel = document.getElementById('vendorSelect').value;
-  if (sel === '__other__') return document.getElementById('vendorOther').value.trim();
-  return sel;
+  const sel = document.getElementById('vendorSelect');
+  if (sel.value === '__other__') return document.getElementById('vendorOther').value.trim();
+  if (sel.value === '') return '';
+  return sel.options[sel.selectedIndex].text;
 }
 
 // ══════════════════════════════════════════════════════
@@ -747,8 +748,10 @@ function hideResult() {
 // ══════════════════════════════════════════════════════
 function saveEntry() {
   if (!currentCalc) return;
-  if (!currentCalc.vendor) { alert('Please select a vendor.'); return; }
-  if (!currentCalc.billNo) { alert('Please enter a Bill No.'); return; }
+  const vendorName = getVendorName();
+  if (!vendorName) { alert('Please select a vendor.'); return; }
+  if (!document.getElementById('billNo').value.trim()) { alert('Please enter a Bill No.'); return; }
+  currentCalc.vendor = vendorName;
 
   currentCalc.savedAt = new Date().toISOString();
   currentCalc.id = Date.now();
