@@ -4,140 +4,288 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Travel Bill Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inconsolata:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0F1117;
-  --surface: #181C25;
-  --surface2: #1F2435;
-  --border: #2A3045;
-  --accent: #4F8EF7;
-  --accent2: #F7A24F;
-  --green: #3FCF8E;
-  --red: #F75F5F;
-  --yellow: #F7D44F;
-  --text: #E8EAF0;
-  --muted: #6B738C;
-  --font: 'Syne', sans-serif;
-  --mono: 'Inconsolata', monospace;
+  --bg: #13151C;
+  --surface: #1C1F2E;
+  --surface2: #242838;
+  --surface3: #2C3045;
+  --border: #323752;
+  --border2: #404668;
+  --accent: #6C8EF5;
+  --accent-glow: rgba(108,142,245,0.15);
+  --teal: #4ECDC4;
+  --teal-glow: rgba(78,205,196,0.12);
+  --coral: #FF6B6B;
+  --amber: #FFD93D;
+  --green: #51CF7C;
+  --green-glow: rgba(81,207,124,0.12);
+  --text: #E2E6F3;
+  --text2: #B8BFDA;
+  --muted: #717899;
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --radius: 16px;
+  --radius-sm: 10px;
 }
+
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;}
 
-/* NAV */
-.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 36px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
-.nav-logo{font-size:1.2rem;font-weight:800;letter-spacing:1px;color:var(--accent);}
-.nav-logo span{color:var(--accent2);}
-.tab-btns{display:flex;gap:6px;}
-.tab-btn{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:var(--font);font-size:0.82rem;font-weight:600;padding:7px 18px;border-radius:6px;cursor:pointer;transition:all 0.2s;}
-.tab-btn.active,.tab-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,0.08);}
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
 
-/* LAYOUT */
-.page{display:none;max-width:820px;margin:0 auto;padding:36px 24px 80px;}
-.page.active{display:block;animation:fadeIn 0.35s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* ── NAV ── */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 40px;
+  background:rgba(28,31,46,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:200;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-0.3px;
+}
+.nav-logo .logo-icon{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+}
+.nav-logo .logo-sub{color:var(--muted);font-weight:500;font-size:0.85rem;margin-left:2px;}
+.tab-btns{display:flex;gap:4px;background:var(--surface2);padding:4px;border-radius:12px;border:1px solid var(--border);}
+.tab-btn{
+  background:none;border:none;color:var(--muted);
+  font-family:var(--font);font-size:0.82rem;font-weight:600;
+  padding:8px 20px;border-radius:9px;cursor:pointer;transition:all 0.2s;
+  display:flex;align-items:center;gap:6px;
+}
+.tab-btn.active{background:var(--surface3);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.tab-btn:hover:not(.active){color:var(--text2);}
 
-/* PAGE TITLE */
-.page-title{font-size:1.8rem;font-weight:800;margin-bottom:6px;}
-.page-sub{color:var(--muted);font-size:0.88rem;margin-bottom:32px;}
+/* ── LAYOUT ── */
+.page{display:none;max-width:840px;margin:0 auto;padding:36px 28px 80px;}
+.page.active{display:block;animation:fadeUp 0.4s cubic-bezier(.22,.68,0,1.2) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* FORM CARD */
-.form-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:20px;}
-.section-label{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:28px;}
+.page-title{font-size:1.65rem;font-weight:800;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px;}
+.page-sub{color:var(--muted);font-size:0.88rem;}
+
+/* ── CARDS ── */
+.form-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px 26px;
+  margin-bottom:16px;
+  transition:border-color 0.2s;
+}
+.form-card:hover{border-color:var(--border2);}
+
+.section-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:0.72rem;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:18px;padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.section-label .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--teal));
+  flex-shrink:0;
+}
+
 .form-row{display:grid;gap:14px;margin-bottom:14px;}
 .form-row.col2{grid-template-columns:1fr 1fr;}
 .form-row.col3{grid-template-columns:1fr 1fr 1fr;}
 .form-row.col1{grid-template-columns:1fr;}
-label{font-size:0.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:5px;letter-spacing:0.5px;}
-input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);font-family:var(--font);font-size:0.9rem;padding:10px 14px;border-radius:8px;outline:none;transition:border 0.2s;}
-input:focus,select:focus{border-color:var(--accent);}
+
+label{
+  font-size:0.78rem;font-weight:600;color:var(--text2);
+  display:block;margin-bottom:6px;letter-spacing:0.2px;
+}
+label .hint{font-weight:400;color:var(--muted);font-size:0.72rem;}
+
+input,select{
+  width:100%;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+  color:var(--text);
+  font-family:var(--font);font-size:0.9rem;
+  padding:11px 14px;
+  border-radius:var(--radius-sm);
+  outline:none;
+  transition:all 0.2s;
+  appearance:none;
+}
+input:focus,select:focus{
+  border-color:var(--accent);
+  background:var(--surface3);
+  box-shadow:0 0 0 3px var(--accent-glow);
+}
+input::placeholder{color:var(--muted);}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23717899' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
 select option{background:var(--surface2);}
 .hidden{display:none!important;}
 
-/* CALCULATION RESULT */
-.result-card{background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;}
-.result-title{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
-.result-line{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.88rem;}
+/* ── RESULT CARD ── */
+.result-card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;margin-bottom:16px;
+  position:relative;overflow:hidden;
+}
+.result-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--teal));
+}
+.result-title{
+  font-size:0.72rem;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--teal);
+  margin-bottom:18px;display:flex;align-items:center;gap:8px;
+}
+.result-line{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-bottom:1px solid var(--border);font-size:0.88rem;
+}
 .result-line:last-of-type{border-bottom:none;}
-.result-line .lbl{color:var(--muted);}
-.result-line .val{font-family:var(--mono);font-weight:600;}
+.result-line .lbl{color:var(--text2);}
+.result-line .val{font-family:var(--mono);font-weight:600;font-size:0.9rem;}
 .result-line .val.green{color:var(--green);}
-.result-line .val.yellow{color:var(--yellow);}
-.result-line .val.red{color:var(--red);}
-.divider-line{border:none;border-top:2px solid var(--border);margin:10px 0;}
-.payable-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(63,207,142,0.1);border:1.5px solid var(--green);border-radius:10px;margin-top:14px;}
-.payable-row .lbl{font-weight:700;font-size:1rem;}
-.payable-row .val{font-family:var(--mono);font-weight:800;font-size:1.4rem;color:var(--green);}
-.note-box{background:rgba(247,162,79,0.08);border:1px solid rgba(247,162,79,0.3);border-radius:8px;padding:10px 14px;font-size:0.82rem;color:var(--accent2);margin-top:12px;line-height:1.6;}
-.note-box ul{margin-left:16px;}
+.result-line .val.yellow{color:var(--amber);}
+.result-line .val.red{color:var(--coral);}
+.divider-line{border:none;border-top:1px dashed var(--border2);margin:8px 0;}
 
-/* BUTTONS */
-.btn-row{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
-.btn{font-family:var(--font);font-weight:700;font-size:0.88rem;padding:12px 24px;border-radius:8px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;}
-.btn-primary{background:var(--accent);color:#fff;}
-.btn-primary:hover{background:#3a7de8;}
-.btn-success{background:var(--green);color:#0F1117;}
-.btn-success:hover{background:#2fb87a;}
-.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text);}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
-.btn-danger{background:none;border:1.5px solid var(--red);color:var(--red);font-size:0.78rem;padding:6px 12px;}
-.btn-danger:hover{background:var(--red);color:#fff;}
+.payable-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 20px;
+  background:var(--green-glow);
+  border:1.5px solid rgba(81,207,124,0.3);
+  border-radius:var(--radius-sm);margin-top:16px;
+}
+.payable-row .lbl{font-weight:700;font-size:1rem;color:var(--text);}
+.payable-row .val{font-family:var(--mono);font-weight:800;font-size:1.5rem;color:var(--green);}
 
-/* HISTORY */
-.history-empty{text-align:center;padding:60px 20px;color:var(--muted);}
-.history-empty .icon{font-size:3rem;margin-bottom:12px;}
-.history-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:14px;cursor:pointer;transition:border 0.2s;position:relative;}
-.history-item:hover{border-color:var(--accent);}
-.history-item.expanded{border-color:var(--accent);}
-.hi-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.note-box{
+  background:rgba(255,217,61,0.06);
+  border:1px solid rgba(255,217,61,0.2);
+  border-radius:var(--radius-sm);
+  padding:12px 16px;font-size:0.82rem;
+  color:#E8C94A;margin-top:14px;line-height:1.7;
+}
+.note-box ul{margin-left:18px;}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--font);font-weight:700;font-size:0.88rem;
+  padding:12px 24px;border-radius:var(--radius-sm);
+  border:none;cursor:pointer;transition:all 0.2s;
+  letter-spacing:0.2px;display:inline-flex;align-items:center;gap:7px;
+}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#5579e8);color:#fff;box-shadow:0 4px 12px rgba(108,142,245,0.3);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(108,142,245,0.4);}
+.btn-success{background:linear-gradient(135deg,var(--green),#3ab869);color:#0d1a14;box-shadow:0 4px 12px rgba(81,207,124,0.25);}
+.btn-success:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(81,207,124,0.35);}
+.btn-outline{background:var(--surface2);border:1.5px solid var(--border);color:var(--text2);}
+.btn-outline:hover{border-color:var(--border2);color:var(--text);background:var(--surface3);}
+.btn-danger{background:none;border:1.5px solid rgba(255,107,107,0.4);color:var(--coral);font-size:0.78rem;padding:7px 14px;}
+.btn-danger:hover{background:rgba(255,107,107,0.1);border-color:var(--coral);}
+
+/* ── HISTORY ── */
+.history-empty{text-align:center;padding:70px 20px;color:var(--muted);}
+.history-empty .icon{font-size:3.5rem;margin-bottom:14px;opacity:0.6;}
+.history-empty p{font-size:0.9rem;margin-top:6px;}
+
+.history-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px 24px;margin-bottom:12px;
+  cursor:pointer;transition:all 0.2s;
+}
+.history-item:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,0.2);}
+.history-item.expanded{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-glow);}
+
+.hi-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
 .hi-meta{flex:1;}
-.hi-bill{font-family:var(--mono);font-size:0.8rem;color:var(--muted);margin-bottom:4px;}
-.hi-title{font-weight:700;font-size:1rem;margin-bottom:4px;}
-.hi-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
-.tag{font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(79,142,247,0.12);color:var(--accent);border:1px solid rgba(79,142,247,0.2);}
-.tag.green{background:rgba(63,207,142,0.12);color:var(--green);border-color:rgba(63,207,142,0.2);}
-.tag.yellow{background:rgba(247,212,79,0.12);color:var(--yellow);border-color:rgba(247,212,79,0.2);}
-.hi-amount{text-align:right;}
+.hi-bill{font-family:var(--mono);font-size:0.75rem;color:var(--muted);margin-bottom:5px;letter-spacing:0.5px;}
+.hi-title{font-weight:700;font-size:1rem;color:var(--text);margin-bottom:6px;}
+.hi-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{
+  font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;
+  background:var(--accent-glow);color:var(--accent);
+  border:1px solid rgba(108,142,245,0.2);
+}
+.tag.green{background:var(--green-glow);color:var(--green);border-color:rgba(81,207,124,0.2);}
+.tag.yellow{background:rgba(255,217,61,0.08);color:var(--amber);border-color:rgba(255,217,61,0.2);}
+.tag.teal{background:var(--teal-glow);color:var(--teal);border-color:rgba(78,205,196,0.2);}
+
+.hi-amount{text-align:right;flex-shrink:0;}
 .hi-amount .payable{font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green);}
-.hi-amount .label{font-size:0.72rem;color:var(--muted);}
-.hi-detail{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:none;}
-.hi-detail.show{display:block;}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;}
-.dg-item .dg-lbl{font-size:0.72rem;color:var(--muted);margin-bottom:2px;}
-.dg-item .dg-val{font-size:0.88rem;font-weight:600;}
+.hi-amount .label{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+
+.hi-detail{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);display:none;}
+.hi-detail.show{display:block;animation:fadeUp 0.25s ease both;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;}
+.dg-item{background:var(--surface2);border-radius:8px;padding:10px 14px;}
+.dg-item .dg-lbl{font-size:0.7rem;color:var(--muted);margin-bottom:3px;font-weight:600;letter-spacing:0.3px;}
+.dg-item .dg-val{font-size:0.88rem;font-weight:600;color:var(--text);}
 .hi-actions{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;}
 
-/* EXPORT */
-.export-bar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
-.count-badge{font-family:var(--mono);font-size:0.85rem;color:var(--muted);}
+/* ── EXPORT BAR ── */
+.export-bar{
+  display:flex;gap:10px;margin-bottom:20px;
+  flex-wrap:wrap;align-items:center;justify-content:space-between;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px 18px;
+}
+.count-badge{font-family:var(--mono);font-size:0.82rem;color:var(--muted);}
+.count-badge span{color:var(--accent);font-weight:700;}
 
-/* RESPONSIVE */
-@media(max-width:600px){
-  .nav{padding:14px 16px;}
-  .page{padding:24px 14px 60px;}
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .nav{padding:14px 18px;}
+  .nav-logo .logo-sub{display:none;}
+  .page{padding:24px 16px 60px;}
   .form-row.col2,.form-row.col3{grid-template-columns:1fr;}
   .detail-grid{grid-template-columns:1fr;}
+  .tab-btn{padding:8px 14px;}
 }
 </style>
 </head>
 <body>
 
 <div class="nav">
-  <div class="nav-logo">Travel<span>Bill</span></div>
+  <div class="nav-logo">
+    <div class="logo-icon">🚖</div>
+    Taxi Bill Calculator
+    <span class="logo-sub">by Mohan Deist</span>
+  </div>
   <div class="tab-btns">
-    <button class="tab-btn active" onclick="showTab('calculator')">⊕ New Entry</button>
-    <button class="tab-btn" onclick="showTab('history')">☰ History</button>
+    <button class="tab-btn active" onclick="showTab('calculator')">✚ New Entry</button>
+    <button class="tab-btn" onclick="showTab('history')">📋 History</button>
   </div>
 </div>
 
 <!-- ══════════════════ CALCULATOR PAGE ══════════════════ -->
 <div class="page active" id="tab-calculator">
-  <div class="page-title">New Bill Entry</div>
-  <div class="page-sub">Fill in journey details to calculate the payable amount.</div>
+  <div class="page-header">
+    <div class="page-title">New Bill Entry</div>
+    <div class="page-sub">Fill in the journey details below to calculate the payable amount.</div>
+  </div>
 
   <!-- BASIC INFO -->
   <div class="form-card">
-    <div class="section-label">Basic Information</div>
+    <div class="section-label"><span class="dot"></span> Basic Information</div>
     <div class="form-row col2">
       <div>
         <label>Vendor Name</label>
@@ -165,11 +313,25 @@ select option{background:var(--surface2);}
         <input type="text" id="destination" placeholder="e.g. Mussoorie, Agra"/>
       </div>
     </div>
+    <div class="form-row col2">
+      <div>
+        <label>Purpose of Visit</label>
+        <select id="purposeOfVisit" onchange="handlePurposeChange()">
+          <option value="">— Select Purpose —</option>
+          <option value="Exam Observer">Exam Observer</option>
+          <option value="Venue Audit">Venue Audit</option>
+          <option value="Flying Squad">Flying Squad</option>
+          <option value="Control Room Cab">Control Room Cab</option>
+          <option value="__other__">Other (enter purpose)</option>
+        </select>
+        <input type="text" id="purposeOther" class="hidden" placeholder="Enter purpose…" style="margin-top:8px;"/>
+      </div>
+    </div>
   </div>
 
   <!-- JOURNEY DETAILS -->
   <div class="form-card">
-    <div class="section-label">Journey Details</div>
+    <div class="section-label"><span class="dot"></span> Journey Details</div>
     <div class="form-row col2">
       <div>
         <label>Type of Service</label>
@@ -264,11 +426,13 @@ select option{background:var(--surface2);}
 
 <!-- ══════════════════ HISTORY PAGE ══════════════════ -->
 <div class="page" id="tab-history">
-  <div class="page-title">Bill History</div>
-  <div class="page-sub">All saved entries. Click any entry to expand details.</div>
+  <div class="page-header">
+    <div class="page-title">Bill History</div>
+    <div class="page-sub">All saved entries. Click any card to expand full details.</div>
+  </div>
   <div class="export-bar">
     <span class="count-badge" id="countBadge">0 entries saved</span>
-    <div style="display:flex;gap:10px;">
+    <div style="display:flex;gap:8px;">
       <button class="btn btn-outline" onclick="exportCSV()">↓ Export CSV</button>
       <button class="btn btn-outline" onclick="exportJSON()">↓ Export JSON</button>
     </div>
@@ -309,6 +473,18 @@ function handleVendorChange() {
   const v = document.getElementById('vendorSelect').value;
   const other = document.getElementById('vendorOther');
   v === '__other__' ? other.classList.remove('hidden') : other.classList.add('hidden');
+}
+
+function handlePurposeChange() {
+  const v = document.getElementById('purposeOfVisit').value;
+  const other = document.getElementById('purposeOther');
+  v === '__other__' ? other.classList.remove('hidden') : other.classList.add('hidden');
+}
+
+function getPurpose() {
+  const sel = document.getElementById('purposeOfVisit').value;
+  if (sel === '__other__') return document.getElementById('purposeOther').value.trim();
+  return sel;
 }
 
 function handleServiceChange() {
@@ -500,6 +676,7 @@ function recalculate() {
     billNo: document.getElementById('billNo').value.trim(),
     passengers: document.getElementById('passengers').value.trim(),
     destination: document.getElementById('destination').value.trim(),
+    purposeOfVisit: getPurpose(),
     serviceType: svc,
     vehicleType: veh,
     journeyStart: startStr,
@@ -606,6 +783,9 @@ function saveEntry() {
 }
 
 function clearForm() {
+  document.getElementById('purposeOfVisit').value = '';
+  document.getElementById('purposeOther').value = '';
+  document.getElementById('purposeOther').classList.add('hidden');
   document.getElementById('vendorSelect').value = '';
   document.getElementById('vendorOther').value = '';
   document.getElementById('vendorOther').classList.add('hidden');
@@ -645,7 +825,7 @@ function fmtDt(str) {
 function renderHistory() {
   const list = document.getElementById('historyList');
   const badge = document.getElementById('countBadge');
-  badge.textContent = entries.length + ' entr' + (entries.length === 1 ? 'y' : 'ies') + ' saved';
+  badge.innerHTML = `<span>${entries.length}</span> entr${entries.length === 1 ? 'y' : 'ies'} saved`;
 
   if (!entries.length) {
     list.innerHTML = `<div class="history-empty"><div class="icon">🗂️</div><div>No entries saved yet.</div><div style="margin-top:8px;font-size:0.82rem;">Calculate and save a bill to see it here.</div></div>`;
@@ -671,8 +851,9 @@ function renderHistory() {
           <div class="hi-title">${e.vendor || '—'} → ${e.destination || '—'}</div>
           <div class="hi-tags">
             <span class="tag">${svcLabel(e.serviceType)}</span>
-            <span class="tag">${e.vehicleType === 'sedan' ? 'Sedan' : 'Crysta'}</span>
-            ${e.passengers ? `<span class="tag green">${e.passengers}</span>` : ''}
+            <span class="tag">${e.vehicleType === 'sedan' ? '🚗 Sedan' : '🚙 Crysta'}</span>
+            ${e.purposeOfVisit ? `<span class="tag yellow">🎯 ${e.purposeOfVisit}</span>` : ''}
+            ${e.passengers ? `<span class="tag teal">👤 ${e.passengers}</span>` : ''}
             ${diffTag}
           </div>
         </div>
@@ -684,6 +865,7 @@ function renderHistory() {
       <div class="hi-detail" id="hid_${i}">
         <div class="detail-grid">
           <div class="dg-item"><div class="dg-lbl">Passengers</div><div class="dg-val">${e.passengers || '—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Purpose of Visit</div><div class="dg-val">${e.purposeOfVisit || '—'}</div></div>
           <div class="dg-item"><div class="dg-lbl">Destination</div><div class="dg-val">${e.destination || '—'}</div></div>
           <div class="dg-item"><div class="dg-lbl">Journey Start</div><div class="dg-val">${fmtDt(e.journeyStart)}</div></div>
           <div class="dg-item"><div class="dg-lbl">Journey End</div><div class="dg-val">${fmtDt(e.journeyEnd)}</div></div>
@@ -730,10 +912,10 @@ function deleteEntry(i) {
 // ══════════════════════════════════════════════════════
 function exportCSV() {
   if (!entries.length) { alert('No entries to export.'); return; }
-  const headers = ['ID','Saved Date','Vendor','Bill No','Passengers','Destination','Service','Vehicle','Journey Start','Journey End','Km','Hours','Vendor Claimed','Transport Sub-total','GST %','GST Amount','Toll/Parking','Calculated Total','Payable Amount'];
+  const headers = ['ID','Saved Date','Vendor','Bill No','Passengers','Purpose of Visit','Destination','Service','Vehicle','Journey Start','Journey End','Km','Hours','Vendor Claimed','Transport Sub-total','GST %','GST Amount','Toll/Parking','Calculated Total','Payable Amount'];
   const rows = entries.map(e => [
     e.id, new Date(e.savedAt).toLocaleString('en-IN'), e.vendor, e.billNo,
-    e.passengers, e.destination, svcLabel(e.serviceType),
+    e.passengers, e.purposeOfVisit || '', e.destination, svcLabel(e.serviceType),
     e.vehicleType === 'sedan' ? 'Sedan' : 'Crysta',
     fmtDt(e.journeyStart), fmtDt(e.journeyEnd),
     e.km, e.hrs ?? '', e.vendorClaimed, e.calculatedAmount,
