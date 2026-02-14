@@ -305,15 +305,19 @@ select option{background:var(--surface2);}
     </div>
     <div class="form-row col2">
       <div>
+        <label>Bill Date</label>
+        <input type="date" id="billDate"/>
+      </div>
+      <div>
         <label>Passenger Name(s)</label>
         <input type="text" id="passengers" placeholder="e.g. Rajesh Kumar, Priya Singh"/>
       </div>
+    </div>
+    <div class="form-row col2">
       <div>
         <label>Destination</label>
         <input type="text" id="destination" placeholder="e.g. Mussoorie, Agra"/>
       </div>
-    </div>
-    <div class="form-row col2">
       <div>
         <label>Purpose of Visit</label>
         <select id="purposeOfVisit" onchange="handlePurposeChange()">
@@ -674,6 +678,7 @@ function recalculate() {
   currentCalc = {
     vendor: getVendorName(),
     billNo: document.getElementById('billNo').value.trim(),
+    billDate: document.getElementById('billDate').value,
     passengers: document.getElementById('passengers').value.trim(),
     destination: document.getElementById('destination').value.trim(),
     purposeOfVisit: getPurpose(),
@@ -790,6 +795,7 @@ function clearForm() {
   document.getElementById('vendorOther').value = '';
   document.getElementById('vendorOther').classList.add('hidden');
   document.getElementById('billNo').value = '';
+  document.getElementById('billDate').value = '';
   document.getElementById('passengers').value = '';
   document.getElementById('destination').value = '';
   document.getElementById('serviceType').value = '';
@@ -847,7 +853,7 @@ function renderHistory() {
     item.innerHTML = `
       <div class="hi-top" onclick="toggleExpand(${i})">
         <div class="hi-meta">
-          <div class="hi-bill">Bill #${e.billNo || '—'} · ${saved}</div>
+          <div class="hi-bill">Bill #${e.billNo || '—'} · ${e.billDate ? new Date(e.billDate).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : saved}</div>
           <div class="hi-title">${e.vendor || '—'} → ${e.destination || '—'}</div>
           <div class="hi-tags">
             <span class="tag">${svcLabel(e.serviceType)}</span>
@@ -864,6 +870,8 @@ function renderHistory() {
       </div>
       <div class="hi-detail" id="hid_${i}">
         <div class="detail-grid">
+          <div class="dg-item"><div class="dg-lbl">Bill No.</div><div class="dg-val">${e.billNo || '—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Bill Date</div><div class="dg-val">${e.billDate ? new Date(e.billDate).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—'}</div></div>
           <div class="dg-item"><div class="dg-lbl">Passengers</div><div class="dg-val">${e.passengers || '—'}</div></div>
           <div class="dg-item"><div class="dg-lbl">Purpose of Visit</div><div class="dg-val">${e.purposeOfVisit || '—'}</div></div>
           <div class="dg-item"><div class="dg-lbl">Destination</div><div class="dg-val">${e.destination || '—'}</div></div>
@@ -912,10 +920,10 @@ function deleteEntry(i) {
 // ══════════════════════════════════════════════════════
 function exportCSV() {
   if (!entries.length) { alert('No entries to export.'); return; }
-  const headers = ['ID','Saved Date','Vendor','Bill No','Passengers','Purpose of Visit','Destination','Service','Vehicle','Journey Start','Journey End','Km','Hours','Vendor Claimed','Transport Sub-total','GST %','GST Amount','Toll/Parking','Calculated Total','Payable Amount'];
+  const headers = ['ID','Saved Date','Vendor','Bill No','Bill Date','Passengers','Purpose of Visit','Destination','Service','Vehicle','Journey Start','Journey End','Km','Hours','Vendor Claimed','Transport Sub-total','GST %','GST Amount','Toll/Parking','Calculated Total','Payable Amount'];
   const rows = entries.map(e => [
     e.id, new Date(e.savedAt).toLocaleString('en-IN'), e.vendor, e.billNo,
-    e.passengers, e.purposeOfVisit || '', e.destination, svcLabel(e.serviceType),
+    e.billDate || '', e.passengers, e.purposeOfVisit || '', e.destination, svcLabel(e.serviceType),
     e.vehicleType === 'sedan' ? 'Sedan' : 'Crysta',
     fmtDt(e.journeyStart), fmtDt(e.journeyEnd),
     e.km, e.hrs ?? '', e.vendorClaimed, e.calculatedAmount,
