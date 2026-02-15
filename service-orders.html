@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Service Orders Tracking</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F0F4FF;
+  --white: #FFFFFF;
+  --border: #DDE3F5;
+  --text: #1A1F36;
+  --muted: #6B7280;
+  --blue: #4361EE;
+  --blue-light: #EEF1FF;
+  --green: #0CAF60;
+  --green-light: #E6F7EF;
+  --yellow: #F59E0B;
+  --yellow-light: #FFFBEB;
+  --red: #EF4444;
+  --red-light: #FEF2F2;
+  --font: 'Nunito', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 2px 16px rgba(67,97,238,0.08);
+  --shadow-hover: 0 8px 32px rgba(67,97,238,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* NAV */
+.nav{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:16px 36px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;
+  box-shadow:0 1px 8px rgba(67,97,238,0.06);
+}
+.nav-left{display:flex;align-items:center;gap:12px;}
+.back-btn{
+  background:var(--blue-light);border:1.5px solid rgba(67,97,238,0.2);
+  color:var(--blue);font-family:var(--font);font-size:0.82rem;font-weight:700;
+  padding:7px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s;
+  text-decoration:none;display:flex;align-items:center;gap:5px;
+}
+.back-btn:hover{background:var(--blue);color:#fff;}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#0CAF60,#34D98B);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;box-shadow:0 3px 10px rgba(12,175,96,0.25);
+}
+.nav-title{font-size:1rem;font-weight:800;color:var(--text);}
+
+.tab-btns{display:flex;gap:4px;background:#F3F4F6;padding:4px;border-radius:10px;}
+.tab-btn{
+  background:none;border:none;color:var(--muted);
+  font-family:var(--font);font-size:0.82rem;font-weight:700;
+  padding:8px 18px;border-radius:7px;cursor:pointer;transition:all 0.2s;
+}
+.tab-btn.active{background:var(--white);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+
+/* LAYOUT */
+.page{display:none;max-width:860px;margin:0 auto;padding:36px 24px 80px;}
+.page.active{display:block;animation:fadeUp 0.35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.page-header{margin-bottom:28px;}
+.page-title{font-size:1.6rem;font-weight:900;letter-spacing:-0.4px;margin-bottom:4px;}
+.page-sub{color:var(--muted);font-size:0.88rem;}
+
+/* FORM CARD */
+.form-card{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:28px;margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+.section-label{
+  font-size:0.7rem;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;color:var(--blue);
+  margin-bottom:18px;padding-bottom:10px;
+  border-bottom:1.5px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.section-label .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+
+.form-row{display:grid;gap:14px;margin-bottom:14px;}
+.form-row.col2{grid-template-columns:1fr 1fr;}
+.form-row.col3{grid-template-columns:1fr 1fr 1fr;}
+.form-row.col1{grid-template-columns:1fr;}
+label{font-size:0.78rem;font-weight:700;color:var(--text);display:block;margin-bottom:5px;}
+label .opt{font-weight:500;color:var(--muted);font-size:0.72rem;}
+input,select,textarea{
+  width:100%;background:#F8F9FF;border:1.5px solid var(--border);
+  color:var(--text);font-family:var(--font);font-size:0.9rem;
+  padding:11px 14px;border-radius:var(--radius-sm);outline:none;transition:all 0.2s;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--blue);background:var(--white);
+  box-shadow:0 0 0 3px rgba(67,97,238,0.1);
+}
+input::placeholder,textarea::placeholder{color:#9CA3AF;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;appearance:none;background-color:#F8F9FF;}
+textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.hidden{display:none!important;}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--font);font-weight:800;font-size:0.88rem;
+  padding:12px 24px;border-radius:var(--radius-sm);
+  border:none;cursor:pointer;transition:all 0.2s;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.btn-primary{background:linear-gradient(135deg,var(--blue),#6B7FFF);color:#fff;box-shadow:0 4px 14px rgba(67,97,238,0.3);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(67,97,238,0.4);}
+.btn-success{background:linear-gradient(135deg,var(--green),#34D98B);color:#fff;box-shadow:0 4px 14px rgba(12,175,96,0.25);}
+.btn-success:hover{transform:translateY(-1px);}
+.btn-outline{background:var(--white);border:1.5px solid var(--border);color:var(--muted);}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.btn-danger{background:none;border:1.5px solid #FCA5A5;color:var(--red);font-size:0.78rem;padding:6px 12px;}
+.btn-danger:hover{background:var(--red-light);}
+
+/* STATUS BADGES */
+.badge{font-size:0.72rem;font-weight:800;padding:4px 12px;border-radius:20px;letter-spacing:0.3px;white-space:nowrap;}
+.badge-active{background:var(--green-light);color:#076D3C;border:1px solid #A7F3D0;}
+.badge-warn60{background:var(--yellow-light);color:#92400E;border:1px solid #FDE68A;}
+.badge-warn30{background:var(--red-light);color:#991B1B;border:1px solid #FCA5A5;}
+.badge-expired{background:#F3F4F6;color:#6B7280;border:1px solid #E5E7EB;}
+
+/* CONTRACT LIST */
+.list-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:16px;flex-wrap:wrap;gap:10px;
+}
+.list-count{font-size:0.82rem;color:var(--muted);font-family:var(--mono);}
+.list-count span{color:var(--blue);font-weight:700;}
+
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.filter-btn{
+  background:var(--white);border:1.5px solid var(--border);
+  color:var(--muted);font-family:var(--font);font-size:0.78rem;font-weight:700;
+  padding:6px 14px;border-radius:20px;cursor:pointer;transition:all 0.2s;
+}
+.filter-btn.active,.filter-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light);}
+.filter-btn.f-warn60.active{border-color:var(--yellow);color:#92400E;background:var(--yellow-light);}
+.filter-btn.f-warn30.active{border-color:var(--red);color:var(--red);background:var(--red-light);}
+
+.contract-item{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:10px;
+  cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;
+}
+.contract-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:4px;border-radius:2px 0 0 2px;
+}
+.contract-item.status-active::before{background:var(--green);}
+.contract-item.status-warn60::before{background:var(--yellow);}
+.contract-item.status-warn30::before{background:var(--red);}
+.contract-item.status-expired::before{background:#D1D5DB;}
+
+.contract-item:hover{border-color:#B4C0E8;box-shadow:var(--shadow-hover);transform:translateY(-1px);}
+.contract-item.expanded{border-color:var(--blue);}
+
+.ci-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.ci-meta{flex:1;}
+.ci-contract{font-family:var(--mono);font-size:0.75rem;color:var(--muted);margin-bottom:4px;letter-spacing:0.5px;}
+.ci-title{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:6px;}
+.ci-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.ci-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.days-chip{
+  font-family:var(--mono);font-size:0.78rem;font-weight:600;
+  padding:4px 12px;border-radius:8px;text-align:right;
+}
+.days-active{background:var(--green-light);color:#076D3C;}
+.days-warn60{background:var(--yellow-light);color:#92400E;}
+.days-warn30{background:var(--red-light);color:#991B1B;}
+.days-expired{background:#F3F4F6;color:#6B7280;}
+
+.tag{font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--blue-light);color:var(--blue);border:1px solid rgba(67,97,238,0.15);}
+
+.ci-detail{margin-top:16px;padding-top:16px;border-top:1.5px dashed var(--border);display:none;}
+.ci-detail.show{display:block;animation:fadeUp 0.2s ease both;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.dg-item{background:#F8F9FF;border-radius:8px;padding:10px 14px;}
+.dg-lbl{font-size:0.7rem;font-weight:700;color:var(--muted);margin-bottom:3px;letter-spacing:0.3px;}
+.dg-val{font-size:0.88rem;font-weight:700;color:var(--text);}
+.remarks-box{background:#F8F9FF;border-radius:8px;padding:12px 14px;margin-top:10px;}
+.remarks-box .dg-lbl{margin-bottom:5px;}
+.remarks-text{font-size:0.88rem;color:var(--text);line-height:1.6;}
+.ci-actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-end;}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.stat-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;box-shadow:var(--shadow);}
+.stat-val{font-size:1.6rem;font-weight:900;font-family:var(--mono);margin-bottom:2px;}
+.stat-lbl{font-size:0.75rem;font-weight:600;color:var(--muted);}
+.stat-active .stat-val{color:var(--green);}
+.stat-warn60 .stat-val{color:var(--yellow);}
+.stat-warn30 .stat-val{color:var(--red);}
+.stat-total .stat-val{color:var(--blue);}
+
+/* EMPTY */
+.list-empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.list-empty .icon{font-size:3rem;margin-bottom:12px;opacity:0.5;}
+
+/* EXPORT BAR */
+.export-bar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:16px;}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .nav{padding:14px 16px;}
+  .page{padding:24px 16px 60px;}
+  .form-row.col2,.form-row.col3{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .detail-grid{grid-template-columns:1fr;}
+  .tab-btn{padding:7px 12px;font-size:0.78rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-left">
+    <a class="back-btn" href="index.html">← Home</a>
+    <div class="nav-logo">
+      <div class="logo-icon">📋</div>
+      <span class="nav-title">Service Orders Tracking</span>
+    </div>
+  </div>
+  <div class="tab-btns">
+    <button class="tab-btn active" onclick="showTab('add',this)">➕ Add Contract</button>
+    <button class="tab-btn" onclick="showTab('list',this)">📄 All Contracts</button>
+  </div>
+</div>
+
+<!-- ══════ ADD CONTRACT PAGE ══════ -->
+<div class="page active" id="tab-add">
+  <div class="page-header">
+    <div class="page-title">Add New Contract</div>
+    <div class="page-sub">Fill in the GeM contract details below.</div>
+  </div>
+
+  <div class="form-card">
+    <div class="section-label"><span class="dot"></span> Contract Details</div>
+    <div class="form-row col2">
+      <div>
+        <label>GeM Contract Number</label>
+        <input type="text" id="gemNumber" placeholder="e.g. GEMC-511687755"/>
+      </div>
+      <div>
+        <label>Type of Service</label>
+        <input type="text" id="serviceType" placeholder="e.g. Housekeeping, Security"/>
+      </div>
+    </div>
+    <div class="form-row col2">
+      <div>
+        <label>Vendor Name</label>
+        <input type="text" id="vendorName" placeholder="e.g. ABC Services Pvt. Ltd."/>
+      </div>
+      <div>
+        <label>Value of Contract (₹) <span class="opt">— Optional</span></label>
+        <input type="number" id="contractValue" placeholder="e.g. 500000"/>
+      </div>
+    </div>
+    <div class="form-row col2">
+      <div>
+        <label>Contract Start Date</label>
+        <input type="date" id="startDate"/>
+      </div>
+      <div>
+        <label>Contract End Date</label>
+        <input type="date" id="endDate" onchange="previewStatus()"/>
+      </div>
+    </div>
+    <div class="form-row col1">
+      <div>
+        <label>Remarks <span class="opt">— Optional</span></label>
+        <textarea id="remarks" placeholder="Any additional notes about this contract…"></textarea>
+      </div>
+    </div>
+
+    <!-- STATUS PREVIEW -->
+    <div id="statusPreview" class="hidden" style="margin-top:4px;padding:12px 16px;border-radius:10px;font-size:0.88rem;font-weight:700;display:flex;align-items:center;gap:10px;"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-success" onclick="saveContract()">✓ Save Contract</button>
+    <button class="btn btn-outline" onclick="clearContractForm()">✕ Clear</button>
+  </div>
+</div>
+
+<!-- ══════ LIST PAGE ══════ -->
+<div class="page" id="tab-list">
+  <div class="page-header">
+    <div class="page-title">All Contracts</div>
+    <div class="page-sub">Click any contract to expand full details.</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card stat-total"><div class="stat-val" id="statTotal">0</div><div class="stat-lbl">Total Contracts</div></div>
+    <div class="stat-card stat-active"><div class="stat-val" id="statActive">0</div><div class="stat-lbl">Active</div></div>
+    <div class="stat-card stat-warn60"><div class="stat-val" id="statWarn60">0</div><div class="stat-lbl">Expiring &lt; 60 Days</div></div>
+    <div class="stat-card stat-warn30"><div class="stat-val" id="statWarn30">0</div><div class="stat-lbl">Expiring &lt; 30 Days</div></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterContracts('all',this)">All</button>
+    <button class="filter-btn" onclick="filterContracts('active',this)">✅ Active</button>
+    <button class="filter-btn f-warn60" onclick="filterContracts('warn60',this)">⚠️ &lt; 60 Days</button>
+    <button class="filter-btn f-warn30" onclick="filterContracts('warn30',this)">🔴 &lt; 30 Days</button>
+    <button class="filter-btn" onclick="filterContracts('expired',this)">⛔ Expired</button>
+  </div>
+
+  <div class="list-header">
+    <span class="list-count" id="listCount"><span>0</span> contracts</span>
+    <div class="export-bar">
+      <button class="btn btn-outline" style="font-size:0.8rem;padding:8px 16px;" onclick="exportCSV()">↓ Export CSV</button>
+    </div>
+  </div>
+
+  <div id="contractList"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════════════════
+const SHEET_URL = 'https://script.google.com/macros/s/YOUR_APPS_SCRIPT_URL_HERE/exec';
+// Replace above with your Apps Script Web App URL after deployment
+
+// ══════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════
+let contracts = JSON.parse(localStorage.getItem('service_contracts') || '[]');
+let currentFilter = 'all';
+
+// ══════════════════════════════════════════════════════
+//  TAB
+// ══════════════════════════════════════════════════════
+function showTab(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+  if (name === 'list') renderContracts();
+}
+
+// ══════════════════════════════════════════════════════
+//  STATUS CALCULATION
+// ══════════════════════════════════════════════════════
+function calcStatus(endDateStr) {
+  if (!endDateStr) return { status: 'unknown', days: null };
+  const today = new Date(); today.setHours(0,0,0,0);
+  const end = new Date(endDateStr); end.setHours(0,0,0,0);
+  const diff = Math.ceil((end - today) / 86400000);
+  if (diff < 0)  return { status: 'expired',  days: diff };
+  if (diff < 30) return { status: 'warn30',   days: diff };
+  if (diff < 60) return { status: 'warn60',   days: diff };
+  return { status: 'active', days: diff };
+}
+
+function statusLabel(status, days) {
+  if (status === 'expired')  return `⛔ Expired (${Math.abs(days)} days ago)`;
+  if (status === 'warn30')   return `🔴 Expiring in ${days} day${days===1?'':'s'}`;
+  if (status === 'warn60')   return `⚠️ Expiring in ${days} day${days===1?'':'s'}`;
+  if (status === 'active')   return `✅ Active — ${days} days remaining`;
+  return '—';
+}
+
+function badgeHtml(status, days) {
+  const cls = { active:'badge-active', warn60:'badge-warn60', warn30:'badge-warn30', expired:'badge-expired' }[status] || '';
+  return `<span class="badge ${cls}">${statusLabel(status,days)}</span>`;
+}
+
+function daysChipHtml(status, days) {
+  const cls = { active:'days-active', warn60:'days-warn60', warn30:'days-warn30', expired:'days-expired' }[status] || '';
+  if (status === 'expired') return `<div class="days-chip ${cls}">Expired</div>`;
+  return `<div class="days-chip ${cls}">${days}d left</div>`;
+}
+
+// ══════════════════════════════════════════════════════
+//  STATUS PREVIEW WHILE FILLING FORM
+// ══════════════════════════════════════════════════════
+function previewStatus() {
+  const endDate = document.getElementById('endDate').value;
+  const preview = document.getElementById('statusPreview');
+  if (!endDate) { preview.classList.add('hidden'); return; }
+  const { status, days } = calcStatus(endDate);
+  const styles = {
+    active:  { bg:'#E6F7EF', color:'#076D3C', border:'#A7F3D0' },
+    warn60:  { bg:'#FFFBEB', color:'#92400E', border:'#FDE68A' },
+    warn30:  { bg:'#FEF2F2', color:'#991B1B', border:'#FCA5A5' },
+    expired: { bg:'#F3F4F6', color:'#6B7280', border:'#E5E7EB' },
+  };
+  const s = styles[status] || styles.expired;
+  preview.style.cssText = `background:${s.bg};color:${s.color};border:1.5px solid ${s.border};margin-top:4px;padding:12px 16px;border-radius:10px;font-size:0.88rem;font-weight:700;display:flex;align-items:center;gap:10px;`;
+  preview.textContent = statusLabel(status, days);
+  preview.classList.remove('hidden');
+}
+
+// ══════════════════════════════════════════════════════
+//  SAVE CONTRACT
+// ══════════════════════════════════════════════════════
+function saveContract() {
+  const gemNumber    = document.getElementById('gemNumber').value.trim();
+  const serviceType  = document.getElementById('serviceType').value.trim();
+  const vendorName   = document.getElementById('vendorName').value.trim();
+  const startDate    = document.getElementById('startDate').value;
+  const endDate      = document.getElementById('endDate').value;
+  const contractValue= document.getElementById('contractValue').value;
+  const remarks      = document.getElementById('remarks').value.trim();
+
+  if (!gemNumber)   { alert('Please enter GeM Contract Number.'); return; }
+  if (!serviceType) { alert('Please enter Type of Service.'); return; }
+  if (!vendorName)  { alert('Please enter Vendor Name.'); return; }
+  if (!startDate)   { alert('Please select Contract Start Date.'); return; }
+  if (!endDate)     { alert('Please select Contract End Date.'); return; }
+
+  const { status, days } = calcStatus(endDate);
+
+  const entry = {
+    id: Date.now(),
+    savedAt: new Date().toISOString(),
+    gemNumber, serviceType, vendorName,
+    startDate, endDate,
+    contractValue: contractValue || '',
+    remarks, status, days
+  };
+
+  contracts.unshift(entry);
+  localStorage.setItem('service_contracts', JSON.stringify(contracts));
+
+  // Push to Google Sheets
+  if (SHEET_URL && !SHEET_URL.includes('YOUR_APPS_SCRIPT')) {
+    fetch(SHEET_URL, {
+      method: 'POST',
+      body: JSON.stringify(entry),
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors'
+    }).catch(() => {});
+  }
+
+  const btn = document.querySelector('.btn-success');
+  btn.textContent = '✓ Saved!';
+  setTimeout(() => { btn.innerHTML = '✓ Save Contract'; }, 2000);
+  clearContractForm();
+}
+
+function clearContractForm() {
+  ['gemNumber','serviceType','vendorName','startDate','endDate','contractValue','remarks']
+    .forEach(id => document.getElementById(id).value = '');
+  document.getElementById('statusPreview').classList.add('hidden');
+}
+
+// ══════════════════════════════════════════════════════
+//  FILTER
+// ══════════════════════════════════════════════════════
+function filterContracts(filter, el) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderContracts();
+}
+
+function getFiltered() {
+  // Re-calculate status live each render
+  const refreshed = contracts.map(c => {
+    const { status, days } = calcStatus(c.endDate);
+    return { ...c, status, days };
+  });
+  if (currentFilter === 'all')     return refreshed;
+  if (currentFilter === 'active')  return refreshed.filter(c => c.status === 'active');
+  if (currentFilter === 'warn60')  return refreshed.filter(c => c.status === 'warn60');
+  if (currentFilter === 'warn30')  return refreshed.filter(c => c.status === 'warn30');
+  if (currentFilter === 'expired') return refreshed.filter(c => c.status === 'expired');
+  return refreshed;
+}
+
+// ══════════════════════════════════════════════════════
+//  RENDER CONTRACTS
+// ══════════════════════════════════════════════════════
+function fmtDate(str) {
+  if (!str) return '—';
+  return new Date(str).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+}
+function fmtCurrency(val) {
+  if (!val) return '—';
+  return '₹' + Number(val).toLocaleString('en-IN');
+}
+
+function renderContracts() {
+  const list = document.getElementById('contractList');
+  const filtered = getFiltered();
+  const all = contracts.map(c => ({ ...c, ...calcStatus(c.endDate) }));
+
+  // Stats
+  document.getElementById('statTotal').textContent  = all.length;
+  document.getElementById('statActive').textContent = all.filter(c=>c.status==='active').length;
+  document.getElementById('statWarn60').textContent = all.filter(c=>c.status==='warn60').length;
+  document.getElementById('statWarn30').textContent = all.filter(c=>c.status==='warn30').length;
+  document.getElementById('listCount').innerHTML = `<span>${filtered.length}</span> contract${filtered.length===1?'':'s'}`;
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="list-empty"><div class="icon">📋</div><div>No contracts found.</div><p>Add a contract using the "Add Contract" tab.</p></div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  filtered.forEach((c, i) => {
+    const item = document.createElement('div');
+    item.className = `contract-item status-${c.status}`;
+    item.id = 'ci_' + c.id;
+    item.innerHTML = `
+      <div class="ci-top" onclick="toggleExpand('${c.id}')">
+        <div class="ci-meta">
+          <div class="ci-contract">📄 ${c.gemNumber}</div>
+          <div class="ci-title">${c.serviceType} — ${c.vendorName}</div>
+          <div class="ci-tags">
+            ${badgeHtml(c.status, c.days)}
+            <span class="tag">📅 Ends ${fmtDate(c.endDate)}</span>
+          </div>
+        </div>
+        <div class="ci-right">
+          ${daysChipHtml(c.status, c.days)}
+        </div>
+      </div>
+      <div class="ci-detail" id="cid_${c.id}">
+        <div class="detail-grid">
+          <div class="dg-item"><div class="dg-lbl">GeM Contract No.</div><div class="dg-val">${c.gemNumber}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Type of Service</div><div class="dg-val">${c.serviceType}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Vendor Name</div><div class="dg-val">${c.vendorName}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Contract Value</div><div class="dg-val">${fmtCurrency(c.contractValue)}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Start Date</div><div class="dg-val">${fmtDate(c.startDate)}</div></div>
+          <div class="dg-item"><div class="dg-lbl">End Date</div><div class="dg-val">${fmtDate(c.endDate)}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Days Remaining</div><div class="dg-val" style="color:${c.status==='warn30'?'#EF4444':c.status==='warn60'?'#F59E0B':c.status==='expired'?'#9CA3AF':'#0CAF60'}">${c.days < 0 ? 'Expired ' + Math.abs(c.days) + 'd ago' : c.days + ' days'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Added On</div><div class="dg-val">${new Date(c.savedAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</div></div>
+        </div>
+        ${c.remarks ? `<div class="remarks-box"><div class="dg-lbl">Remarks</div><div class="remarks-text">${c.remarks}</div></div>` : ''}
+        <div class="ci-actions">
+          <button class="btn btn-danger" onclick="deleteContract('${c.id}')">🗑 Delete</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function toggleExpand(id) {
+  const detail = document.getElementById('cid_' + id);
+  const item = document.getElementById('ci_' + id);
+  const isOpen = detail.classList.contains('show');
+  document.querySelectorAll('.ci-detail').forEach(d => d.classList.remove('show'));
+  document.querySelectorAll('.contract-item').forEach(d => d.classList.remove('expanded'));
+  if (!isOpen) {
+    detail.classList.add('show');
+    item.classList.add('expanded');
+  }
+}
+
+function deleteContract(id) {
+  if (!confirm('Delete this contract?')) return;
+  contracts = contracts.filter(c => String(c.id) !== String(id));
+  localStorage.setItem('service_contracts', JSON.stringify(contracts));
+  renderContracts();
+}
+
+// ══════════════════════════════════════════════════════
+//  EXPORT CSV
+// ══════════════════════════════════════════════════════
+function exportCSV() {
+  if (!contracts.length) { alert('No contracts to export.'); return; }
+  const headers = ['ID','Saved Date','GeM Contract No.','Type of Service','Vendor Name','Contract Value','Start Date','End Date','Days Remaining','Status','Remarks'];
+  const rows = contracts.map(c => {
+    const { status, days } = calcStatus(c.endDate);
+    return [
+      c.id, new Date(c.savedAt).toLocaleDateString('en-IN'),
+      c.gemNumber, c.serviceType, c.vendorName,
+      c.contractValue || '', fmtDate(c.startDate), fmtDate(c.endDate),
+      days, status, c.remarks || ''
+    ].map(v => `"${String(v ?? '').replace(/"/g,'""')}"`);
+  });
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+  a.download = 'service_contracts.csv';
+  a.click();
+}
+</script>
+</body>
+</html>
