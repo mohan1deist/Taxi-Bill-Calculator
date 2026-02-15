@@ -4,11 +4,11 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>My Office Hub</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow-x:hidden;}
-body{font-family:'Inter',sans-serif;background:#060812;color:#fff;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#060812;color:#fff;}
 
 /* ─── PARTICLE CANVAS ─── */
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none;}
@@ -17,42 +17,24 @@ body{font-family:'Inter',sans-serif;background:#060812;color:#fff;}
 .photo-bg{
   position:fixed;inset:0;z-index:0;
   background:
-    linear-gradient(to bottom, rgba(6,8,18,0.82) 0%, rgba(6,8,18,0.65) 40%, rgba(6,8,18,0.9) 100%),
-    url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80&auto=format&fit=crop') center/cover no-repeat;
+    linear-gradient(to bottom, rgba(6,8,18,0.92) 0%, rgba(6,8,18,0.80) 40%, rgba(6,8,18,0.96) 100%),
+    url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=70&auto=format&fit=crop') center/cover no-repeat;
 }
 
 /* ─── ANIMATED MESH ─── */
 .mesh{
   position:fixed;inset:0;z-index:1;pointer-events:none;
   background:
-    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(99,102,241,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(6,182,212,0.1) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 60% at 50% 0%, rgba(139,92,246,0.08) 0%, transparent 50%);
-  animation:meshMove 12s ease-in-out infinite alternate;
-}
-@keyframes meshMove{
-  0%{transform:translate(0,0) scale(1);}
-  100%{transform:translate(20px,10px) scale(1.04);}
-}
-
-/* ─── FLOATING GEOMETRIC SHAPES ─── */
-.shapes{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
-.shape{position:absolute;border-radius:50%;opacity:0.07;animation:shapeFloat linear infinite;}
-.s1{width:320px;height:320px;background:conic-gradient(#6366f1,#8b5cf6,#06b6d4,#6366f1);top:5%;right:5%;animation-duration:20s;border-radius:30% 70% 70% 30%/30% 30% 70% 70%;}
-.s2{width:200px;height:200px;background:conic-gradient(#10b981,#06b6d4,#3b82f6,#10b981);bottom:10%;left:8%;animation-duration:25s;animation-delay:-10s;border-radius:60% 40% 30% 70%/60% 30% 70% 40%;}
-.s3{width:140px;height:140px;background:conic-gradient(#f59e0b,#ef4444,#ec4899,#f59e0b);top:40%;left:2%;animation-duration:18s;animation-delay:-5s;}
-@keyframes shapeFloat{
-  0%{transform:rotate(0deg) scale(1);}
-  50%{transform:rotate(180deg) scale(1.1);}
-  100%{transform:rotate(360deg) scale(1);}
+    radial-gradient(ellipse 70% 45% at 15% 35%, rgba(99,102,241,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 40% at 85% 65%, rgba(6,182,212,0.07) 0%, transparent 55%);
 }
 
 /* ─── GRID LINES ─── */
 .grid-lines{
   position:fixed;inset:0;z-index:1;pointer-events:none;
   background-image:
-    linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(99,102,241,0.05) 1px, transparent 1px);
+    linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
   background-size:80px 80px;
 }
 
@@ -76,7 +58,7 @@ body{font-family:'Inter',sans-serif;background:#060812;color:#fff;}
   animation:iconPulse 3s ease-in-out infinite;
 }
 @keyframes iconPulse{0%,100%{box-shadow:0 0 24px rgba(99,102,241,0.5);}50%{box-shadow:0 0 40px rgba(99,102,241,0.8);}}
-.tb-name{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.3px;}
+.tb-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.3px;}
 .tb-name span{background:linear-gradient(90deg,#a5b4fc,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .tb-right{display:flex;align-items:center;gap:16px;}
 .tb-badge{
@@ -104,10 +86,11 @@ body{font-family:'Inter',sans-serif;background:#060812;color:#fff;}
 .hero-tag-dot{width:5px;height:5px;border-radius:50%;background:#6366f1;box-shadow:0 0 8px #6366f1;}
 
 .hero-h1{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   font-size:4rem;font-weight:800;line-height:1.05;
   letter-spacing:-2px;margin-bottom:16px;
   animation:slideDown 0.7s cubic-bezier(.22,.68,0,1.2) 0.1s both;
+  text-shadow:0 2px 20px rgba(0,0,0,0.5);
 }
 .hero-h1 .w1{display:block;color:#f1f5f9;}
 .hero-h1 .w2{
@@ -225,7 +208,7 @@ body{font-family:'Inter',sans-serif;background:#060812;color:#fff;}
 .card-green .card-label{color:#6ee7b7;}
 .card-orange .card-label{color:#fcd34d;}
 
-.card-title{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:10px;letter-spacing:-0.3px;line-height:1.3;}
+.card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:10px;letter-spacing:-0.3px;line-height:1.3;}
 .card-desc{font-size:0.8rem;color:rgba(148,163,184,0.75);line-height:1.65;margin-bottom:22px;}
 
 .card-footer{display:flex;justify-content:space-between;align-items:center;}
@@ -257,19 +240,19 @@ body{font-family:'Inter',sans-serif;background:#060812;color:#fff;}
 
 /* ─── BOTTOM WIDGETS ─── */
 .widgets{
-  display:flex;gap:16px;margin-top:28px;max-width:1000px;width:100%;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px;max-width:1000px;width:100%;
   animation:slideUp 0.8s cubic-bezier(.22,.68,0,1.2) 0.5s both;
 }
 .widget{
-  flex:1;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.07);
-  backdrop-filter:blur(16px);border-radius:16px;
-  padding:16px 20px;display:flex;align-items:center;gap:14px;
+  background:rgba(8,12,30,0.75);
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);border-radius:14px;
+  padding:14px 18px;display:flex;flex-direction:column;gap:6px;
 }
-.widget-icon{font-size:1.4rem;flex-shrink:0;}
-.widget-text .wt{font-size:0.82rem;font-weight:600;color:#e2e8f0;}
-.widget-text .ws{font-size:0.72rem;color:rgba(100,116,139,0.7);margin-top:2px;}
-.widget-val{margin-left:auto;font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;}
+.widget-icon{font-size:1.2rem;}
+.widget-text .wt{font-size:0.8rem;font-weight:700;color:#e2e8f0;}
+.widget-text .ws{font-size:0.68rem;color:rgba(100,116,139,0.7);margin-top:1px;}
+.widget-val{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;margin-top:4px;}
 .widget-val.blue{color:#818cf8;}
 .widget-val.green{color:#34d399;}
 .widget-val.amber{color:#fbbf24;}
@@ -286,9 +269,14 @@ footer{
 @media(max-width:900px){
   .cards{grid-template-columns:1fr;}
   .stats-row{flex-wrap:wrap;justify-content:center;}
-  .widgets{flex-direction:column;}
-  .hero-h1{font-size:2.8rem;}
-  .topbar{padding:16px 20px;}
+  .widgets{grid-template-columns:1fr 1fr;}
+  .hero-h1{font-size:2.5rem;letter-spacing:-1px;}
+  .topbar{padding:14px 20px;}
+}
+@media(max-width:520px){
+  .widgets{grid-template-columns:1fr 1fr;}
+  .stats-row{gap:10px;}
+  .stat-pill{padding:8px 14px;}
 }
 </style>
 </head>
@@ -297,11 +285,6 @@ footer{
 <!-- Background layers -->
 <div class="photo-bg"></div>
 <div class="mesh"></div>
-<div class="shapes">
-  <div class="shape s1"></div>
-  <div class="shape s2"></div>
-  <div class="shape s3"></div>
-</div>
 <div class="grid-lines"></div>
 <canvas id="particles"></canvas>
 
@@ -337,17 +320,24 @@ footer{
         </div>
       </div>
       <div class="stat-pill">
-        <span class="stat-pill-icon">📋</span>
+        <span class="stat-pill-icon">✅</span>
         <div class="stat-pill-info">
-          <div class="stat-pill-val" id="contractCount">—</div>
-          <div class="stat-pill-lbl">Contracts</div>
+          <div class="stat-pill-val" id="activeCount" style="color:#34d399;">—</div>
+          <div class="stat-pill-lbl">Active Contracts</div>
+        </div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-icon">⚠️</span>
+        <div class="stat-pill-info">
+          <div class="stat-pill-val" id="exp30Count" style="color:#fbbf24;">—</div>
+          <div class="stat-pill-lbl">Expiring &lt;30d</div>
         </div>
       </div>
       <div class="stat-pill">
         <span class="stat-pill-icon">🔴</span>
         <div class="stat-pill-info">
-          <div class="stat-pill-val" id="urgentCount" style="color:#f87171;">—</div>
-          <div class="stat-pill-lbl">Expiring Soon</div>
+          <div class="stat-pill-val" id="exp10Count" style="color:#f87171;">—</div>
+          <div class="stat-pill-lbl">Expiring &lt;10d</div>
         </div>
       </div>
       <div class="stat-pill">
@@ -424,10 +414,10 @@ footer{
     <!-- BOTTOM WIDGETS -->
     <div class="widgets" id="widgets">
       <div class="widget">
-        <span class="widget-icon">💰</span>
+        <span class="widget-icon">🚖</span>
         <div class="widget-text">
-          <div class="wt">Total Bills Processed</div>
-          <div class="ws">From your Taxi Bill Calculator</div>
+          <div class="wt">Bills Processed</div>
+          <div class="ws">Taxi Bill Calculator</div>
         </div>
         <div class="widget-val blue" id="wTaxi">—</div>
       </div>
@@ -435,17 +425,25 @@ footer{
         <span class="widget-icon">✅</span>
         <div class="widget-text">
           <div class="wt">Active Contracts</div>
-          <div class="ws">Service Orders Tracker</div>
+          <div class="ws">Service Orders</div>
         </div>
         <div class="widget-val green" id="wActive">—</div>
       </div>
       <div class="widget">
         <span class="widget-icon">⚠️</span>
         <div class="widget-text">
-          <div class="wt">Needs Attention</div>
-          <div class="ws">Contracts expiring in &lt;60 days</div>
+          <div class="wt">Expiring in &lt;30 Days</div>
+          <div class="ws">Needs renewal attention</div>
         </div>
-        <div class="widget-val amber" id="wAttention">—</div>
+        <div class="widget-val amber" id="wExp30">—</div>
+      </div>
+      <div class="widget">
+        <span class="widget-icon">🔴</span>
+        <div class="widget-text">
+          <div class="wt">Expiring in &lt;10 Days</div>
+          <div class="ws">Critical — renew immediately</div>
+        </div>
+        <div class="widget-val" style="color:#f87171;" id="wExp10">—</div>
       </div>
     </div>
 
@@ -493,7 +491,7 @@ class Particle {
 }
 
 // Create 120 particles
-for (let i = 0; i < 120; i++) particles.push(new Particle());
+for (let i = 0; i < 60; i++) particles.push(new Particle());
 
 // Draw constellation lines between nearby particles
 function drawLines() {
@@ -528,27 +526,31 @@ animate();
 function loadStats() {
   const bills = JSON.parse(localStorage.getItem('travelbill_entries') || '[]');
   const contracts = JSON.parse(localStorage.getItem('service_contracts') || '[]');
+  const today = new Date(); today.setHours(0,0,0,0);
 
-  const today = new Date();
-  const urgent = contracts.filter(c => {
-    const end = new Date(c.endDate);
-    const days = Math.ceil((end - today) / 86400000);
-    return days >= 0 && days < 60;
-  });
   const active = contracts.filter(c => {
-    const end = new Date(c.endDate);
-    const days = Math.ceil((end - today) / 86400000);
-    return days >= 0;
+    const d = Math.ceil((new Date(c.endDate) - today) / 86400000);
+    return d >= 0;
+  });
+  const exp30 = contracts.filter(c => {
+    const d = Math.ceil((new Date(c.endDate) - today) / 86400000);
+    return d >= 0 && d < 30;
+  });
+  const exp10 = contracts.filter(c => {
+    const d = Math.ceil((new Date(c.endDate) - today) / 86400000);
+    return d >= 0 && d < 10;
   });
 
   document.getElementById('taxiCount').textContent = bills.length;
-  document.getElementById('contractCount').textContent = contracts.length;
-  document.getElementById('urgentCount').textContent = urgent.length;
+  document.getElementById('activeCount').textContent = active.length;
+  document.getElementById('exp30Count').textContent = exp30.length;
+  document.getElementById('exp10Count').textContent = exp10.length;
   document.getElementById('todayDate').textContent = today.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
 
-  document.getElementById('wTaxi').textContent = bills.length + ' bills';
-  document.getElementById('wActive').textContent = active.length + ' active';
-  document.getElementById('wAttention').textContent = urgent.length + ' contracts';
+  document.getElementById('wTaxi').textContent = bills.length;
+  document.getElementById('wActive').textContent = active.length;
+  document.getElementById('wExp30').textContent = exp30.length;
+  document.getElementById('wExp10').textContent = exp10.length;
 }
 loadStats();
 

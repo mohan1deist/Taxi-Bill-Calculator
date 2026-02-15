@@ -4,10 +4,10 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Taxi Bill Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Outfit',sans-serif;background:#07090f;color:#e2e8f0;min-height:100vh;line-height:1.5;overflow-x:hidden;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#07090f;color:#e2e8f0;min-height:100vh;line-height:1.5;overflow-x:hidden;}
 ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:rgba(247,199,0,0.2);border-radius:3px;}
 
 /* NAV */
@@ -17,7 +17,7 @@ body{font-family:'Outfit',sans-serif;background:#07090f;color:#e2e8f0;min-height
 @keyframes cabGlow{0%,100%{box-shadow:0 0 18px rgba(247,199,0,0.45);}50%{box-shadow:0 0 32px rgba(247,199,0,0.8);}}
 .nav-logo .logo-sub{color:rgba(148,163,184,0.7);font-weight:500;font-size:0.8rem;}
 .tab-btns{display:flex;gap:4px;background:rgba(247,199,0,0.05);padding:4px;border-radius:12px;border:1px solid rgba(247,199,0,0.1);}
-.tab-btn{background:none;border:none;color:rgba(148,163,184,0.7);font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:600;padding:8px 20px;border-radius:9px;cursor:pointer;transition:all 0.2s;}
+.tab-btn{background:none;border:none;color:rgba(148,163,184,0.7);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:600;padding:8px 20px;border-radius:9px;cursor:pointer;transition:all 0.2s;}
 .tab-btn.active{background:rgba(247,199,0,0.12);color:#F7C700;box-shadow:0 1px 4px rgba(0,0,0,0.3);}
 .tab-btn:hover:not(.active){color:#e2e8f0;}
 
@@ -30,8 +30,7 @@ body{font-family:'Outfit',sans-serif;background:#07090f;color:#e2e8f0;min-height
 .page-sub{color:rgba(148,163,184,0.6);font-size:0.88rem;}
 
 /* FORM CARDS */
-.form-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(247,199,0,0.1);border-radius:18px;padding:24px 26px;margin-bottom:16px;position:relative;overflow:hidden;transition:border-color 0.2s;}
-.form-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(247,199,0,0.04) 0%,transparent 60%);pointer-events:none;border-radius:18px;}
+.form-card{background:rgba(7,9,15,0.88);backdrop-filter:blur(16px);border:1px solid rgba(247,199,0,0.1);border-radius:18px;padding:24px 26px;margin-bottom:16px;position:relative;overflow:hidden;transition:border-color 0.2s;}
 .form-card:hover{border-color:rgba(247,199,0,0.2);}
 .section-label{display:flex;align-items:center;gap:8px;font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F7C700;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(247,199,0,0.08);}
 .section-label .dot{width:5px;height:5px;border-radius:50%;background:#F7C700;box-shadow:0 0 6px #F7C700;flex-shrink:0;}
@@ -42,7 +41,7 @@ body{font-family:'Outfit',sans-serif;background:#07090f;color:#e2e8f0;min-height
 .form-row.col1{grid-template-columns:1fr;}
 label{font-size:0.76rem;font-weight:600;color:rgba(148,163,184,0.9);display:block;margin-bottom:5px;letter-spacing:0.2px;}
 label .hint{font-weight:400;color:rgba(100,116,139,0.7);font-size:0.7rem;}
-input,select{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(247,199,0,0.1);color:#e2e8f0;font-family:'Outfit',sans-serif;font-size:0.9rem;padding:11px 14px;border-radius:10px;outline:none;transition:all 0.2s;appearance:none;}
+input,select{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(247,199,0,0.1);color:#e2e8f0;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;padding:11px 14px;border-radius:10px;outline:none;transition:all 0.2s;appearance:none;}
 input:focus,select:focus{border-color:rgba(247,199,0,0.5);background:rgba(247,199,0,0.05);box-shadow:0 0 0 3px rgba(247,199,0,0.08);}
 input::placeholder{color:rgba(100,116,139,0.5);}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23F7C700' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;background-color:rgba(255,255,255,0.04);}
@@ -50,7 +49,7 @@ select option{background:#0f1626;color:#e2e8f0;}
 .hidden{display:none!important;}
 
 /* RESULT CARD */
-.result-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(247,199,0,0.15);border-radius:18px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.result-card{background:rgba(7,9,15,0.9);backdrop-filter:blur(16px);border:1px solid rgba(247,199,0,0.15);border-radius:18px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;}
 .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#F7C700,#f59e0b,#fbbf24);}
 .result-title{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F7C700;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
 .result-line{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.88rem;}
@@ -69,7 +68,7 @@ select option{background:#0f1626;color:#e2e8f0;}
 
 /* BUTTONS */
 .btn-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
-.btn{font-family:'Outfit',sans-serif;font-weight:700;font-size:0.88rem;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.2px;display:inline-flex;align-items:center;gap:7px;}
+.btn{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.88rem;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.2px;display:inline-flex;align-items:center;gap:7px;}
 .btn-primary{background:linear-gradient(135deg,#F7C700,#f59e0b);color:#1a1000;box-shadow:0 4px 16px rgba(247,199,0,0.3);}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(247,199,0,0.45);}
 .btn-success{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 4px 16px rgba(16,185,129,0.25);}
@@ -82,10 +81,10 @@ select option{background:#0f1626;color:#e2e8f0;}
 /* HISTORY */
 .history-empty{text-align:center;padding:70px 20px;color:rgba(100,116,139,0.6);}
 .history-empty .icon{font-size:3.5rem;margin-bottom:14px;opacity:0.4;}
-.history-item{background:rgba(255,255,255,0.03);border:1px solid rgba(247,199,0,0.08);border-radius:16px;padding:20px 24px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.history-item{background:rgba(7,9,15,0.88);border:1px solid rgba(247,199,0,0.08);border-radius:16px;padding:20px 24px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
 .history-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#F7C700,#f59e0b);border-radius:3px 0 0 3px;}
-.history-item:hover{background:rgba(247,199,0,0.04);border-color:rgba(247,199,0,0.18);transform:translateX(3px);}
-.history-item.expanded{border-color:rgba(247,199,0,0.3);background:rgba(247,199,0,0.04);}
+.history-item:hover{background:rgba(10,12,20,0.95);border-color:rgba(247,199,0,0.18);transform:translateX(2px);}
+.history-item.expanded{border-color:rgba(247,199,0,0.3);background:rgba(10,12,20,0.95);}
 .hi-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
 .hi-meta{flex:1;}
 .hi-bill{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:rgba(247,199,0,0.6);margin-bottom:5px;letter-spacing:0.5px;}
@@ -121,161 +120,17 @@ select option{background:#0f1626;color:#e2e8f0;}
 </head>
 <body>
 
-<!-- ═══════════ TAXI-THEMED BACKGROUND ═══════════ -->
-
-<!-- Deep night sky base -->
-<div style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#07090f 0%,#0a0d18 35%,#0d1020 65%,#050810 100%);"></div>
-
-<!-- Stars -->
-<svg style="position:fixed;inset:0;z-index:0;width:100%;height:100%;pointer-events:none;" xmlns="http://www.w3.org/2000/svg">
-  <g fill="white">
-    <circle cx="3%" cy="6%" r="1" opacity=".7"/><circle cx="8%" cy="14%" r="1.5" opacity=".4"/>
-    <circle cx="14%" cy="4%" r="1" opacity=".8"/><circle cx="22%" cy="10%" r="1" opacity=".5"/>
-    <circle cx="29%" cy="3%" r="1.5" opacity=".6"/><circle cx="37%" cy="8%" r="1" opacity=".7"/>
-    <circle cx="44%" cy="15%" r="1" opacity=".4"/><circle cx="51%" cy="5%" r="1.5" opacity=".6"/>
-    <circle cx="58%" cy="11%" r="1" opacity=".8"/><circle cx="66%" cy="3%" r="1" opacity=".5"/>
-    <circle cx="73%" cy="9%" r="1.5" opacity=".7"/><circle cx="80%" cy="5%" r="1" opacity=".6"/>
-    <circle cx="87%" cy="13%" r="1" opacity=".5"/><circle cx="93%" cy="6%" r="1.5" opacity=".7"/>
-    <circle cx="18%" cy="22%" r="1" opacity=".3"/><circle cx="42%" cy="20%" r="1" opacity=".4"/>
-    <circle cx="65%" cy="18%" r="1.2" opacity=".35"/><circle cx="88%" cy="21%" r="1" opacity=".4"/>
-    <!-- Moon glow -->
-    <circle cx="88%" cy="10%" r="28" fill="rgba(255,245,200,0.07)"/>
-    <circle cx="88%" cy="10%" r="20" fill="rgba(255,245,200,0.09)"/>
-    <circle cx="88%" cy="10%" r="13" fill="rgba(255,245,200,0.06)"/>
-  </g>
-</svg>
-
-<!-- City skyline + road + animated taxi -->
-<div style="position:fixed;bottom:0;left:0;right:0;z-index:1;pointer-events:none;">
-<svg viewBox="0 0 1440 340" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMax slice" style="width:100%;display:block;">
-  <defs>
-    <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-    <filter id="winGlow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>
-
-  <!-- Buildings - back layer -->
-  <g fill="#0c0f1a">
-    <rect x="0" y="200" width="70" height="140"/><rect x="10" y="175" width="28" height="25"/>
-    <rect x="80" y="215" width="55" height="125"/><rect x="145" y="165" width="48" height="175"/>
-    <rect x="153" y="148" width="18" height="17"/><rect x="203" y="190" width="65" height="150"/>
-    <rect x="215" y="170" width="18" height="20"/><rect x="278" y="145" width="85" height="195"/>
-    <rect x="293" y="125" width="16" height="20"/><rect x="373" y="175" width="52" height="165"/>
-    <rect x="435" y="120" width="78" height="220"/><rect x="450" y="100" width="22" height="20"/>
-    <rect x="523" y="160" width="60" height="180"/><rect x="593" y="130" width="42" height="210"/>
-    <rect x="645" y="155" width="70" height="185"/><rect x="725" y="108" width="88" height="232"/>
-    <rect x="740" y="90" width="19" height="18"/><rect x="823" y="162" width="52" height="178"/>
-    <rect x="885" y="138" width="68" height="202"/><rect x="963" y="168" width="58" height="172"/>
-    <rect x="1031" y="118" width="82" height="222"/><rect x="1046" y="98" width="17" height="20"/>
-    <rect x="1123" y="152" width="68" height="188"/><rect x="1201" y="130" width="52" height="210"/>
-    <rect x="1263" y="162" width="62" height="178"/><rect x="1335" y="142" width="38" height="198"/>
-    <rect x="1383" y="145" width="57" height="195"/>
-  </g>
-
-  <!-- Lit windows -->
-  <g filter="url(#glow)">
-    <!-- warm yellow windows -->
-    <g fill="rgba(255,220,100,0.6)">
-      <rect x="16" y="185" width="5" height="5"/><rect x="25" y="185" width="5" height="5"/>
-      <rect x="16" y="196" width="5" height="5"/><rect x="25" y="196" width="5" height="5"/>
-      <rect x="152" y="178" width="5" height="5"/><rect x="162" y="178" width="5" height="5"/>
-      <rect x="287" y="158" width="5" height="5"/><rect x="298" y="158" width="5" height="5"/>
-      <rect x="309" y="158" width="5" height="5"/><rect x="287" y="170" width="5" height="5"/>
-      <rect x="452" y="118" width="5" height="5"/><rect x="464" y="118" width="5" height="5"/>
-      <rect x="476" y="118" width="5" height="5"/><rect x="452" y="130" width="5" height="5"/>
-      <rect x="464" y="130" width="5" height="5"/>
-      <rect x="741" y="120" width="5" height="5"/><rect x="753" y="120" width="5" height="5"/>
-      <rect x="765" y="120" width="5" height="5"/><rect x="741" y="132" width="5" height="5"/>
-      <rect x="1048" y="130" width="5" height="5"/><rect x="1060" y="130" width="5" height="5"/>
-      <rect x="1072" y="130" width="5" height="5"/><rect x="1048" y="142" width="5" height="5"/>
-    </g>
-    <!-- cool blue windows -->
-    <g fill="rgba(150,210,255,0.55)">
-      <rect x="88" y="225" width="5" height="5"/><rect x="98" y="225" width="5" height="5"/>
-      <rect x="210" y="198" width="5" height="5"/><rect x="221" y="198" width="5" height="5"/>
-      <rect x="445" y="140" width="5" height="5"/><rect x="456" y="140" width="5" height="5"/>
-      <rect x="600" y="150" width="5" height="5"/><rect x="611" y="150" width="5" height="5"/>
-      <rect x="728" y="148" width="5" height="5"/><rect x="740" y="148" width="5" height="5"/>
-      <rect x="890" y="150" width="5" height="5"/><rect x="901" y="150" width="5" height="5"/>
-      <rect x="1035" y="138" width="5" height="5"/><rect x="1046" y="138" width="5" height="5"/>
-      <rect x="1130" y="165" width="5" height="5"/><rect x="1141" y="165" width="5" height="5"/>
-    </g>
-  </g>
-
-  <!-- Road surface -->
-  <rect x="0" y="290" width="1440" height="50" fill="#111420"/>
-  <!-- Road center line -->
-  <g fill="rgba(247,199,0,0.25)">
-    <rect x="0" y="312" width="80" height="4" rx="2"/>
-    <rect x="120" y="312" width="80" height="4" rx="2"/>
-    <rect x="240" y="312" width="80" height="4" rx="2"/>
-    <rect x="360" y="312" width="80" height="4" rx="2"/>
-    <rect x="480" y="312" width="80" height="4" rx="2"/>
-    <rect x="600" y="312" width="80" height="4" rx="2"/>
-    <rect x="720" y="312" width="80" height="4" rx="2"/>
-    <rect x="840" y="312" width="80" height="4" rx="2"/>
-    <rect x="960" y="312" width="80" height="4" rx="2"/>
-    <rect x="1080" y="312" width="80" height="4" rx="2"/>
-    <rect x="1200" y="312" width="80" height="4" rx="2"/>
-    <rect x="1320" y="312" width="80" height="4" rx="2"/>
-  </g>
-  <!-- Sidewalk -->
-  <rect x="0" y="280" width="1440" height="10" fill="#161a28"/>
-
-  <!-- ANIMATED TAXI CAB -->
-  <g id="mainTaxi">
-    <!-- Headlight cone -->
-    <path d="M92,268 L130,255 L130,275 Z" fill="rgba(255,245,150,0.15)"/>
-    <!-- Car body -->
-    <rect x="10" y="255" width="82" height="30" rx="6" fill="#F7C700"/>
-    <!-- Roof/cabin -->
-    <rect x="20" y="238" width="55" height="25" rx="5" fill="#F7C700"/>
-    <!-- Front window -->
-    <rect x="54" y="241" width="17" height="18" rx="2" fill="rgba(160,230,255,0.75)"/>
-    <!-- Rear window -->
-    <rect x="24" y="241" width="22" height="18" rx="2" fill="rgba(160,230,255,0.75)"/>
-    <!-- TAXI sign on roof -->
-    <rect x="30" y="232" width="32" height="9" rx="2" fill="#111"/>
-    <text x="46" y="239" text-anchor="middle" fill="#F7C700" font-size="6" font-weight="800">TAXI</text>
-    <!-- Door stripe -->
-    <line x1="52" y1="258" x2="52" y2="282" stroke="#c8a000" stroke-width="1.5"/>
-    <!-- Wheels -->
-    <circle cx="24" cy="288" r="9" fill="#1a1a2e"/><circle cx="24" cy="288" r="5" fill="#2a2a3e"/><circle cx="24" cy="288" r="2" fill="#F7C700"/>
-    <circle cx="76" cy="288" r="9" fill="#1a1a2e"/><circle cx="76" cy="288" r="5" fill="#2a2a3e"/><circle cx="76" cy="288" r="2" fill="#F7C700"/>
-    <!-- Headlights -->
-    <ellipse cx="93" cy="265" rx="5" ry="4" fill="rgba(255,245,150,0.9)" filter="url(#winGlow)"/>
-    <!-- Tail lights -->
-    <rect x="10" y="260" width="6" height="8" rx="2" fill="rgba(255,80,80,0.85)" filter="url(#winGlow)"/>
-    <animate attributeName="opacity" values="1;1" dur="0s"/>
-  </g>
-  <animateTransform xlink:href="#mainTaxi" attributeName="transform" type="translate" from="-120 0" to="1560 0" dur="14s" repeatCount="indefinite"/>
-
-  <!-- Second taxi (smaller, in background) -->
-  <g id="taxi2" opacity="0.5">
-    <rect x="10" y="262" width="55" height="20" rx="4" fill="#F7C700"/>
-    <rect x="16" y="251" width="37" height="18" rx="4" fill="#F7C700"/>
-    <rect x="36" y="253" width="13" height="13" rx="2" fill="rgba(160,230,255,0.7)"/>
-    <rect x="19" y="253" width="14" height="13" rx="2" fill="rgba(160,230,255,0.7)"/>
-    <circle cx="19" cy="283" r="7" fill="#1a1a2e"/><circle cx="53" cy="283" r="7" fill="#1a1a2e"/>
-    <ellipse cx="65" cy="270" rx="4" ry="3" fill="rgba(255,245,150,0.8)"/>
-  </g>
-  <animateTransform xlink:href="#taxi2" attributeName="transform" type="translate" from="1600 0" to="-200 0" dur="20s" repeatCount="indefinite"/>
-
-</svg>
-</div>
-
-<!-- Yellow ambient glow from headlights -->
-<div style="position:fixed;bottom:0;left:0;right:0;height:220px;z-index:1;background:linear-gradient(to top,rgba(247,199,0,0.05),transparent);pointer-events:none;"></div>
-<!-- Top subtle gradient -->
-<div style="position:fixed;top:0;left:0;right:0;height:200px;z-index:1;background:radial-gradient(ellipse at 88% 0%,rgba(247,199,0,0.04),transparent 60%);pointer-events:none;"></div>
-<!-- Grid overlay -->
-<div style="position:fixed;inset:0;z-index:1;background-image:linear-gradient(rgba(247,199,0,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(247,199,0,0.025) 1px,transparent 1px);background-size:65px 65px;pointer-events:none;"></div>
-<!-- Particle canvas -->
-<canvas id="particleCanvas" style="position:fixed;inset:0;z-index:2;pointer-events:none;"></canvas>
+<!-- ═══════════ TAXI-THEMED BACKGROUND (Lightweight) ═══════════ -->
+<div style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#07090f 0%,#0a0d18 60%,#07090f 100%);"></div>
+<div style="position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 55% 40% at 85% 5%,rgba(247,199,0,0.07) 0%,transparent 60%),radial-gradient(ellipse 50% 35% at 15% 80%,rgba(247,199,0,0.04) 0%,transparent 55%);pointer-events:none;"></div>
+<div style="position:fixed;bottom:0;left:0;right:0;height:6px;z-index:0;background:#111420;border-top:1px solid rgba(247,199,0,0.08);"></div>
+<div style="position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(247,199,0,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(247,199,0,0.025) 1px,transparent 1px);background-size:65px 65px;pointer-events:none;"></div>
+<canvas id="particleCanvas" style="position:fixed;inset:0;z-index:1;pointer-events:none;"></canvas>
 
 <!-- ═══════════ NAV ═══════════ -->
 <div class="nav" style="position:sticky;top:0;z-index:200;">
   <div style="display:flex;align-items:center;gap:12px;">
-    <a href="index.html" style="background:rgba(247,199,0,0.07);border:1px solid rgba(247,199,0,0.18);color:rgba(247,210,100,0.9);font-family:'Outfit',sans-serif;font-size:0.8rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;">← Home</a>
+    <a href="index.html" style="background:rgba(247,199,0,0.07);border:1px solid rgba(247,199,0,0.18);color:rgba(247,210,100,0.9);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;">← Home</a>
     <div class="nav-logo">
       <div class="logo-icon">🚖</div>
       Taxi Bill Calculator
@@ -721,7 +576,7 @@ class Pt{
   update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>PW||this.y<0||this.y>PH)this.reset();}
   draw(){cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fillStyle=this.c;cx.globalAlpha=this.a;cx.fill();cx.globalAlpha=1;}
 }
-for(let i=0;i<120;i++)pts.push(new Pt());
+for(let i=0;i<60;i++)pts.push(new Pt());
 function anim(){
   cx.clearRect(0,0,PW,PH);
   for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){

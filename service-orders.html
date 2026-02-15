@@ -4,10 +4,10 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Service Orders Tracking</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Outfit',sans-serif;min-height:100vh;background:#050d12;color:#fff;overflow-x:hidden;}
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;background:#050d12;color:#fff;overflow-x:hidden;}
 ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:rgba(16,185,129,0.2);border-radius:3px;}
 
 .content{position:relative;z-index:10;min-height:100vh;}
@@ -15,14 +15,14 @@ body{font-family:'Outfit',sans-serif;min-height:100vh;background:#050d12;color:#
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-bottom:1px solid rgba(16,185,129,0.12);background:rgba(5,13,18,0.75);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;}
 .nav-left{display:flex;align-items:center;gap:14px;}
-.back-btn{display:flex;align-items:center;gap:6px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.18);color:rgba(110,231,183,0.9);font-family:'Outfit',sans-serif;font-size:0.8rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.back-btn{display:flex;align-items:center;gap:6px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.18);color:rgba(110,231,183,0.9);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all 0.2s;text-decoration:none;}
 .back-btn:hover{background:rgba(16,185,129,0.15);color:#6ee7b7;}
 .nav-logo{display:flex;align-items:center;gap:10px;}
 .logo-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:0 0 18px rgba(16,185,129,0.4);animation:iconPulse 3s ease-in-out infinite;}
 @keyframes iconPulse{0%,100%{box-shadow:0 0 18px rgba(16,185,129,0.4);}50%{box-shadow:0 0 32px rgba(16,185,129,0.7);}}
 .nav-title{font-size:0.95rem;font-weight:700;color:#e2e8f0;}
 .tab-pills{display:flex;gap:4px;background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.1);padding:4px;border-radius:12px;}
-.tab-btn{background:none;border:none;color:rgba(148,163,184,0.7);font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:600;padding:8px 20px;border-radius:9px;cursor:pointer;transition:all 0.2s;}
+.tab-btn{background:none;border:none;color:rgba(148,163,184,0.7);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:600;padding:8px 20px;border-radius:9px;cursor:pointer;transition:all 0.2s;}
 .tab-btn.active{background:rgba(16,185,129,0.12);color:#6ee7b7;box-shadow:0 1px 6px rgba(0,0,0,0.3);}
 .tab-btn:hover:not(.active){color:#e2e8f0;}
 
@@ -34,10 +34,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .page-sub{color:rgba(148,163,184,0.7);font-size:0.88rem;margin-bottom:28px;}
 
 /* GLASS CARD */
-.glass-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(16,185,129,0.1);border-radius:20px;padding:26px;margin-bottom:16px;position:relative;overflow:hidden;}
-.glass-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(16,185,129,0.04) 0%,transparent 60%);pointer-events:none;border-radius:20px;}
-.glass-card:hover{border-color:rgba(16,185,129,0.2);}
-.section-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#34d399;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(16,185,129,0.08);display:flex;align-items:center;gap:8px;}
+.glass-card{background:rgba(5,15,22,0.85);backdrop-filter:blur(16px);border:1px solid rgba(16,185,129,0.12);border-radius:20px;padding:26px;margin-bottom:16px;position:relative;overflow:hidden;}
+.glass-card:hover{border-color:rgba(16,185,129,0.22);}
+.section-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#34d399;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(16,185,129,0.1);display:flex;align-items:center;gap:8px;}
 .section-label .dot{width:5px;height:5px;border-radius:50%;background:#10b981;box-shadow:0 0 6px #10b981;}
 
 /* FORM */
@@ -46,7 +45,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .form-row.col1{grid-template-columns:1fr;}
 label{font-size:0.76rem;font-weight:600;color:rgba(148,163,184,0.9);display:block;margin-bottom:5px;letter-spacing:0.3px;}
 label .opt{font-weight:400;color:rgba(100,116,139,0.8);font-size:0.7rem;}
-input,select,textarea{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(16,185,129,0.1);color:#e2e8f0;font-family:'Outfit',sans-serif;font-size:0.9rem;padding:11px 14px;border-radius:10px;outline:none;transition:all 0.2s;}
+input,select,textarea{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(16,185,129,0.1);color:#e2e8f0;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;padding:11px 14px;border-radius:10px;outline:none;transition:all 0.2s;}
 input:focus,select:focus,textarea:focus{border-color:rgba(16,185,129,0.45);background:rgba(16,185,129,0.04);box-shadow:0 0 0 3px rgba(16,185,129,0.08);}
 input::placeholder,textarea::placeholder{color:rgba(100,116,139,0.5);}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2334d399' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;appearance:none;background-color:rgba(255,255,255,0.04);}
@@ -57,7 +56,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
 
 /* BUTTONS */
 .btn-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
-.btn{font-family:'Outfit',sans-serif;font-weight:700;font-size:0.88rem;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:7px;}
+.btn{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.88rem;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:7px;}
 .btn-success{background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;box-shadow:0 4px 16px rgba(16,185,129,0.3);}
 .btn-success:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(16,185,129,0.4);}
 .btn-outline{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(148,163,184,0.8);}
@@ -67,7 +66,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
 
 /* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
-.stat-card{background:rgba(255,255,255,0.03);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:18px;backdrop-filter:blur(10px);position:relative;overflow:hidden;}
+.stat-card{background:rgba(5,15,22,0.9);border:1px solid rgba(16,185,129,0.1);border-radius:16px;padding:18px;position:relative;overflow:hidden;}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
 .stat-total::before{background:linear-gradient(90deg,#6366f1,#06b6d4);}
 .stat-active::before{background:linear-gradient(90deg,#10b981,#34d399);}
@@ -79,7 +78,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
 
 /* FILTERS */
 .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
-.filter-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(16,185,129,0.1);color:rgba(148,163,184,0.7);font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:600;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all 0.2s;}
+.filter-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(16,185,129,0.1);color:rgba(148,163,184,0.7);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.78rem;font-weight:600;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all 0.2s;}
 .filter-btn.active,.filter-btn:hover{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.3);color:#34d399;}
 .filter-btn.f-warn60.active{background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3);color:#fbbf24;}
 .filter-btn.f-warn30.active{background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.3);color:#f87171;}
@@ -89,14 +88,14 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
 .list-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .list-count{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:rgba(100,116,139,0.8);}
 .list-count span{color:#34d399;font-weight:700;}
-.contract-item{background:rgba(255,255,255,0.03);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:20px 22px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.contract-item{background:rgba(5,15,22,0.88);border:1px solid rgba(16,185,129,0.1);border-radius:16px;padding:20px 22px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
 .contract-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px 0 0 2px;}
 .contract-item.status-active::before{background:linear-gradient(180deg,#10b981,#34d399);}
 .contract-item.status-warn60::before{background:linear-gradient(180deg,#f59e0b,#fbbf24);}
 .contract-item.status-warn30::before{background:linear-gradient(180deg,#ef4444,#f87171);}
 .contract-item.status-expired::before{background:#374151;}
-.contract-item:hover{background:rgba(16,185,129,0.04);border-color:rgba(16,185,129,0.18);transform:translateX(3px);}
-.contract-item.expanded{border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.04);}
+.contract-item:hover{background:rgba(5,20,28,0.95);border-color:rgba(16,185,129,0.22);transform:translateX(2px);}
+.contract-item.expanded{border-color:rgba(16,185,129,0.28);background:rgba(5,20,28,0.95);}
 .ci-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
 .ci-meta{flex:1;}
 .ci-contract{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:rgba(52,211,153,0.6);margin-bottom:5px;letter-spacing:0.5px;}
@@ -134,128 +133,11 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
 <body>
 
 <!-- ═══════════ SERVICE-THEMED BACKGROUND ═══════════ -->
-<div style="position:fixed;inset:0;z-index:0;background:linear-gradient(160deg,#050d12 0%,#071418 50%,#050e10 100%);"></div>
-
-<!-- Large SVG themed illustrations in background -->
-<svg style="position:fixed;inset:0;z-index:0;width:100%;height:100%;pointer-events:none;" xmlns="http://www.w3.org/2000/svg">
-
-  <!-- TOP RIGHT: Large floating contract document -->
-  <g transform="translate(1150,30) rotate(-12)" opacity="0.07">
-    <rect x="0" y="0" width="140" height="185" rx="12" fill="none" stroke="#10b981" stroke-width="2.5"/>
-    <rect x="0" y="0" width="140" height="32" rx="12" fill="rgba(16,185,129,0.15)"/>
-    <text x="70" y="21" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700" letter-spacing="1">CONTRACT</text>
-    <line x1="16" y1="50" x2="124" y2="50" stroke="#10b981" stroke-width="2"/>
-    <line x1="16" y1="65" x2="124" y2="65" stroke="#10b981" stroke-width="2"/>
-    <line x1="16" y1="80" x2="95" y2="80" stroke="#10b981" stroke-width="2"/>
-    <line x1="16" y1="95" x2="110" y2="95" stroke="#10b981" stroke-width="2"/>
-    <line x1="16" y1="110" x2="80" y2="110" stroke="#10b981" stroke-width="2"/>
-    <!-- Checkbox items -->
-    <rect x="16" y="125" width="10" height="10" rx="2" fill="none" stroke="#10b981" stroke-width="2"/>
-    <path d="M18,130 L21,133 L27,127" stroke="#10b981" stroke-width="2" fill="none"/>
-    <line x1="32" y1="130" x2="90" y2="130" stroke="#10b981" stroke-width="2"/>
-    <rect x="16" y="142" width="10" height="10" rx="2" fill="none" stroke="#10b981" stroke-width="2"/>
-    <path d="M18,147 L21,150 L27,144" stroke="#10b981" stroke-width="2" fill="none"/>
-    <line x1="32" y1="147" x2="105" y2="147" stroke="#10b981" stroke-width="2"/>
-    <rect x="16" y="159" width="10" height="10" rx="2" fill="none" stroke="#10b981" stroke-width="2"/>
-    <line x1="32" y1="164" x2="75" y2="164" stroke="#10b981" stroke-width="2"/>
-    <!-- Stamp -->
-    <circle cx="105" cy="148" r="26" fill="none" stroke="#34d399" stroke-width="2" opacity="0.7" stroke-dasharray="4,2"/>
-    <text x="105" y="144" text-anchor="middle" fill="#34d399" font-size="8" font-weight="800" opacity="0.7">ACTIVE</text>
-    <text x="105" y="155" text-anchor="middle" fill="#34d399" font-size="7" opacity="0.7">GeM</text>
-  </g>
-
-  <!-- LEFT SIDE: Large spinning gear -->
-  <g transform="translate(30,160)" opacity="0.06">
-    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="30s" repeatCount="indefinite" additive="sum"/>
-    <circle cx="100" cy="100" r="70" fill="none" stroke="#06b6d4" stroke-width="3"/>
-    <circle cx="100" cy="100" r="45" fill="none" stroke="#06b6d4" stroke-width="3"/>
-    <circle cx="100" cy="100" r="18" fill="none" stroke="#06b6d4" stroke-width="3"/>
-    <g fill="#06b6d4">
-      <rect x="88" y="22" width="24" height="18" rx="4"/><rect x="88" y="160" width="24" height="18" rx="4"/>
-      <rect x="22" y="88" width="18" height="24" rx="4"/><rect x="160" y="88" width="18" height="24" rx="4"/>
-      <rect x="36" y="36" width="18" height="18" rx="3" transform="rotate(45,45,45)"/>
-      <rect x="152" y="36" width="18" height="18" rx="3" transform="rotate(45,161,45)"/>
-      <rect x="36" y="152" width="18" height="18" rx="3" transform="rotate(45,45,161)"/>
-      <rect x="152" y="152" width="18" height="18" rx="3" transform="rotate(45,161,161)"/>
-    </g>
-  </g>
-
-  <!-- BOTTOM LEFT: Calendar with expiry visual -->
-  <g transform="translate(50,530)" opacity="0.065">
-    <rect x="0" y="20" width="120" height="110" rx="10" fill="none" stroke="#10b981" stroke-width="2.5"/>
-    <rect x="0" y="20" width="120" height="34" rx="10" fill="rgba(16,185,129,0.2)"/>
-    <text x="60" y="42" text-anchor="middle" fill="#10b981" font-size="12" font-weight="700">JUNE 2025</text>
-    <line x1="0" y1="54" x2="120" y2="54" stroke="#10b981" stroke-width="1.5"/>
-    <line x1="28" y1="10" x2="28" y2="30" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
-    <line x1="92" y1="10" x2="92" y2="30" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
-    <!-- Day grid -->
-    <g fill="#10b981" opacity="0.7" font-size="9">
-      <text x="18" y="72">Mo</text><text x="38" y="72">Tu</text><text x="58" y="72">We</text><text x="78" y="72">Th</text><text x="98" y="72">Fr</text>
-      <text x="18" y="88">1</text><text x="38" y="88">2</text><text x="58" y="88">3</text><text x="78" y="88">4</text><text x="98" y="88">5</text>
-      <text x="18" y="102">8</text><text x="38" y="102">9</text><text x="58" y="102">10</text><text x="78" y="102">11</text><text x="98" y="102">12</text>
-      <text x="18" y="116">15</text><text x="38" y="116">16</text>
-    </g>
-    <!-- Highlighted expiry day -->
-    <circle cx="58" cy="116" r="10" fill="rgba(239,68,68,0.3)" stroke="#ef4444" stroke-width="1.5"/>
-    <text x="58" y="120" text-anchor="middle" fill="#f87171" font-size="9" font-weight="700">17</text>
-  </g>
-
-  <!-- CENTER TOP: Shield / verification icon -->
-  <g transform="translate(680,20)" opacity="0.055">
-    <path d="M70,5 L130,28 L130,80 Q130,128 70,148 Q10,128 10,80 L10,28 Z" fill="none" stroke="#10b981" stroke-width="3"/>
-    <path d="M40,78 L60,98 L102,56" stroke="#10b981" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <text x="70" y="132" text-anchor="middle" fill="#10b981" font-size="9" font-weight="700" opacity="0.7">VERIFIED</text>
-  </g>
-
-  <!-- BOTTOM RIGHT: Handshake / agreement icon -->
-  <g transform="translate(1220,480)" opacity="0.055">
-    <!-- Two hands meeting -->
-    <path d="M10,55 C20,35 45,30 60,42 L80,38 C95,32 115,38 120,55" fill="none" stroke="#34d399" stroke-width="4" stroke-linecap="round"/>
-    <path d="M120,55 C125,65 118,78 108,74 L65,60 C52,55 48,44 58,40" fill="none" stroke="#34d399" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="10" cy="55" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
-    <circle cx="130" cy="55" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
-    <text x="70" y="100" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">AGREEMENT</text>
-  </g>
-
-  <!-- TOP LEFT: Small clipboard -->
-  <g transform="translate(60,40)" opacity="0.06">
-    <rect x="5" y="12" width="75" height="95" rx="6" fill="none" stroke="#06b6d4" stroke-width="2"/>
-    <rect x="22" y="6" width="40" height="14" rx="4" fill="none" stroke="#06b6d4" stroke-width="2"/>
-    <circle cx="42" cy="13" r="3" fill="#06b6d4"/>
-    <line x1="14" y1="35" x2="71" y2="35" stroke="#06b6d4" stroke-width="1.5"/>
-    <line x1="14" y1="48" x2="71" y2="48" stroke="#06b6d4" stroke-width="1.5"/>
-    <line x1="14" y1="61" x2="55" y2="61" stroke="#06b6d4" stroke-width="1.5"/>
-    <line x1="14" y1="74" x2="65" y2="74" stroke="#06b6d4" stroke-width="1.5"/>
-    <line x1="14" y1="87" x2="45" y2="87" stroke="#06b6d4" stroke-width="1.5"/>
-  </g>
-
-  <!-- RIGHT: Second smaller gear (counter-rotating) -->
-  <g transform="translate(1310,280)" opacity="0.05">
-    <animateTransform attributeName="transform" type="rotate" from="0 65 65" to="-360 65 65" dur="22s" repeatCount="indefinite" additive="sum"/>
-    <circle cx="65" cy="65" r="48" fill="none" stroke="#10b981" stroke-width="2"/>
-    <circle cx="65" cy="65" r="28" fill="none" stroke="#10b981" stroke-width="2"/>
-    <circle cx="65" cy="65" r="12" fill="none" stroke="#10b981" stroke-width="2"/>
-    <g fill="#10b981">
-      <rect x="57" y="10" width="16" height="12" rx="3"/><rect x="57" y="108" width="16" height="12" rx="3"/>
-      <rect x="10" y="57" width="12" height="16" rx="3"/><rect x="108" y="57" width="12" height="16" rx="3"/>
-    </g>
-  </g>
-
-  <!-- Horizontal timeline decoration -->
-  <g opacity="0.04">
-    <line x1="0" y1="720" x2="1440" y2="720" stroke="#10b981" stroke-width="1.5" stroke-dasharray="8,6"/>
-    <circle cx="180" cy="720" r="5" fill="#10b981"/><circle cx="360" cy="720" r="5" fill="#10b981"/>
-    <circle cx="540" cy="720" r="5" fill="#10b981"/><circle cx="720" cy="720" r="5" fill="#10b981"/>
-    <circle cx="900" cy="720" r="5" fill="#10b981"/><circle cx="1080" cy="720" r="5" fill="#10b981"/>
-    <circle cx="1260" cy="720" r="5" fill="#10b981"/>
-  </g>
-</svg>
-
-<!-- Color glow -->
-<div style="position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 55% 40% at 90% 10%,rgba(16,185,129,0.07) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 5% 50%,rgba(6,182,212,0.05) 0%,transparent 55%),radial-gradient(ellipse 40% 40% at 50% 90%,rgba(16,185,129,0.04) 0%,transparent 55%);pointer-events:none;animation:glow 15s ease-in-out infinite alternate;"></div>
+<div style="position:fixed;inset:0;z-index:0;background:#060e14;"></div>
+<!-- Subtle radial glows only — no heavy SVG animations -->
+<div style="position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 60% 45% at 90% 10%,rgba(16,185,129,0.07) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 5% 55%,rgba(6,182,212,0.05) 0%,transparent 55%);pointer-events:none;"></div>
 <div style="position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(16,185,129,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,0.025) 1px,transparent 1px);background-size:65px 65px;pointer-events:none;"></div>
 <canvas id="particleCanvas" style="position:fixed;inset:0;z-index:1;pointer-events:none;"></canvas>
-<style>@keyframes glow{0%{transform:translate(0,0);}100%{transform:translate(10px,8px);}}</style>
 
 <!-- ═══════════ CONTENT ═══════════ -->
 <div class="content">
@@ -423,7 +305,11 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
     </div>
     <div class="list-header">
       <span class="list-count" id="listCount"><span>0</span> contracts</span>
-      <button class="btn btn-outline" style="font-size:0.78rem;padding:8px 16px;" onclick="exportCSV()">↓ Export CSV</button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span id="sheetStatus" style="font-size:0.72rem;color:rgba(52,211,153,0.7);font-family:'JetBrains Mono',monospace;"></span>
+        <button class="btn btn-outline" style="font-size:0.72rem;padding:6px 12px;" onclick="loadFromSheet()">↻ Sync Sheet</button>
+        <button class="btn btn-outline" style="font-size:0.78rem;padding:8px 16px;" onclick="exportCSV()">↓ CSV</button>
+      </div>
     </div>
     <div id="contractList"></div>
   </div>
@@ -433,8 +319,35 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
 const SHEET_URL='https://script.google.com/macros/s/AKfycbzEiq6-MT1sOhgR27t6DJ4R77Bw--QDxWjc2xPKwzMS1dR_s8OshDs1HLpdo6MMCytl/exec';
 let contracts=JSON.parse(localStorage.getItem('service_contracts')||'[]');
 let currentFilter='all';
+let sheetLoaded=false;
 
-function showTab(name,el){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+name).classList.add('active');if(el)el.classList.add('active');if(name==='list')renderContracts();}
+// ── FETCH FROM GOOGLE SHEET ON LOAD ──
+function loadFromSheet(){
+  const statusEl=document.getElementById('sheetStatus');
+  if(statusEl) statusEl.textContent='⏳ Syncing from Sheet…';
+  fetch(SHEET_URL+'?action=getAll')
+    .then(r=>r.json())
+    .then(data=>{
+      if(data && Array.isArray(data) && data.length>0){
+        // Merge sheet data with localStorage — sheet is source of truth
+        contracts=data;
+        localStorage.setItem('service_contracts',JSON.stringify(contracts));
+        if(statusEl) statusEl.textContent='✅ Synced from Sheet ('+contracts.length+' contracts)';
+        setTimeout(()=>{if(statusEl)statusEl.textContent='';},4000);
+        renderContracts();
+      } else {
+        if(statusEl) statusEl.textContent='';
+      }
+      sheetLoaded=true;
+    })
+    .catch(()=>{
+      if(statusEl) statusEl.textContent='📱 Offline — showing local data';
+      setTimeout(()=>{if(statusEl)statusEl.textContent='';},3000);
+      sheetLoaded=true;
+    });
+}
+
+function showTab(name,el){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+name).classList.add('active');if(el)el.classList.add('active');if(name==='list'){if(!sheetLoaded)loadFromSheet();else renderContracts();}}
 
 function calcStatus(endDateStr){if(!endDateStr)return{status:'unknown',days:null};const today=new Date();today.setHours(0,0,0,0);const end=new Date(endDateStr);end.setHours(0,0,0,0);const diff=Math.ceil((end-today)/86400000);if(diff<0)return{status:'expired',days:diff};if(diff<30)return{status:'warn30',days:diff};if(diff<60)return{status:'warn60',days:diff};return{status:'active',days:diff};}
 
@@ -442,7 +355,42 @@ function statusText(status,days){if(status==='expired')return`⛔ Expired (${Mat
 
 function previewStatus(){const endDate=document.getElementById('endDate').value;const preview=document.getElementById('statusPreview');if(!endDate){preview.classList.add('hidden');return;}const{status,days}=calcStatus(endDate);const styles={active:'background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#34d399;',warn60:'background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:#fbbf24;',warn30:'background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;',expired:'background:rgba(100,116,139,0.1);border:1px solid rgba(100,116,139,0.2);color:#9ca3af;'};preview.style.cssText=(styles[status]||styles.expired)+'border-radius:10px;padding:12px 16px;font-size:0.88rem;font-weight:700;display:flex;align-items:center;gap:10px;margin-top:8px;';preview.textContent=statusText(status,days);preview.classList.remove('hidden');}
 
-function saveContract(){const gemNumber=document.getElementById('gemNumber').value.trim();const serviceType=document.getElementById('serviceType').value.trim();const vendorName=document.getElementById('vendorName').value.trim();const startDate=document.getElementById('startDate').value;const endDate=document.getElementById('endDate').value;const contractValue=document.getElementById('contractValue').value;const remarks=document.getElementById('remarks').value.trim();if(!gemNumber){alert('Please enter GeM Contract Number.');return;}if(!serviceType){alert('Please enter Type of Service.');return;}if(!vendorName){alert('Please enter Vendor Name.');return;}if(!startDate){alert('Please select Contract Start Date.');return;}if(!endDate){alert('Please select Contract End Date.');return;}const{status,days}=calcStatus(endDate);const entry={id:Date.now(),savedAt:new Date().toISOString(),gemNumber,serviceType,vendorName,startDate,endDate,contractValue:contractValue||'',remarks,status,days};contracts.unshift(entry);localStorage.setItem('service_contracts',JSON.stringify(contracts));if(SHEET_URL&&!SHEET_URL.includes('YOUR_APPS')){fetch(SHEET_URL,{method:'POST',body:JSON.stringify(entry),headers:{'Content-Type':'application/json'},mode:'no-cors'}).catch(()=>{});}const btn=document.querySelector('.btn-success');const orig=btn.innerHTML;btn.innerHTML='✓ Saved!';setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';},2500);clearForm();}
+function saveContract(){
+  const gemNumber=document.getElementById('gemNumber').value.trim();
+  const serviceType=document.getElementById('serviceType').value.trim();
+  const vendorName=document.getElementById('vendorName').value.trim();
+  const startDate=document.getElementById('startDate').value;
+  const endDate=document.getElementById('endDate').value;
+  const contractValue=document.getElementById('contractValue').value;
+  const remarks=document.getElementById('remarks').value.trim();
+  if(!gemNumber){alert('Please enter GeM Contract Number.');return;}
+  if(!serviceType){alert('Please enter Type of Service.');return;}
+  if(!vendorName){alert('Please enter Vendor Name.');return;}
+  if(!startDate){alert('Please select Contract Start Date.');return;}
+  if(!endDate){alert('Please select Contract End Date.');return;}
+  const{status,days}=calcStatus(endDate);
+  const entry={id:Date.now(),savedAt:new Date().toISOString(),gemNumber,serviceType,vendorName,startDate,endDate,contractValue:contractValue||'',remarks,status,days};
+  contracts.unshift(entry);
+  localStorage.setItem('service_contracts',JSON.stringify(contracts));
+  const btn=document.querySelector('.btn-success');
+  const orig=btn.innerHTML;
+  btn.innerHTML='⏳ Saving to Sheet…';
+  btn.disabled=true;
+  fetch(SHEET_URL,{
+    method:'POST',
+    body:JSON.stringify(entry),
+    headers:{'Content-Type':'application/json'},
+    mode:'no-cors'
+  }).then(()=>{
+    btn.innerHTML='✅ Saved to Sheet!';
+    btn.style.background='linear-gradient(135deg,#059669,#0891b2)';
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.disabled=false;},2500);
+  }).catch(()=>{
+    btn.innerHTML='💾 Saved locally';
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.disabled=false;},2500);
+  });
+  clearForm();
+}
 
 function clearForm(){['gemNumber','serviceType','vendorName','startDate','endDate','contractValue','remarks'].forEach(id=>document.getElementById(id).value='');document.getElementById('statusPreview').classList.add('hidden');}
 
@@ -503,6 +451,12 @@ function toggleExpand(id){const detail=document.getElementById('cid_'+id);const 
 function deleteContract(id){if(!confirm('Delete this contract?'))return;contracts=contracts.filter(c=>String(c.id)!==String(id));localStorage.setItem('service_contracts',JSON.stringify(contracts));renderContracts();}
 
 function exportCSV(){if(!contracts.length){alert('No contracts to export.');return;}const headers=['ID','Saved Date','GeM Contract No.','Type of Service','Vendor Name','Contract Value','Start Date','End Date','Days Remaining','Status','Remarks'];const rows=contracts.map(c=>{const{status,days}=calcStatus(c.endDate);return[c.id,new Date(c.savedAt).toLocaleDateString('en-IN'),c.gemNumber,c.serviceType,c.vendorName,c.contractValue||'',fmtDate(c.startDate),fmtDate(c.endDate),days,status,c.remarks||''].map(v=>`"${String(v??'').replace(/"/g,'""')}"`)});const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='service_contracts.csv';a.click();}
+
+// Auto-load from sheet when page opens
+window.addEventListener('DOMContentLoaded',()=>{
+  renderContracts(); // show local data immediately
+  loadFromSheet();   // then sync from sheet in background
+});
 </script>
 
 <script>
@@ -517,7 +471,7 @@ class Pt{
   update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>PW||this.y<0||this.y>PH)this.reset();}
   draw(){cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fillStyle=this.c;cx.globalAlpha=this.a;cx.fill();cx.globalAlpha=1;}
 }
-for(let i=0;i<110;i++)pts.push(new Pt());
+for(let i=0;i<60;i++)pts.push(new Pt());
 function anim(){
   cx.clearRect(0,0,PW,PH);
   for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
