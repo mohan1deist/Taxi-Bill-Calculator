@@ -4,181 +4,566 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>My Office Hub</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #F0F4FF;
-  --white: #FFFFFF;
-  --border: #DDE3F5;
-  --text: #1A1F36;
-  --muted: #6B7280;
-  --blue: #4361EE;
-  --blue-light: #EEF1FF;
-  --green: #0CAF60;
-  --green-light: #E6F7EF;
-  --orange: #F97316;
-  --orange-light: #FFF4ED;
-  --font: 'Nunito', sans-serif;
-}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font);background:var(--bg);min-height:100vh;display:flex;flex-direction:column;}
+html,body{height:100%;overflow-x:hidden;}
+body{font-family:'Inter',sans-serif;background:#060812;color:#fff;}
 
-/* HEADER */
-.header{
-  background:var(--white);
-  border-bottom:1px solid var(--border);
-  padding:20px 40px;
-  display:flex;align-items:center;gap:14px;
-}
-.header-icon{
-  width:44px;height:44px;border-radius:14px;
-  background:linear-gradient(135deg,#4361EE,#7B8CFF);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.4rem;box-shadow:0 4px 12px rgba(67,97,238,0.25);
-}
-.header-text h1{font-size:1.3rem;font-weight:900;color:var(--text);letter-spacing:-0.3px;}
-.header-text p{font-size:0.82rem;color:var(--muted);margin-top:1px;}
+/* ─── PARTICLE CANVAS ─── */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-/* MAIN */
-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;}
-.hero-label{
-  font-size:0.75rem;font-weight:700;letter-spacing:2px;
-  text-transform:uppercase;color:var(--blue);
-  background:var(--blue-light);border:1px solid rgba(67,97,238,0.15);
-  padding:5px 14px;border-radius:20px;margin-bottom:20px;
+/* ─── PHOTO BG ─── */
+.photo-bg{
+  position:fixed;inset:0;z-index:0;
+  background:
+    linear-gradient(to bottom, rgba(6,8,18,0.82) 0%, rgba(6,8,18,0.65) 40%, rgba(6,8,18,0.9) 100%),
+    url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80&auto=format&fit=crop') center/cover no-repeat;
 }
-.hero-title{
-  font-size:2.2rem;font-weight:900;color:var(--text);
-  text-align:center;letter-spacing:-0.5px;margin-bottom:8px;
-  line-height:1.2;
-}
-.hero-sub{font-size:1rem;color:var(--muted);text-align:center;margin-bottom:52px;}
 
-/* APP GRID */
-.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;width:100%;}
+/* ─── ANIMATED MESH ─── */
+.mesh{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(99,102,241,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(6,182,212,0.1) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 50% 0%, rgba(139,92,246,0.08) 0%, transparent 50%);
+  animation:meshMove 12s ease-in-out infinite alternate;
+}
+@keyframes meshMove{
+  0%{transform:translate(0,0) scale(1);}
+  100%{transform:translate(20px,10px) scale(1.04);}
+}
+
+/* ─── FLOATING GEOMETRIC SHAPES ─── */
+.shapes{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+.shape{position:absolute;border-radius:50%;opacity:0.07;animation:shapeFloat linear infinite;}
+.s1{width:320px;height:320px;background:conic-gradient(#6366f1,#8b5cf6,#06b6d4,#6366f1);top:5%;right:5%;animation-duration:20s;border-radius:30% 70% 70% 30%/30% 30% 70% 70%;}
+.s2{width:200px;height:200px;background:conic-gradient(#10b981,#06b6d4,#3b82f6,#10b981);bottom:10%;left:8%;animation-duration:25s;animation-delay:-10s;border-radius:60% 40% 30% 70%/60% 30% 70% 40%;}
+.s3{width:140px;height:140px;background:conic-gradient(#f59e0b,#ef4444,#ec4899,#f59e0b);top:40%;left:2%;animation-duration:18s;animation-delay:-5s;}
+@keyframes shapeFloat{
+  0%{transform:rotate(0deg) scale(1);}
+  50%{transform:rotate(180deg) scale(1.1);}
+  100%{transform:rotate(360deg) scale(1);}
+}
+
+/* ─── GRID LINES ─── */
+.grid-lines{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.05) 1px, transparent 1px);
+  background-size:80px 80px;
+}
+
+/* ─── CONTENT ─── */
+.wrapper{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;}
+
+/* ─── TOP BAR ─── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 52px;
+  background:rgba(6,8,18,0.6);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.tb-logo{display:flex;align-items:center;gap:12px;}
+.tb-logo-icon{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#06b6d4 100%);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  box-shadow:0 0 24px rgba(99,102,241,0.5);
+  animation:iconPulse 3s ease-in-out infinite;
+}
+@keyframes iconPulse{0%,100%{box-shadow:0 0 24px rgba(99,102,241,0.5);}50%{box-shadow:0 0 40px rgba(99,102,241,0.8);}}
+.tb-name{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.3px;}
+.tb-name span{background:linear-gradient(90deg,#a5b4fc,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tb-right{display:flex;align-items:center;gap:16px;}
+.tb-badge{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  padding:7px 14px;border-radius:20px;font-size:0.75rem;color:rgba(148,163,184,0.8);
+}
+.tb-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* ─── HERO ─── */
+.hero{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:50px 24px 36px;text-align:center;
+}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);
+  padding:6px 18px;border-radius:20px;font-size:0.72rem;font-weight:600;
+  color:#a5b4fc;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;
+  animation:slideDown 0.7s cubic-bezier(.22,.68,0,1.2) both;
+}
+.hero-tag-dot{width:5px;height:5px;border-radius:50%;background:#6366f1;box-shadow:0 0 8px #6366f1;}
+
+.hero-h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:4rem;font-weight:800;line-height:1.05;
+  letter-spacing:-2px;margin-bottom:16px;
+  animation:slideDown 0.7s cubic-bezier(.22,.68,0,1.2) 0.1s both;
+}
+.hero-h1 .w1{display:block;color:#f1f5f9;}
+.hero-h1 .w2{
+  display:block;
+  background:linear-gradient(135deg,#6366f1 0%,#a78bfa 40%,#67e8f9 80%,#10b981 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:200% 200%;
+  animation:gradShift 4s ease infinite;
+}
+@keyframes gradShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+
+.hero-sub{
+  font-size:1rem;color:rgba(148,163,184,0.85);
+  line-height:1.75;max-width:500px;margin-bottom:52px;font-weight:400;
+  animation:slideDown 0.7s cubic-bezier(.22,.68,0,1.2) 0.2s both;
+}
+
+/* ─── STATS ROW ─── */
+.stats-row{
+  display:flex;gap:20px;margin-bottom:44px;
+  animation:slideUp 0.8s cubic-bezier(.22,.68,0,1.2) 0.3s both;
+}
+.stat-pill{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+  padding:10px 20px;border-radius:40px;
+}
+.stat-pill-icon{font-size:1.1rem;}
+.stat-pill-info{text-align:left;}
+.stat-pill-val{font-size:1rem;font-weight:700;line-height:1;}
+.stat-pill-lbl{font-size:0.65rem;color:rgba(148,163,184,0.6);margin-top:2px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;}
+
+/* ─── APP CARDS ─── */
+.cards{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:20px;max-width:1000px;width:100%;
+  animation:slideUp 0.8s cubic-bezier(.22,.68,0,1.2) 0.4s both;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
 .app-card{
-  background:var(--white);
-  border:1.5px solid var(--border);
-  border-radius:24px;
-  padding:36px 28px 32px;
-  text-align:center;
+  position:relative;border-radius:24px;overflow:hidden;
+  text-decoration:none;color:#fff;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
+  transition:transform 0.4s cubic-bezier(.22,.68,0,1.2), box-shadow 0.4s ease;
   cursor:pointer;
-  transition:all 0.25s cubic-bezier(.22,.68,0,1.2);
-  text-decoration:none;
-  display:flex;flex-direction:column;align-items:center;
-  position:relative;overflow:hidden;
+  transform-style:preserve-3d;
+  perspective:800px;
 }
-.app-card::before{
-  content:'';position:absolute;inset:0;opacity:0;
-  transition:opacity 0.25s;
+.app-card:hover{transform:translateY(-10px) scale(1.02);}
+
+/* Card photo backgrounds */
+.card-photo{
+  position:absolute;inset:0;z-index:0;
+  background-size:cover;background-position:center;
+  opacity:0;
+  transition:opacity 0.4s ease;
 }
-.app-card:hover{transform:translateY(-6px);border-color:transparent;}
-.app-card:hover::before{opacity:1;}
-.app-card:hover .app-icon{transform:scale(1.1);}
-.app-card:hover .app-arrow{opacity:1;transform:translateX(0);}
+.app-card:hover .card-photo{opacity:1;}
 
-/* Card 1 - Blue */
-.card-blue{box-shadow:0 2px 16px rgba(67,97,238,0.08);}
-.card-blue:hover{box-shadow:0 16px 40px rgba(67,97,238,0.2);}
-.card-blue::before{background:linear-gradient(135deg,#EEF1FF,#E0E7FF);}
-.card-blue .app-icon-wrap{background:linear-gradient(135deg,#4361EE,#6B7FFF);}
-.card-blue .app-name{color:#3050D8;}
-.card-blue .app-arrow{color:#4361EE;}
-
-/* Card 2 - Green */
-.card-green{box-shadow:0 2px 16px rgba(12,175,96,0.08);}
-.card-green:hover{box-shadow:0 16px 40px rgba(12,175,96,0.2);}
-.card-green::before{background:linear-gradient(135deg,#E6F7EF,#D1F5E3);}
-.card-green .app-icon-wrap{background:linear-gradient(135deg,#0CAF60,#34D98B);}
-.card-green .app-name{color:#097A43;}
-.card-green .app-arrow{color:#0CAF60;}
-
-/* Card 3 - Orange */
-.card-orange{box-shadow:0 2px 16px rgba(249,115,22,0.08);}
-.card-orange:hover{box-shadow:0 16px 40px rgba(249,115,22,0.2);}
-.card-orange::before{background:linear-gradient(135deg,#FFF4ED,#FFE8D6);}
-.card-orange .app-icon-wrap{background:linear-gradient(135deg,#F97316,#FB923C);}
-.card-orange .app-name{color:#C2540A;}
-.card-orange .app-arrow{color:#F97316;}
-
-.app-icon-wrap{
-  width:80px;height:80px;border-radius:22px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.2rem;margin-bottom:22px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.12);
-  transition:transform 0.25s cubic-bezier(.22,.68,0,1.2);
+.card-blue .card-photo{
+  background-image:linear-gradient(135deg,rgba(6,8,18,0.85),rgba(6,8,18,0.5)),
+  url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=70&auto=format&fit=crop');
 }
-.app-name{font-size:1.05rem;font-weight:800;margin-bottom:8px;letter-spacing:-0.2px;}
-.app-desc{font-size:0.82rem;color:var(--muted);line-height:1.5;margin-bottom:20px;}
-.app-arrow{
-  font-size:0.8rem;font-weight:700;
-  opacity:0;transform:translateX(-4px);
+.card-green .card-photo{
+  background-image:linear-gradient(135deg,rgba(6,8,18,0.85),rgba(6,8,18,0.5)),
+  url('https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=600&q=70&auto=format&fit=crop');
+}
+.card-orange .card-photo{
+  background-image:linear-gradient(135deg,rgba(6,8,18,0.85),rgba(6,8,18,0.5)),
+  url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=70&auto=format&fit=crop');
+}
+
+/* Card gradient overlays */
+.card-bg{position:absolute;inset:0;z-index:1;transition:opacity 0.4s;}
+.card-blue .card-bg{background:linear-gradient(135deg,rgba(99,102,241,0.15) 0%,rgba(6,8,18,0.2) 100%);}
+.card-green .card-bg{background:linear-gradient(135deg,rgba(16,185,129,0.15) 0%,rgba(6,8,18,0.2) 100%);}
+.card-orange .card-bg{background:linear-gradient(135deg,rgba(245,158,11,0.15) 0%,rgba(6,8,18,0.2) 100%);}
+
+/* Top glow bar */
+.card-glow{position:absolute;top:0;left:0;right:0;height:1px;z-index:2;}
+.card-blue .card-glow{background:linear-gradient(90deg,transparent,#6366f1,#06b6d4,transparent);}
+.card-green .card-glow{background:linear-gradient(90deg,transparent,#10b981,#06b6d4,transparent);}
+.card-orange .card-glow{background:linear-gradient(90deg,transparent,#f59e0b,#ef4444,transparent);}
+
+.card-content{position:relative;z-index:3;padding:28px 26px 26px;}
+
+/* 3D Icon */
+.card-icon-3d{
+  width:68px;height:68px;margin-bottom:18px;
+  position:relative;display:flex;align-items:center;justify-content:center;
+  transition:transform 0.4s cubic-bezier(.22,.68,0,1.2);
+}
+.app-card:hover .card-icon-3d{transform:translateY(-4px) scale(1.15) rotate(-5deg);}
+.icon-shadow{
+  position:absolute;inset:0;border-radius:18px;
+  transition:all 0.4s;
+}
+.card-blue .icon-shadow{background:linear-gradient(135deg,#6366f1,#4f46e5);box-shadow:0 8px 24px rgba(99,102,241,0.4), 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
+.card-green .icon-shadow{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 8px 24px rgba(16,185,129,0.4), 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
+.card-orange .icon-shadow{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 8px 24px rgba(245,158,11,0.4), 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
+.app-card:hover .icon-shadow{box-shadow:0 16px 40px rgba(99,102,241,0.6), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);}
+.icon-emoji{font-size:1.8rem;position:relative;z-index:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));}
+
+.card-label{
+  font-size:0.65rem;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:6px;opacity:0.6;
+}
+.card-blue .card-label{color:#a5b4fc;}
+.card-green .card-label{color:#6ee7b7;}
+.card-orange .card-label{color:#fcd34d;}
+
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:10px;letter-spacing:-0.3px;line-height:1.3;}
+.card-desc{font-size:0.8rem;color:rgba(148,163,184,0.75);line-height:1.65;margin-bottom:22px;}
+
+.card-footer{display:flex;justify-content:space-between;align-items:center;}
+.card-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.78rem;font-weight:700;
+  padding:8px 16px;border-radius:8px;
   transition:all 0.2s;
 }
-.coming-soon{
-  font-size:0.68rem;font-weight:700;letter-spacing:1px;
-  text-transform:uppercase;background:#FFF4ED;color:#C2540A;
-  border:1px solid #FED7AA;padding:3px 10px;border-radius:20px;
-  margin-top:auto;
+.card-blue .card-cta{background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.2);}
+.card-green .card-cta{background:rgba(16,185,129,0.15);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2);}
+.card-orange .card-cta{background:rgba(245,158,11,0.1);color:#fcd34d;border:1px solid rgba(245,158,11,0.15);}
+.app-card:hover .card-cta{gap:10px;}
+
+.card-arrow{font-size:1rem;transition:transform 0.2s;}
+.app-card:hover .card-arrow{transform:translateX(4px);}
+
+.coming-tag{
+  font-size:0.65rem;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;background:rgba(245,158,11,0.1);
+  border:1px solid rgba(245,158,11,0.2);color:#fcd34d;
+  padding:5px 12px;border-radius:20px;
 }
 
-/* FOOTER */
-footer{text-align:center;padding:20px;font-size:0.78rem;color:var(--muted);}
+/* Card hover glow effect */
+.card-blue:hover{box-shadow:0 24px 60px rgba(99,102,241,0.25),0 0 0 1px rgba(99,102,241,0.15);}
+.card-green:hover{box-shadow:0 24px 60px rgba(16,185,129,0.2),0 0 0 1px rgba(16,185,129,0.15);}
+.card-orange:hover{box-shadow:0 24px 60px rgba(245,158,11,0.15),0 0 0 1px rgba(245,158,11,0.1);}
 
-/* RESPONSIVE */
-@media(max-width:700px){
-  .app-grid{grid-template-columns:1fr;max-width:380px;}
-  .hero-title{font-size:1.6rem;}
-  .header{padding:16px 20px;}
+/* ─── BOTTOM WIDGETS ─── */
+.widgets{
+  display:flex;gap:16px;margin-top:28px;max-width:1000px;width:100%;
+  animation:slideUp 0.8s cubic-bezier(.22,.68,0,1.2) 0.5s both;
+}
+.widget{
+  flex:1;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  backdrop-filter:blur(16px);border-radius:16px;
+  padding:16px 20px;display:flex;align-items:center;gap:14px;
+}
+.widget-icon{font-size:1.4rem;flex-shrink:0;}
+.widget-text .wt{font-size:0.82rem;font-weight:600;color:#e2e8f0;}
+.widget-text .ws{font-size:0.72rem;color:rgba(100,116,139,0.7);margin-top:2px;}
+.widget-val{margin-left:auto;font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;}
+.widget-val.blue{color:#818cf8;}
+.widget-val.green{color:#34d399;}
+.widget-val.amber{color:#fbbf24;}
+
+/* ─── FOOTER ─── */
+footer{
+  text-align:center;padding:22px;
+  color:rgba(71,85,105,0.8);font-size:0.75rem;
+  border-top:1px solid rgba(255,255,255,0.04);
+  position:relative;z-index:10;
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .cards{grid-template-columns:1fr;}
+  .stats-row{flex-wrap:wrap;justify-content:center;}
+  .widgets{flex-direction:column;}
+  .hero-h1{font-size:2.8rem;}
+  .topbar{padding:16px 20px;}
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-icon">🏢</div>
-  <div class="header-text">
-    <h1>My Office Hub</h1>
-    <p>Your personal productivity suite</p>
-  </div>
+<!-- Background layers -->
+<div class="photo-bg"></div>
+<div class="mesh"></div>
+<div class="shapes">
+  <div class="shape s1"></div>
+  <div class="shape s2"></div>
+  <div class="shape s3"></div>
+</div>
+<div class="grid-lines"></div>
+<canvas id="particles"></canvas>
+
+<div class="wrapper">
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="tb-logo">
+      <div class="tb-logo-icon">🏢</div>
+      <span class="tb-name">My Office <span>Hub</span></span>
+    </div>
+    <div class="tb-right">
+      <div class="tb-badge"><span class="tb-dot"></span>All Systems Active</div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span>Personal Productivity Dashboard</div>
+
+    <h1 class="hero-h1">
+      <span class="w1">Your Work,</span>
+      <span class="w2">Simplified.</span>
+    </h1>
+    <p class="hero-sub">A unified command center for managing travel bills, government contracts, and product orders — built just for you.</p>
+
+    <!-- LIVE STATS -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-pill">
+        <span class="stat-pill-icon">🚖</span>
+        <div class="stat-pill-info">
+          <div class="stat-pill-val" id="taxiCount">—</div>
+          <div class="stat-pill-lbl">Bills Saved</div>
+        </div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-icon">📋</span>
+        <div class="stat-pill-info">
+          <div class="stat-pill-val" id="contractCount">—</div>
+          <div class="stat-pill-lbl">Contracts</div>
+        </div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-icon">🔴</span>
+        <div class="stat-pill-info">
+          <div class="stat-pill-val" id="urgentCount" style="color:#f87171;">—</div>
+          <div class="stat-pill-lbl">Expiring Soon</div>
+        </div>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-icon">📅</span>
+        <div class="stat-pill-info">
+          <div class="stat-pill-val" id="todayDate">—</div>
+          <div class="stat-pill-lbl">Today</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP CARDS -->
+    <div class="cards">
+
+      <!-- Taxi Bill Calculator -->
+      <a class="app-card card-blue" href="taxi-bill-calculator.html">
+        <div class="card-photo"></div>
+        <div class="card-bg"></div>
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <div class="card-icon-3d">
+            <div class="icon-shadow"></div>
+            <span class="icon-emoji">🚖</span>
+          </div>
+          <div class="card-label">Finance Tool</div>
+          <div class="card-title">Taxi Bill Calculator</div>
+          <div class="card-desc">Calculate vendor bills, verify GST & toll charges, and track all travel expenses with smart auto-calculation.</div>
+          <div class="card-footer">
+            <div class="card-cta">Open Tool <span class="card-arrow">→</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Service Orders -->
+      <a class="app-card card-green" href="service-orders.html">
+        <div class="card-photo"></div>
+        <div class="card-bg"></div>
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <div class="card-icon-3d">
+            <div class="icon-shadow"></div>
+            <span class="icon-emoji">📋</span>
+          </div>
+          <div class="card-label">Contract Tracker</div>
+          <div class="card-title">Service Orders Tracking</div>
+          <div class="card-desc">Track GeM contracts, monitor expiry dates with live countdowns, and get instant renewal alerts.</div>
+          <div class="card-footer">
+            <div class="card-cta">Open Tool <span class="card-arrow">→</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Product Orders -->
+      <div class="app-card card-orange" style="cursor:default;">
+        <div class="card-photo"></div>
+        <div class="card-bg"></div>
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <div class="card-icon-3d">
+            <div class="icon-shadow"></div>
+            <span class="icon-emoji">📦</span>
+          </div>
+          <div class="card-label">Orders Manager</div>
+          <div class="card-title">Product Orders Tracking</div>
+          <div class="card-desc">Manage product orders, track delivery status, and maintain a complete order history in one place.</div>
+          <div class="card-footer">
+            <span class="coming-tag">⏳ Coming Soon</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM WIDGETS -->
+    <div class="widgets" id="widgets">
+      <div class="widget">
+        <span class="widget-icon">💰</span>
+        <div class="widget-text">
+          <div class="wt">Total Bills Processed</div>
+          <div class="ws">From your Taxi Bill Calculator</div>
+        </div>
+        <div class="widget-val blue" id="wTaxi">—</div>
+      </div>
+      <div class="widget">
+        <span class="widget-icon">✅</span>
+        <div class="widget-text">
+          <div class="wt">Active Contracts</div>
+          <div class="ws">Service Orders Tracker</div>
+        </div>
+        <div class="widget-val green" id="wActive">—</div>
+      </div>
+      <div class="widget">
+        <span class="widget-icon">⚠️</span>
+        <div class="widget-text">
+          <div class="wt">Needs Attention</div>
+          <div class="ws">Contracts expiring in &lt;60 days</div>
+        </div>
+        <div class="widget-val amber" id="wAttention">—</div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>My Office Hub &nbsp;·&nbsp; Built for personal use &nbsp;·&nbsp; 2025</footer>
 </div>
 
-<main>
-  <div class="hero-label">Office Tools</div>
-  <h2 class="hero-title">What would you like<br>to work on today?</h2>
-  <p class="hero-sub">Pick a tool below to get started.</p>
+<script>
+// ── PARTICLE SYSTEM ──
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
 
-  <div class="app-grid">
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
 
-    <!-- Taxi Bill Calculator -->
-    <a class="app-card card-blue" href="taxi-bill-calculator.html">
-      <div class="app-icon-wrap">🚖</div>
-      <div class="app-name">Taxi Bill Calculator</div>
-      <div class="app-desc">Calculate vendor bills, apply GST & toll charges, and track all travel expenses.</div>
-      <div class="app-arrow">Open Tool →</div>
-    </a>
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 1.5 + 0.3;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.color = ['#6366f1','#06b6d4','#10b981','#a78bfa','#67e8f9'][Math.floor(Math.random()*5)];
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.alpha;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
 
-    <!-- Service Orders -->
-    <a class="app-card card-green" href="service-orders.html">
-      <div class="app-icon-wrap">📋</div>
-      <div class="app-name">Service Orders Tracking</div>
-      <div class="app-desc">Track GeM contracts, monitor expiry dates, and get alerts for renewals.</div>
-      <div class="app-arrow">Open Tool →</div>
-    </a>
+// Create 120 particles
+for (let i = 0; i < 120; i++) particles.push(new Particle());
 
-    <!-- Product Orders -->
-    <a class="app-card card-orange" href="product-orders.html">
-      <div class="app-icon-wrap">📦</div>
-      <div class="app-name">Product Orders Tracking</div>
-      <div class="app-desc">Manage product orders, track delivery status, and maintain order history.</div>
-      <div class="app-arrow" style="opacity:1;transform:none;">Coming Soon</div>
-    </a>
+// Draw constellation lines between nearby particles
+function drawLines() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i+1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = '#6366f1';
+        ctx.globalAlpha = (1 - dist/100) * 0.08;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+}
 
-  </div>
-</main>
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  drawLines();
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
 
-<footer>My Office Hub &nbsp;·&nbsp; Built for personal use</footer>
+// ── LIVE DATA FROM LOCAL STORAGE ──
+function loadStats() {
+  const bills = JSON.parse(localStorage.getItem('travelbill_entries') || '[]');
+  const contracts = JSON.parse(localStorage.getItem('service_contracts') || '[]');
 
+  const today = new Date();
+  const urgent = contracts.filter(c => {
+    const end = new Date(c.endDate);
+    const days = Math.ceil((end - today) / 86400000);
+    return days >= 0 && days < 60;
+  });
+  const active = contracts.filter(c => {
+    const end = new Date(c.endDate);
+    const days = Math.ceil((end - today) / 86400000);
+    return days >= 0;
+  });
+
+  document.getElementById('taxiCount').textContent = bills.length;
+  document.getElementById('contractCount').textContent = contracts.length;
+  document.getElementById('urgentCount').textContent = urgent.length;
+  document.getElementById('todayDate').textContent = today.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+
+  document.getElementById('wTaxi').textContent = bills.length + ' bills';
+  document.getElementById('wActive').textContent = active.length + ' active';
+  document.getElementById('wAttention').textContent = urgent.length + ' contracts';
+}
+loadStats();
+
+// ── 3D CARD TILT ON MOUSE MOVE ──
+document.querySelectorAll('.app-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `translateY(-10px) scale(1.02) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+</script>
 </body>
 </html>

@@ -3,270 +3,279 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Travel Bill Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Taxi Bill Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #13151C;
-  --surface: #1C1F2E;
-  --surface2: #242838;
-  --surface3: #2C3045;
-  --border: #323752;
-  --border2: #404668;
-  --accent: #6C8EF5;
-  --accent-glow: rgba(108,142,245,0.15);
-  --teal: #4ECDC4;
-  --teal-glow: rgba(78,205,196,0.12);
-  --coral: #FF6B6B;
-  --amber: #FFD93D;
-  --green: #51CF7C;
-  --green-glow: rgba(81,207,124,0.12);
-  --text: #E2E6F3;
-  --text2: #B8BFDA;
-  --muted: #717899;
-  --font: 'Plus Jakarta Sans', sans-serif;
-  --mono: 'JetBrains Mono', monospace;
-  --radius: 16px;
-  --radius-sm: 10px;
-}
-
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;}
+body{font-family:'Outfit',sans-serif;background:#07090f;color:#e2e8f0;min-height:100vh;line-height:1.5;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:rgba(247,199,0,0.2);border-radius:3px;}
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(7,9,15,0.75);backdrop-filter:blur(20px);border-bottom:1px solid rgba(247,199,0,0.12);position:sticky;top:0;z-index:200;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:1rem;font-weight:700;color:#e2e8f0;}
+.nav-logo .logo-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#F7C700,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 0 18px rgba(247,199,0,0.45);animation:cabGlow 2.5s ease-in-out infinite;}
+@keyframes cabGlow{0%,100%{box-shadow:0 0 18px rgba(247,199,0,0.45);}50%{box-shadow:0 0 32px rgba(247,199,0,0.8);}}
+.nav-logo .logo-sub{color:rgba(148,163,184,0.7);font-weight:500;font-size:0.8rem;}
+.tab-btns{display:flex;gap:4px;background:rgba(247,199,0,0.05);padding:4px;border-radius:12px;border:1px solid rgba(247,199,0,0.1);}
+.tab-btn{background:none;border:none;color:rgba(148,163,184,0.7);font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:600;padding:8px 20px;border-radius:9px;cursor:pointer;transition:all 0.2s;}
+.tab-btn.active{background:rgba(247,199,0,0.12);color:#F7C700;box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.tab-btn:hover:not(.active){color:#e2e8f0;}
 
-/* ── NAV ── */
-.nav{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 40px;
-  background:rgba(28,31,46,0.85);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:200;
-}
-.nav-logo{
-  display:flex;align-items:center;gap:10px;
-  font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-0.3px;
-}
-.nav-logo .logo-icon{
-  width:34px;height:34px;border-radius:10px;
-  background:linear-gradient(135deg,var(--accent),var(--teal));
-  display:flex;align-items:center;justify-content:center;
-  font-size:1rem;
-}
-.nav-logo .logo-sub{color:var(--muted);font-weight:500;font-size:0.85rem;margin-left:2px;}
-.tab-btns{display:flex;gap:4px;background:var(--surface2);padding:4px;border-radius:12px;border:1px solid var(--border);}
-.tab-btn{
-  background:none;border:none;color:var(--muted);
-  font-family:var(--font);font-size:0.82rem;font-weight:600;
-  padding:8px 20px;border-radius:9px;cursor:pointer;transition:all 0.2s;
-  display:flex;align-items:center;gap:6px;
-}
-.tab-btn.active{background:var(--surface3);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
-.tab-btn:hover:not(.active){color:var(--text2);}
-
-/* ── LAYOUT ── */
-.page{display:none;max-width:840px;margin:0 auto;padding:36px 28px 80px;}
+/* LAYOUT */
+.page{display:none;max-width:840px;margin:0 auto;padding:36px 28px 80px;position:relative;z-index:10;}
 .page.active{display:block;animation:fadeUp 0.4s cubic-bezier(.22,.68,0,1.2) both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── PAGE HEADER ── */
 .page-header{margin-bottom:28px;}
-.page-title{font-size:1.65rem;font-weight:800;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px;}
-.page-sub{color:var(--muted);font-size:0.88rem;}
+.page-title{font-size:1.65rem;font-weight:800;color:#f1f5f9;letter-spacing:-0.5px;margin-bottom:4px;}
+.page-sub{color:rgba(148,163,184,0.6);font-size:0.88rem;}
 
-/* ── CARDS ── */
-.form-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:24px 26px;
-  margin-bottom:16px;
-  transition:border-color 0.2s;
-}
-.form-card:hover{border-color:var(--border2);}
-
-.section-label{
-  display:flex;align-items:center;gap:8px;
-  font-size:0.72rem;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--accent);
-  margin-bottom:18px;padding-bottom:12px;
-  border-bottom:1px solid var(--border);
-}
-.section-label .dot{
-  width:6px;height:6px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--teal));
-  flex-shrink:0;
-}
+/* FORM CARDS */
+.form-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(247,199,0,0.1);border-radius:18px;padding:24px 26px;margin-bottom:16px;position:relative;overflow:hidden;transition:border-color 0.2s;}
+.form-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(247,199,0,0.04) 0%,transparent 60%);pointer-events:none;border-radius:18px;}
+.form-card:hover{border-color:rgba(247,199,0,0.2);}
+.section-label{display:flex;align-items:center;gap:8px;font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F7C700;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(247,199,0,0.08);}
+.section-label .dot{width:5px;height:5px;border-radius:50%;background:#F7C700;box-shadow:0 0 6px #F7C700;flex-shrink:0;}
 
 .form-row{display:grid;gap:14px;margin-bottom:14px;}
 .form-row.col2{grid-template-columns:1fr 1fr;}
 .form-row.col3{grid-template-columns:1fr 1fr 1fr;}
 .form-row.col1{grid-template-columns:1fr;}
-
-label{
-  font-size:0.78rem;font-weight:600;color:var(--text2);
-  display:block;margin-bottom:6px;letter-spacing:0.2px;
-}
-label .hint{font-weight:400;color:var(--muted);font-size:0.72rem;}
-
-input,select{
-  width:100%;
-  background:var(--surface2);
-  border:1.5px solid var(--border);
-  color:var(--text);
-  font-family:var(--font);font-size:0.9rem;
-  padding:11px 14px;
-  border-radius:var(--radius-sm);
-  outline:none;
-  transition:all 0.2s;
-  appearance:none;
-}
-input:focus,select:focus{
-  border-color:var(--accent);
-  background:var(--surface3);
-  box-shadow:0 0 0 3px var(--accent-glow);
-}
-input::placeholder{color:var(--muted);}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23717899' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
-select option{background:var(--surface2);}
+label{font-size:0.76rem;font-weight:600;color:rgba(148,163,184,0.9);display:block;margin-bottom:5px;letter-spacing:0.2px;}
+label .hint{font-weight:400;color:rgba(100,116,139,0.7);font-size:0.7rem;}
+input,select{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(247,199,0,0.1);color:#e2e8f0;font-family:'Outfit',sans-serif;font-size:0.9rem;padding:11px 14px;border-radius:10px;outline:none;transition:all 0.2s;appearance:none;}
+input:focus,select:focus{border-color:rgba(247,199,0,0.5);background:rgba(247,199,0,0.05);box-shadow:0 0 0 3px rgba(247,199,0,0.08);}
+input::placeholder{color:rgba(100,116,139,0.5);}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23F7C700' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;background-color:rgba(255,255,255,0.04);}
+select option{background:#0f1626;color:#e2e8f0;}
 .hidden{display:none!important;}
 
-/* ── RESULT CARD ── */
-.result-card{
-  background:var(--surface);
-  border:1.5px solid var(--border);
-  border-radius:var(--radius);
-  padding:24px;margin-bottom:16px;
-  position:relative;overflow:hidden;
-}
-.result-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--accent),var(--teal));
-}
-.result-title{
-  font-size:0.72rem;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--teal);
-  margin-bottom:18px;display:flex;align-items:center;gap:8px;
-}
-.result-line{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:9px 0;border-bottom:1px solid var(--border);font-size:0.88rem;
-}
+/* RESULT CARD */
+.result-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(247,199,0,0.15);border-radius:18px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#F7C700,#f59e0b,#fbbf24);}
+.result-title{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F7C700;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.result-line{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.88rem;}
 .result-line:last-of-type{border-bottom:none;}
-.result-line .lbl{color:var(--text2);}
-.result-line .val{font-family:var(--mono);font-weight:600;font-size:0.9rem;}
-.result-line .val.green{color:var(--green);}
-.result-line .val.yellow{color:var(--amber);}
-.result-line .val.red{color:var(--coral);}
-.divider-line{border:none;border-top:1px dashed var(--border2);margin:8px 0;}
-
-.payable-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:16px 20px;
-  background:var(--green-glow);
-  border:1.5px solid rgba(81,207,124,0.3);
-  border-radius:var(--radius-sm);margin-top:16px;
-}
-.payable-row .lbl{font-weight:700;font-size:1rem;color:var(--text);}
-.payable-row .val{font-family:var(--mono);font-weight:800;font-size:1.5rem;color:var(--green);}
-
-.note-box{
-  background:rgba(255,217,61,0.06);
-  border:1px solid rgba(255,217,61,0.2);
-  border-radius:var(--radius-sm);
-  padding:12px 16px;font-size:0.82rem;
-  color:#E8C94A;margin-top:14px;line-height:1.7;
-}
+.result-line .lbl{color:rgba(148,163,184,0.8);}
+.result-line .val{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:0.9rem;}
+.result-line .val.green{color:#34d399;}
+.result-line .val.yellow{color:#fbbf24;}
+.result-line .val.red{color:#f87171;}
+.divider-line{border:none;border-top:1px dashed rgba(255,255,255,0.07);margin:8px 0;}
+.payable-row{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(247,199,0,0.07);border:1px solid rgba(247,199,0,0.2);border-radius:12px;margin-top:16px;}
+.payable-row .lbl{font-weight:700;font-size:1rem;color:#e2e8f0;}
+.payable-row .val{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:1.5rem;color:#F7C700;}
+.note-box{background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px 16px;font-size:0.82rem;color:#fcd34d;margin-top:14px;line-height:1.7;}
 .note-box ul{margin-left:18px;}
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 .btn-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
-.btn{
-  font-family:var(--font);font-weight:700;font-size:0.88rem;
-  padding:12px 24px;border-radius:var(--radius-sm);
-  border:none;cursor:pointer;transition:all 0.2s;
-  letter-spacing:0.2px;display:inline-flex;align-items:center;gap:7px;
-}
-.btn-primary{background:linear-gradient(135deg,var(--accent),#5579e8);color:#fff;box-shadow:0 4px 12px rgba(108,142,245,0.3);}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(108,142,245,0.4);}
-.btn-success{background:linear-gradient(135deg,var(--green),#3ab869);color:#0d1a14;box-shadow:0 4px 12px rgba(81,207,124,0.25);}
-.btn-success:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(81,207,124,0.35);}
-.btn-outline{background:var(--surface2);border:1.5px solid var(--border);color:var(--text2);}
-.btn-outline:hover{border-color:var(--border2);color:var(--text);background:var(--surface3);}
-.btn-danger{background:none;border:1.5px solid rgba(255,107,107,0.4);color:var(--coral);font-size:0.78rem;padding:7px 14px;}
-.btn-danger:hover{background:rgba(255,107,107,0.1);border-color:var(--coral);}
+.btn{font-family:'Outfit',sans-serif;font-weight:700;font-size:0.88rem;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.2px;display:inline-flex;align-items:center;gap:7px;}
+.btn-primary{background:linear-gradient(135deg,#F7C700,#f59e0b);color:#1a1000;box-shadow:0 4px 16px rgba(247,199,0,0.3);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(247,199,0,0.45);}
+.btn-success{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 4px 16px rgba(16,185,129,0.25);}
+.btn-success:hover{transform:translateY(-1px);}
+.btn-outline{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(148,163,184,0.8);}
+.btn-outline:hover{background:rgba(255,255,255,0.08);color:#e2e8f0;}
+.btn-danger{background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);color:#f87171;font-size:0.78rem;padding:7px 14px;}
+.btn-danger:hover{background:rgba(248,113,113,0.15);}
 
-/* ── HISTORY ── */
-.history-empty{text-align:center;padding:70px 20px;color:var(--muted);}
-.history-empty .icon{font-size:3.5rem;margin-bottom:14px;opacity:0.6;}
-.history-empty p{font-size:0.9rem;margin-top:6px;}
-
-.history-item{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:20px 24px;margin-bottom:12px;
-  cursor:pointer;transition:all 0.2s;
-}
-.history-item:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,0.2);}
-.history-item.expanded{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-glow);}
-
+/* HISTORY */
+.history-empty{text-align:center;padding:70px 20px;color:rgba(100,116,139,0.6);}
+.history-empty .icon{font-size:3.5rem;margin-bottom:14px;opacity:0.4;}
+.history-item{background:rgba(255,255,255,0.03);border:1px solid rgba(247,199,0,0.08);border-radius:16px;padding:20px 24px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.history-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#F7C700,#f59e0b);border-radius:3px 0 0 3px;}
+.history-item:hover{background:rgba(247,199,0,0.04);border-color:rgba(247,199,0,0.18);transform:translateX(3px);}
+.history-item.expanded{border-color:rgba(247,199,0,0.3);background:rgba(247,199,0,0.04);}
 .hi-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
 .hi-meta{flex:1;}
-.hi-bill{font-family:var(--mono);font-size:0.75rem;color:var(--muted);margin-bottom:5px;letter-spacing:0.5px;}
-.hi-title{font-weight:700;font-size:1rem;color:var(--text);margin-bottom:6px;}
+.hi-bill{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:rgba(247,199,0,0.6);margin-bottom:5px;letter-spacing:0.5px;}
+.hi-title{font-weight:700;font-size:1rem;color:#e2e8f0;margin-bottom:6px;}
 .hi-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.tag{
-  font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;
-  background:var(--accent-glow);color:var(--accent);
-  border:1px solid rgba(108,142,245,0.2);
-}
-.tag.green{background:var(--green-glow);color:var(--green);border-color:rgba(81,207,124,0.2);}
-.tag.yellow{background:rgba(255,217,61,0.08);color:var(--amber);border-color:rgba(255,217,61,0.2);}
-.tag.teal{background:var(--teal-glow);color:var(--teal);border-color:rgba(78,205,196,0.2);}
-
+.tag{font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(247,199,0,0.08);color:#fbbf24;border:1px solid rgba(247,199,0,0.15);}
+.tag.green{background:rgba(52,211,153,0.08);color:#34d399;border-color:rgba(52,211,153,0.15);}
+.tag.yellow{background:rgba(251,191,36,0.08);color:#fbbf24;border-color:rgba(251,191,36,0.15);}
+.tag.teal{background:rgba(6,182,212,0.08);color:#22d3ee;border-color:rgba(6,182,212,0.15);}
 .hi-amount{text-align:right;flex-shrink:0;}
-.hi-amount .payable{font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green);}
-.hi-amount .label{font-size:0.7rem;color:var(--muted);margin-top:2px;}
-
-.hi-detail{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);display:none;}
+.hi-amount .payable{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:#F7C700;}
+.hi-amount .label{font-size:0.7rem;color:rgba(100,116,139,0.7);margin-top:2px;}
+.hi-detail{margin-top:18px;padding-top:18px;border-top:1px solid rgba(247,199,0,0.08);display:none;}
 .hi-detail.show{display:block;animation:fadeUp 0.25s ease both;}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;}
-.dg-item{background:var(--surface2);border-radius:8px;padding:10px 14px;}
-.dg-item .dg-lbl{font-size:0.7rem;color:var(--muted);margin-bottom:3px;font-weight:600;letter-spacing:0.3px;}
-.dg-item .dg-val{font-size:0.88rem;font-weight:600;color:var(--text);}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.dg-item{background:rgba(255,255,255,0.03);border:1px solid rgba(247,199,0,0.06);border-radius:8px;padding:10px 14px;}
+.dg-item .dg-lbl{font-size:0.68rem;color:rgba(100,116,139,0.7);margin-bottom:3px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+.dg-item .dg-val{font-size:0.88rem;font-weight:600;color:#e2e8f0;}
 .hi-actions{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;}
+.export-bar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);border:1px solid rgba(247,199,0,0.08);border-radius:12px;padding:14px 18px;}
+.count-badge{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:rgba(100,116,139,0.8);}
+.count-badge span{color:#F7C700;font-weight:700;}
 
-/* ── EXPORT BAR ── */
-.export-bar{
-  display:flex;gap:10px;margin-bottom:20px;
-  flex-wrap:wrap;align-items:center;justify-content:space-between;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius-sm);padding:14px 18px;
-}
-.count-badge{font-family:var(--mono);font-size:0.82rem;color:var(--muted);}
-.count-badge span{color:var(--accent);font-weight:700;}
-
-/* ── RESPONSIVE ── */
 @media(max-width:640px){
-  .nav{padding:14px 18px;}
+  .nav{padding:12px 16px;}
   .nav-logo .logo-sub{display:none;}
   .page{padding:24px 16px 60px;}
   .form-row.col2,.form-row.col3{grid-template-columns:1fr;}
   .detail-grid{grid-template-columns:1fr;}
-  .tab-btn{padding:8px 14px;}
+  .tab-btn{padding:8px 12px;}
 }
 </style>
 </head>
 <body>
 
-<div class="nav">
+<!-- ═══════════ TAXI-THEMED BACKGROUND ═══════════ -->
+
+<!-- Deep night sky base -->
+<div style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#07090f 0%,#0a0d18 35%,#0d1020 65%,#050810 100%);"></div>
+
+<!-- Stars -->
+<svg style="position:fixed;inset:0;z-index:0;width:100%;height:100%;pointer-events:none;" xmlns="http://www.w3.org/2000/svg">
+  <g fill="white">
+    <circle cx="3%" cy="6%" r="1" opacity=".7"/><circle cx="8%" cy="14%" r="1.5" opacity=".4"/>
+    <circle cx="14%" cy="4%" r="1" opacity=".8"/><circle cx="22%" cy="10%" r="1" opacity=".5"/>
+    <circle cx="29%" cy="3%" r="1.5" opacity=".6"/><circle cx="37%" cy="8%" r="1" opacity=".7"/>
+    <circle cx="44%" cy="15%" r="1" opacity=".4"/><circle cx="51%" cy="5%" r="1.5" opacity=".6"/>
+    <circle cx="58%" cy="11%" r="1" opacity=".8"/><circle cx="66%" cy="3%" r="1" opacity=".5"/>
+    <circle cx="73%" cy="9%" r="1.5" opacity=".7"/><circle cx="80%" cy="5%" r="1" opacity=".6"/>
+    <circle cx="87%" cy="13%" r="1" opacity=".5"/><circle cx="93%" cy="6%" r="1.5" opacity=".7"/>
+    <circle cx="18%" cy="22%" r="1" opacity=".3"/><circle cx="42%" cy="20%" r="1" opacity=".4"/>
+    <circle cx="65%" cy="18%" r="1.2" opacity=".35"/><circle cx="88%" cy="21%" r="1" opacity=".4"/>
+    <!-- Moon glow -->
+    <circle cx="88%" cy="10%" r="28" fill="rgba(255,245,200,0.07)"/>
+    <circle cx="88%" cy="10%" r="20" fill="rgba(255,245,200,0.09)"/>
+    <circle cx="88%" cy="10%" r="13" fill="rgba(255,245,200,0.06)"/>
+  </g>
+</svg>
+
+<!-- City skyline + road + animated taxi -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:1;pointer-events:none;">
+<svg viewBox="0 0 1440 340" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMax slice" style="width:100%;display:block;">
+  <defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="winGlow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+
+  <!-- Buildings - back layer -->
+  <g fill="#0c0f1a">
+    <rect x="0" y="200" width="70" height="140"/><rect x="10" y="175" width="28" height="25"/>
+    <rect x="80" y="215" width="55" height="125"/><rect x="145" y="165" width="48" height="175"/>
+    <rect x="153" y="148" width="18" height="17"/><rect x="203" y="190" width="65" height="150"/>
+    <rect x="215" y="170" width="18" height="20"/><rect x="278" y="145" width="85" height="195"/>
+    <rect x="293" y="125" width="16" height="20"/><rect x="373" y="175" width="52" height="165"/>
+    <rect x="435" y="120" width="78" height="220"/><rect x="450" y="100" width="22" height="20"/>
+    <rect x="523" y="160" width="60" height="180"/><rect x="593" y="130" width="42" height="210"/>
+    <rect x="645" y="155" width="70" height="185"/><rect x="725" y="108" width="88" height="232"/>
+    <rect x="740" y="90" width="19" height="18"/><rect x="823" y="162" width="52" height="178"/>
+    <rect x="885" y="138" width="68" height="202"/><rect x="963" y="168" width="58" height="172"/>
+    <rect x="1031" y="118" width="82" height="222"/><rect x="1046" y="98" width="17" height="20"/>
+    <rect x="1123" y="152" width="68" height="188"/><rect x="1201" y="130" width="52" height="210"/>
+    <rect x="1263" y="162" width="62" height="178"/><rect x="1335" y="142" width="38" height="198"/>
+    <rect x="1383" y="145" width="57" height="195"/>
+  </g>
+
+  <!-- Lit windows -->
+  <g filter="url(#glow)">
+    <!-- warm yellow windows -->
+    <g fill="rgba(255,220,100,0.6)">
+      <rect x="16" y="185" width="5" height="5"/><rect x="25" y="185" width="5" height="5"/>
+      <rect x="16" y="196" width="5" height="5"/><rect x="25" y="196" width="5" height="5"/>
+      <rect x="152" y="178" width="5" height="5"/><rect x="162" y="178" width="5" height="5"/>
+      <rect x="287" y="158" width="5" height="5"/><rect x="298" y="158" width="5" height="5"/>
+      <rect x="309" y="158" width="5" height="5"/><rect x="287" y="170" width="5" height="5"/>
+      <rect x="452" y="118" width="5" height="5"/><rect x="464" y="118" width="5" height="5"/>
+      <rect x="476" y="118" width="5" height="5"/><rect x="452" y="130" width="5" height="5"/>
+      <rect x="464" y="130" width="5" height="5"/>
+      <rect x="741" y="120" width="5" height="5"/><rect x="753" y="120" width="5" height="5"/>
+      <rect x="765" y="120" width="5" height="5"/><rect x="741" y="132" width="5" height="5"/>
+      <rect x="1048" y="130" width="5" height="5"/><rect x="1060" y="130" width="5" height="5"/>
+      <rect x="1072" y="130" width="5" height="5"/><rect x="1048" y="142" width="5" height="5"/>
+    </g>
+    <!-- cool blue windows -->
+    <g fill="rgba(150,210,255,0.55)">
+      <rect x="88" y="225" width="5" height="5"/><rect x="98" y="225" width="5" height="5"/>
+      <rect x="210" y="198" width="5" height="5"/><rect x="221" y="198" width="5" height="5"/>
+      <rect x="445" y="140" width="5" height="5"/><rect x="456" y="140" width="5" height="5"/>
+      <rect x="600" y="150" width="5" height="5"/><rect x="611" y="150" width="5" height="5"/>
+      <rect x="728" y="148" width="5" height="5"/><rect x="740" y="148" width="5" height="5"/>
+      <rect x="890" y="150" width="5" height="5"/><rect x="901" y="150" width="5" height="5"/>
+      <rect x="1035" y="138" width="5" height="5"/><rect x="1046" y="138" width="5" height="5"/>
+      <rect x="1130" y="165" width="5" height="5"/><rect x="1141" y="165" width="5" height="5"/>
+    </g>
+  </g>
+
+  <!-- Road surface -->
+  <rect x="0" y="290" width="1440" height="50" fill="#111420"/>
+  <!-- Road center line -->
+  <g fill="rgba(247,199,0,0.25)">
+    <rect x="0" y="312" width="80" height="4" rx="2"/>
+    <rect x="120" y="312" width="80" height="4" rx="2"/>
+    <rect x="240" y="312" width="80" height="4" rx="2"/>
+    <rect x="360" y="312" width="80" height="4" rx="2"/>
+    <rect x="480" y="312" width="80" height="4" rx="2"/>
+    <rect x="600" y="312" width="80" height="4" rx="2"/>
+    <rect x="720" y="312" width="80" height="4" rx="2"/>
+    <rect x="840" y="312" width="80" height="4" rx="2"/>
+    <rect x="960" y="312" width="80" height="4" rx="2"/>
+    <rect x="1080" y="312" width="80" height="4" rx="2"/>
+    <rect x="1200" y="312" width="80" height="4" rx="2"/>
+    <rect x="1320" y="312" width="80" height="4" rx="2"/>
+  </g>
+  <!-- Sidewalk -->
+  <rect x="0" y="280" width="1440" height="10" fill="#161a28"/>
+
+  <!-- ANIMATED TAXI CAB -->
+  <g id="mainTaxi">
+    <!-- Headlight cone -->
+    <path d="M92,268 L130,255 L130,275 Z" fill="rgba(255,245,150,0.15)"/>
+    <!-- Car body -->
+    <rect x="10" y="255" width="82" height="30" rx="6" fill="#F7C700"/>
+    <!-- Roof/cabin -->
+    <rect x="20" y="238" width="55" height="25" rx="5" fill="#F7C700"/>
+    <!-- Front window -->
+    <rect x="54" y="241" width="17" height="18" rx="2" fill="rgba(160,230,255,0.75)"/>
+    <!-- Rear window -->
+    <rect x="24" y="241" width="22" height="18" rx="2" fill="rgba(160,230,255,0.75)"/>
+    <!-- TAXI sign on roof -->
+    <rect x="30" y="232" width="32" height="9" rx="2" fill="#111"/>
+    <text x="46" y="239" text-anchor="middle" fill="#F7C700" font-size="6" font-weight="800">TAXI</text>
+    <!-- Door stripe -->
+    <line x1="52" y1="258" x2="52" y2="282" stroke="#c8a000" stroke-width="1.5"/>
+    <!-- Wheels -->
+    <circle cx="24" cy="288" r="9" fill="#1a1a2e"/><circle cx="24" cy="288" r="5" fill="#2a2a3e"/><circle cx="24" cy="288" r="2" fill="#F7C700"/>
+    <circle cx="76" cy="288" r="9" fill="#1a1a2e"/><circle cx="76" cy="288" r="5" fill="#2a2a3e"/><circle cx="76" cy="288" r="2" fill="#F7C700"/>
+    <!-- Headlights -->
+    <ellipse cx="93" cy="265" rx="5" ry="4" fill="rgba(255,245,150,0.9)" filter="url(#winGlow)"/>
+    <!-- Tail lights -->
+    <rect x="10" y="260" width="6" height="8" rx="2" fill="rgba(255,80,80,0.85)" filter="url(#winGlow)"/>
+    <animate attributeName="opacity" values="1;1" dur="0s"/>
+  </g>
+  <animateTransform xlink:href="#mainTaxi" attributeName="transform" type="translate" from="-120 0" to="1560 0" dur="14s" repeatCount="indefinite"/>
+
+  <!-- Second taxi (smaller, in background) -->
+  <g id="taxi2" opacity="0.5">
+    <rect x="10" y="262" width="55" height="20" rx="4" fill="#F7C700"/>
+    <rect x="16" y="251" width="37" height="18" rx="4" fill="#F7C700"/>
+    <rect x="36" y="253" width="13" height="13" rx="2" fill="rgba(160,230,255,0.7)"/>
+    <rect x="19" y="253" width="14" height="13" rx="2" fill="rgba(160,230,255,0.7)"/>
+    <circle cx="19" cy="283" r="7" fill="#1a1a2e"/><circle cx="53" cy="283" r="7" fill="#1a1a2e"/>
+    <ellipse cx="65" cy="270" rx="4" ry="3" fill="rgba(255,245,150,0.8)"/>
+  </g>
+  <animateTransform xlink:href="#taxi2" attributeName="transform" type="translate" from="1600 0" to="-200 0" dur="20s" repeatCount="indefinite"/>
+
+</svg>
+</div>
+
+<!-- Yellow ambient glow from headlights -->
+<div style="position:fixed;bottom:0;left:0;right:0;height:220px;z-index:1;background:linear-gradient(to top,rgba(247,199,0,0.05),transparent);pointer-events:none;"></div>
+<!-- Top subtle gradient -->
+<div style="position:fixed;top:0;left:0;right:0;height:200px;z-index:1;background:radial-gradient(ellipse at 88% 0%,rgba(247,199,0,0.04),transparent 60%);pointer-events:none;"></div>
+<!-- Grid overlay -->
+<div style="position:fixed;inset:0;z-index:1;background-image:linear-gradient(rgba(247,199,0,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(247,199,0,0.025) 1px,transparent 1px);background-size:65px 65px;pointer-events:none;"></div>
+<!-- Particle canvas -->
+<canvas id="particleCanvas" style="position:fixed;inset:0;z-index:2;pointer-events:none;"></canvas>
+
+<!-- ═══════════ NAV ═══════════ -->
+<div class="nav" style="position:sticky;top:0;z-index:200;">
   <div style="display:flex;align-items:center;gap:12px;">
-    <a href="index.html" style="background:rgba(79,142,247,0.1);border:1.5px solid rgba(79,142,247,0.2);color:var(--accent);font-family:var(--font);font-size:0.82rem;font-weight:700;padding:7px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s;text-decoration:none;">← Home</a>
+    <a href="index.html" style="background:rgba(247,199,0,0.07);border:1px solid rgba(247,199,0,0.18);color:rgba(247,210,100,0.9);font-family:'Outfit',sans-serif;font-size:0.8rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;">← Home</a>
     <div class="nav-logo">
       <div class="logo-icon">🚖</div>
       Taxi Bill Calculator
@@ -281,14 +290,58 @@ select option{background:var(--surface2);}
 
 <!-- ══════════════════ CALCULATOR PAGE ══════════════════ -->
 <div class="page active" id="tab-calculator">
-  <div class="page-header">
-    <div class="page-title">New Bill Entry</div>
-    <div class="page-sub">Fill in the journey details below to calculate the payable amount.</div>
+
+  <!-- THEMED ILLUSTRATED HEADER BANNER -->
+  <div style="background:rgba(247,199,0,0.05);border:1px solid rgba(247,199,0,0.12);border-radius:20px;padding:20px 24px;margin-bottom:22px;display:flex;align-items:center;gap:20px;overflow:hidden;position:relative;">
+    <!-- Mini taxi illustration -->
+    <svg width="110" height="70" viewBox="0 0 110 70" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+      <!-- Road -->
+      <rect x="0" y="55" width="110" height="15" rx="2" fill="rgba(247,199,0,0.08)"/>
+      <rect x="10" y="61" width="18" height="3" rx="1.5" fill="rgba(247,199,0,0.25)"/>
+      <rect x="46" y="61" width="18" height="3" rx="1.5" fill="rgba(247,199,0,0.25)"/>
+      <rect x="82" y="61" width="18" height="3" rx="1.5" fill="rgba(247,199,0,0.25)"/>
+      <!-- Cab body -->
+      <rect x="18" y="32" width="74" height="26" rx="5" fill="#F7C700"/>
+      <!-- Cabin roof -->
+      <rect x="28" y="16" width="50" height="24" rx="5" fill="#F7C700"/>
+      <!-- Windows -->
+      <rect x="32" y="19" width="18" height="16" rx="2.5" fill="rgba(160,230,255,0.8)"/>
+      <rect x="54" y="19" width="18" height="16" rx="2.5" fill="rgba(160,230,255,0.8)"/>
+      <!-- TAXI roof sign -->
+      <rect x="38" y="10" width="24" height="9" rx="2" fill="#111"/>
+      <text x="50" y="17.5" text-anchor="middle" fill="#F7C700" font-size="5.5" font-weight="800" font-family="monospace">TAXI</text>
+      <!-- Wheels -->
+      <circle cx="34" cy="59" r="7" fill="#1a1a2e"/><circle cx="34" cy="59" r="3.5" fill="#333"/><circle cx="34" cy="59" r="1.5" fill="#F7C700"/>
+      <circle cx="76" cy="59" r="7" fill="#1a1a2e"/><circle cx="76" cy="59" r="3.5" fill="#333"/><circle cx="76" cy="59" r="1.5" fill="#F7C700"/>
+      <!-- Headlight glow -->
+      <ellipse cx="93" cy="42" rx="5" ry="3.5" fill="rgba(255,245,150,0.85)"/>
+      <!-- Tail light -->
+      <rect x="18" y="37" width="5" height="7" rx="1.5" fill="rgba(255,80,80,0.8)"/>
+      <!-- Door line -->
+      <line x1="55" y1="34" x2="55" y2="56" stroke="rgba(200,160,0,0.5)" stroke-width="1.5"/>
+    </svg>
+    <div>
+      <div style="font-size:1.2rem;font-weight:800;color:#f1f5f9;letter-spacing:-0.3px;margin-bottom:4px;">New Bill Entry</div>
+      <div style="font-size:0.82rem;color:rgba(148,163,184,0.7);line-height:1.5;">Fill in the journey details to calculate the payable amount. The meter never lies.</div>
+    </div>
+    <!-- Taxi meter decoration top-right -->
+    <div style="margin-left:auto;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="8" width="44" height="36" rx="6" fill="rgba(247,199,0,0.08)" stroke="rgba(247,199,0,0.25)" stroke-width="1.5"/>
+        <rect x="4" y="8" width="44" height="14" rx="6" fill="rgba(247,199,0,0.15)"/>
+        <text x="26" y="20" text-anchor="middle" fill="#F7C700" font-size="7" font-weight="800" font-family="monospace">METER</text>
+        <text x="26" y="34" text-anchor="middle" fill="#34d399" font-size="9" font-weight="800" font-family="monospace">₹ —</text>
+        <rect x="18" y="40" width="16" height="4" rx="2" fill="rgba(247,199,0,0.2)"/>
+      </svg>
+    </div>
   </div>
 
-  <!-- BASIC INFO -->
   <div class="form-card">
-    <div class="section-label"><span class="dot"></span> Basic Information</div>
+    <div class="section-label">
+      <!-- Passenger icon -->
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="3" fill="#F7C700"/><path d="M1 13c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#F7C700" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Basic Information
+    </div>
     <div class="form-row col2">
       <div>
         <label>Vendor Name</label>
@@ -307,20 +360,11 @@ select option{background:var(--surface2);}
       </div>
     </div>
     <div class="form-row col2">
-      <div>
-        <label>Bill Date</label>
-        <input type="date" id="billDate"/>
-      </div>
-      <div>
-        <label>Passenger Name(s)</label>
-        <input type="text" id="passengers" placeholder="e.g. Rajesh Kumar, Priya Singh"/>
-      </div>
+      <div><label>Bill Date</label><input type="date" id="billDate"/></div>
+      <div><label>Passenger Name(s)</label><input type="text" id="passengers" placeholder="e.g. Rajesh Kumar, Priya Singh"/></div>
     </div>
     <div class="form-row col2">
-      <div>
-        <label>Destination</label>
-        <input type="text" id="destination" placeholder="e.g. Mussoorie, Agra"/>
-      </div>
+      <div><label>Destination</label><input type="text" id="destination" placeholder="e.g. Mussoorie, Agra"/></div>
       <div>
         <label>Purpose of Visit</label>
         <select id="purposeOfVisit" onchange="handlePurposeChange()">
@@ -336,9 +380,12 @@ select option{background:var(--surface2);}
     </div>
   </div>
 
-  <!-- JOURNEY DETAILS -->
   <div class="form-card">
-    <div class="section-label"><span class="dot"></span> Journey Details</div>
+    <div class="section-label">
+      <!-- Road/route icon -->
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M4 3l3-2 3 2M4 11l3 2 3-2" stroke="#F7C700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7h3M9 7h3" stroke="#F7C700" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Journey Details
+    </div>
     <div class="form-row col2">
       <div>
         <label>Type of Service</label>
@@ -358,64 +405,35 @@ select option{background:var(--surface2);}
         </select>
       </div>
     </div>
-
-    <!-- Journey Dates -->
     <div class="form-row col2">
-      <div>
-        <label>Journey Start (Date &amp; Time)</label>
-        <input type="datetime-local" id="journeyStart" onchange="recalculate()"/>
-      </div>
-      <div>
-        <label>Journey End (Date &amp; Time)</label>
-        <input type="datetime-local" id="journeyEnd" onchange="recalculate()"/>
-      </div>
+      <div><label>Journey Start (Date &amp; Time)</label><input type="datetime-local" id="journeyStart" onchange="recalculate()"/></div>
+      <div><label>Journey End (Date &amp; Time)</label><input type="datetime-local" id="journeyEnd" onchange="recalculate()"/></div>
     </div>
-
-    <!-- LOCAL FIELDS -->
     <div id="localFields" class="hidden">
       <div class="form-row col2">
-        <div>
-          <label>Kilometers Travelled</label>
-          <input type="number" id="localKm" min="0" placeholder="e.g. 95" oninput="recalculate()"/>
-        </div>
-        <div>
-          <label>Hours Used</label>
-          <input type="number" id="localHrs" min="0" step="0.5" placeholder="e.g. 9" oninput="recalculate()"/>
-        </div>
+        <div><label>Kilometers Travelled</label><input type="number" id="localKm" min="0" placeholder="e.g. 95" oninput="recalculate()"/></div>
+        <div><label>Hours Used</label><input type="number" id="localHrs" min="0" step="0.5" placeholder="e.g. 9" oninput="recalculate()"/></div>
       </div>
     </div>
-
-    <!-- OUTSTATION FIELDS -->
     <div id="outstationFields" class="hidden">
       <div class="form-row col1">
-        <div>
-          <label>Total Kilometers Travelled</label>
-          <input type="number" id="outstationKm" min="0" placeholder="e.g. 320" oninput="recalculate()"/>
-        </div>
+        <div><label>Total Kilometers Travelled</label><input type="number" id="outstationKm" min="0" placeholder="e.g. 320" oninput="recalculate()"/></div>
       </div>
     </div>
-
     <div class="form-row col1" style="margin-top:4px;">
-      <div>
-        <label>Amount Claimed by Vendor (₹)</label>
-        <input type="number" id="vendorClaimed" min="0" placeholder="e.g. 3200" oninput="recalculate()"/>
-      </div>
+      <div><label>Amount Claimed by Vendor (₹)</label><input type="number" id="vendorClaimed" min="0" placeholder="e.g. 3200" oninput="recalculate()"/></div>
     </div>
     <div class="form-row col2" style="margin-top:4px;">
-      <div>
-        <label>GST (%)</label>
-        <input type="number" id="gstPercent" min="0" max="100" step="0.01" placeholder="e.g. 5 or 12 (leave 0 if none)" oninput="recalculate()"/>
-      </div>
-      <div>
-        <label>Toll Tax / Parking Charges (₹) <span style="font-weight:400;color:var(--muted);font-size:0.72rem;">— GST not applicable</span></label>
-        <input type="number" id="tollParking" min="0" placeholder="e.g. 250 (leave 0 if none)" oninput="recalculate()"/>
-      </div>
+      <div><label>GST (%)</label><input type="number" id="gstPercent" min="0" max="100" step="0.01" placeholder="e.g. 5 or 12" oninput="recalculate()"/></div>
+      <div><label>Toll Tax / Parking (₹) <span class="hint">— GST not applicable</span></label><input type="number" id="tollParking" min="0" placeholder="e.g. 250" oninput="recalculate()"/></div>
     </div>
   </div>
 
-  <!-- RESULT -->
   <div class="result-card hidden" id="resultCard">
-    <div class="result-title">📊 Calculation Breakdown</div>
+    <div class="result-title">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="2" stroke="#F7C700" stroke-width="1.5"/><rect x="1" y="3" width="12" height="4" rx="2" fill="rgba(247,199,0,0.2)"/><rect x="4" y="9" width="6" height="2" rx="1" fill="#F7C700"/></svg>
+      Fare Breakdown
+    </div>
     <div id="resultLines"></div>
     <div class="payable-row">
       <div class="lbl">Amount Payable</div>
@@ -433,9 +451,23 @@ select option{background:var(--surface2);}
 
 <!-- ══════════════════ HISTORY PAGE ══════════════════ -->
 <div class="page" id="tab-history">
-  <div class="page-header">
-    <div class="page-title">Bill History</div>
-    <div class="page-sub">All saved entries. Click any card to expand full details.</div>
+  <!-- THEMED HEADER BANNER -->
+  <div style="background:rgba(247,199,0,0.05);border:1px solid rgba(247,199,0,0.12);border-radius:20px;padding:20px 24px;margin-bottom:22px;display:flex;align-items:center;gap:16px;">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="flex-shrink:0;">
+      <rect x="6" y="4" width="36" height="40" rx="5" fill="rgba(247,199,0,0.08)" stroke="rgba(247,199,0,0.25)" stroke-width="1.5"/>
+      <line x1="13" y1="14" x2="35" y2="14" stroke="#F7C700" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="13" y1="20" x2="35" y2="20" stroke="#F7C700" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="13" y1="26" x2="28" y2="26" stroke="#F7C700" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="13" y1="32" x2="32" y2="32" stroke="#F7C700" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Taxi mini -->
+      <rect x="26" y="27" width="16" height="9" rx="2" fill="#F7C700"/>
+      <rect x="28" y="23" width="11" height="8" rx="1.5" fill="#F7C700"/>
+      <circle cx="29" cy="37" r="2.5" fill="#1a1a2e"/><circle cx="39" cy="37" r="2.5" fill="#1a1a2e"/>
+    </svg>
+    <div>
+      <div style="font-size:1.2rem;font-weight:800;color:#f1f5f9;letter-spacing:-0.3px;margin-bottom:4px;">Bill History</div>
+      <div style="font-size:0.82rem;color:rgba(148,163,184,0.7);">All saved travel bills. Click any entry to expand full details.</div>
+    </div>
   </div>
   <div class="export-bar">
     <span class="count-badge" id="countBadge">0 entries saved</span>
@@ -448,23 +480,10 @@ select option{background:var(--surface2);}
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════
-//  CONFIG — paste your Google Apps Script URL below
-// ══════════════════════════════════════════════════════
-// ══════════════════════════════════════════════════════
-//  CONFIG — Google Sheets Integration
-// ══════════════════════════════════════════════════════
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyOyOcN3uCi2Igug1EHQ5dslfjHSqWIS7vG4V4zRGLutqhAa1VU7BLwmtUrh8HOg34R8Q/exec';
-
-// ══════════════════════════════════════════════════════
-//  STATE & STORAGE
-// ══════════════════════════════════════════════════════
 let entries = JSON.parse(localStorage.getItem('travelbill_entries') || '[]');
 let currentCalc = null;
 
-// ══════════════════════════════════════════════════════
-//  TAB NAVIGATION
-// ══════════════════════════════════════════════════════
 function showTab(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -473,485 +492,246 @@ function showTab(name, el) {
   if (name === 'calculator') clearForm();
   if (name === 'history') renderHistory();
 }
-
-// ══════════════════════════════════════════════════════
-//  FORM HANDLERS
-// ══════════════════════════════════════════════════════
 function handleVendorChange() {
   const v = document.getElementById('vendorSelect').value;
-  const other = document.getElementById('vendorOther');
-  v === '__other__' ? other.classList.remove('hidden') : other.classList.add('hidden');
+  document.getElementById('vendorOther').classList.toggle('hidden', v !== '__other__');
 }
-
 function handlePurposeChange() {
   const v = document.getElementById('purposeOfVisit').value;
-  const other = document.getElementById('purposeOther');
-  v === '__other__' ? other.classList.remove('hidden') : other.classList.add('hidden');
+  document.getElementById('purposeOther').classList.toggle('hidden', v !== '__other__');
 }
-
 function getPurpose() {
   const sel = document.getElementById('purposeOfVisit').value;
   if (sel === '__other__') return document.getElementById('purposeOther').value.trim();
   return sel;
 }
-
 function handleServiceChange() {
   const svc = document.getElementById('serviceType').value;
-  const lf = document.getElementById('localFields');
-  const of = document.getElementById('outstationFields');
-  lf.classList.add('hidden');
-  of.classList.add('hidden');
-  if (svc === 'local') lf.classList.remove('hidden');
-  if (svc.startsWith('outstation')) of.classList.remove('hidden');
+  document.getElementById('localFields').classList.toggle('hidden', svc !== 'local');
+  document.getElementById('outstationFields').classList.toggle('hidden', !svc.startsWith('outstation'));
   recalculate();
 }
-
 function getVendorName() {
   const sel = document.getElementById('vendorSelect');
   if (sel.value === '__other__') return document.getElementById('vendorOther').value.trim();
   if (sel.value === '') return '';
   return sel.options[sel.selectedIndex].text;
 }
-
-// ══════════════════════════════════════════════════════
-//  NIGHT ALLOWANCE LOGIC
-// ══════════════════════════════════════════════════════
-function isNightTime(dt) {
-  if (!dt) return false;
-  const h = dt.getHours();
-  // Night = 22:00 - 06:00
-  return h >= 22 || h < 6;
+function isNightTime(dt) { if (!dt) return false; const h = dt.getHours(); return h >= 22 || h < 6; }
+function checkNightAllowance(s, e) { if (!s || !e) return false; return isNightTime(new Date(s)) || isNightTime(new Date(e)); }
+function getDaysBetween(s, e) {
+  if (!s || !e) return 0;
+  const start = new Date(s), end = new Date(e);
+  if (end - start <= 0) return 0;
+  const sd = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const ed = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+  return Math.floor((ed - sd) / 86400000);
 }
 
-function checkNightAllowance(startStr, endStr) {
-  if (!startStr || !endStr) return false;
-  const start = new Date(startStr);
-  const end   = new Date(endStr);
-  return isNightTime(start) || isNightTime(end);
-}
-
-function getDaysBetween(startStr, endStr) {
-  if (!startStr || !endStr) return 0;
-  const start = new Date(startStr);
-  const end   = new Date(endStr);
-  const diffMs = end - start;
-  if (diffMs <= 0) return 0;
-  // Number of overnight stays (calendar days difference)
-  const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-  const endDay   = new Date(end.getFullYear(),   end.getMonth(),   end.getDate());
-  return Math.floor((endDay - startDay) / 86400000);
-}
-
-// ══════════════════════════════════════════════════════
-//  CALCULATION ENGINE
-// ══════════════════════════════════════════════════════
 function recalculate() {
   const svc = document.getElementById('serviceType').value;
   const veh = document.getElementById('vehicleType').value;
   const claimed = parseFloat(document.getElementById('vendorClaimed').value) || 0;
   const startStr = document.getElementById('journeyStart').value;
-  const endStr   = document.getElementById('journeyEnd').value;
-
+  const endStr = document.getElementById('journeyEnd').value;
   if (!svc || !veh) { hideResult(); return; }
-
-  let breakdown = [];
-  let calculated = 0;
-  let notes = [];
-
+  let breakdown = [], calculated = 0, notes = [];
   if (svc === 'local') {
-    const km  = parseFloat(document.getElementById('localKm').value)  || 0;
+    const km = parseFloat(document.getElementById('localKm').value) || 0;
     const hrs = parseFloat(document.getElementById('localHrs').value) || 0;
     if (!km && !hrs) { hideResult(); return; }
-
-    // Base package
-    const baseKm  = 80;
-    const baseHrs = 8;
+    const baseKm = 80, baseHrs = 8;
     let baseRate, extraKmRate, extraHrRate;
-
-    if (veh === 'sedan') {
-      baseRate     = 2100;
-      extraKmRate  = 18;
-      extraHrRate  = 150;
-    } else {
-      baseRate     = 2500;
-      extraKmRate  = 24;
-      extraHrRate  = 225;
-    }
-
+    if (veh === 'sedan') { baseRate = 2100; extraKmRate = 18; extraHrRate = 150; }
+    else { baseRate = 2500; extraKmRate = 24; extraHrRate = 225; }
     breakdown.push({ lbl: `Base Package (${baseHrs} hrs / ${baseKm} km)`, val: `₹${baseRate.toLocaleString()}` });
     calculated += baseRate;
-
-    // Extra km
     const extraKm = Math.max(0, km - baseKm);
-    if (extraKm > 0) {
-      const extraKmAmt = extraKm * extraKmRate;
-      breakdown.push({ lbl: `Extra Km: ${extraKm} km × ₹${extraKmRate}`, val: `+₹${extraKmAmt.toLocaleString()}` });
-      calculated += extraKmAmt;
-    }
-
-    // Extra hours
+    if (extraKm > 0) { const a = extraKm * extraKmRate; breakdown.push({ lbl: `Extra Km: ${extraKm} km × ₹${extraKmRate}`, val: `+₹${a.toLocaleString()}` }); calculated += a; }
     const extraHrs = Math.max(0, hrs - baseHrs);
-    if (extraHrs > 0) {
-      const extraHrAmt = extraHrs * extraHrRate;
-      breakdown.push({ lbl: `Extra Hours: ${extraHrs} hrs × ₹${extraHrRate}`, val: `+₹${extraHrAmt.toLocaleString()}` });
-      calculated += extraHrAmt;
-    }
-
+    if (extraHrs > 0) { const a = extraHrs * extraHrRate; breakdown.push({ lbl: `Extra Hours: ${extraHrs} hrs × ₹${extraHrRate}`, val: `+₹${a.toLocaleString()}` }); calculated += a; }
   } else {
-    // OUTSTATION
     const km = parseFloat(document.getElementById('outstationKm').value) || 0;
     if (!km) { hideResult(); return; }
-
-    let pricePerKm;
+    const pricePerKm = svc === 'outstation_plain' ? (veh === 'sedan' ? 18 : 24) : (veh === 'sedan' ? 21 : 28);
     const minKm = 250;
-
-    if (svc === 'outstation_plain') {
-      pricePerKm = veh === 'sedan' ? 18 : 24;
-    } else {
-      pricePerKm = veh === 'sedan' ? 21 : 28;
-    }
-
-    // Minimum 250 km PER DAY
     const tripDays = Math.max(1, getDaysBetween(startStr, endStr) + 1);
     const minKmTotal = minKm * tripDays;
     const billedKm = Math.max(km, minKmTotal);
     const kmCharge = billedKm * pricePerKm;
-
     if (km < minKmTotal) {
-      notes.push(`Minimum billing applied: ${minKm} km/day × ${tripDays} day${tripDays > 1 ? 's' : ''} = ${minKmTotal} km (actual: ${km} km)`);
-      breakdown.push({ lbl: `Distance: ${minKmTotal} km (min ${minKm}×${tripDays} days) × ₹${pricePerKm}/km`, val: `₹${kmCharge.toLocaleString()}` });
+      notes.push(`Minimum billing: ${minKm} km/day × ${tripDays} day${tripDays > 1 ? 's' : ''} = ${minKmTotal} km (actual: ${km} km)`);
+      breakdown.push({ lbl: `Distance: ${minKmTotal} km (min ${minKm}×${tripDays}d) × ₹${pricePerKm}/km`, val: `₹${kmCharge.toLocaleString()}` });
     } else {
       breakdown.push({ lbl: `Distance: ${km} km × ₹${pricePerKm}/km`, val: `₹${kmCharge.toLocaleString()}` });
     }
     calculated += kmCharge;
-
-    // Night allowance
-    const nightApplies = checkNightAllowance(startStr, endStr);
-    if (nightApplies) {
-      const nightAmt = 300;
-      breakdown.push({ lbl: 'Night Allowance (journey before 6AM / after 10PM)', val: `+₹${nightAmt}`, cls: 'yellow' });
-      calculated += nightAmt;
-      notes.push('Night allowance applied (journey start or end falls between 10 PM – 6 AM).');
-    }
-
-    // Vehicle holding days (overnight stays)
+    if (checkNightAllowance(startStr, endStr)) { breakdown.push({ lbl: 'Night Allowance (before 6AM / after 10PM)', val: '+₹300', cls: 'yellow' }); calculated += 300; notes.push('Night allowance applied.'); }
     const holdDays = getDaysBetween(startStr, endStr);
-    if (holdDays > 0) {
-      const holdAmt = holdDays * 300;
-      breakdown.push({ lbl: `Vehicle Holding (${holdDays} day${holdDays > 1 ? 's' : ''} × ₹300)`, val: `+₹${holdAmt.toLocaleString()}`, cls: 'yellow' });
-      calculated += holdAmt;
-      notes.push(`Vehicle holding charge: ${holdDays} night(s) × ₹300 = ₹${holdAmt} (vehicle stayed overnight).`);
-    }
+    if (holdDays > 0) { const a = holdDays * 300; breakdown.push({ lbl: `Vehicle Holding (${holdDays} day${holdDays > 1 ? 's' : ''} × ₹300)`, val: `+₹${a.toLocaleString()}`, cls: 'yellow' }); calculated += a; notes.push(`Vehicle holding: ${holdDays} night(s) × ₹300.`); }
   }
-
-  const gstPercent  = parseFloat(document.getElementById('gstPercent').value)  || 0;
+  const gstPercent = parseFloat(document.getElementById('gstPercent').value) || 0;
   const tollParking = parseFloat(document.getElementById('tollParking').value) || 0;
-
-  // Comparison: vendor claimed vs. calculated (transport only, before GST & toll)
   breakdown.push({ divider: true });
   breakdown.push({ lbl: 'Sub-total (Transport)', val: `₹${calculated.toLocaleString()}`, cls: 'green' });
-
-  // GST on transport sub-total only
   let gstAmount = 0;
-  if (gstPercent > 0) {
-    gstAmount = Math.round(calculated * gstPercent / 100);
-    breakdown.push({ lbl: `GST @ ${gstPercent}% (on transport)`, val: `+₹${gstAmount.toLocaleString()}`, cls: 'yellow' });
-  }
-
+  if (gstPercent > 0) { gstAmount = Math.round(calculated * gstPercent / 100); breakdown.push({ lbl: `GST @ ${gstPercent}%`, val: `+₹${gstAmount.toLocaleString()}`, cls: 'yellow' }); }
   const calculatedWithGST = calculated + gstAmount;
-
-  // Toll / Parking (no GST)
-  if (tollParking > 0) {
-    breakdown.push({ lbl: 'Toll Tax / Parking (GST exempt)', val: `+₹${tollParking.toLocaleString()}`, cls: 'yellow' });
-  }
-
+  if (tollParking > 0) breakdown.push({ lbl: 'Toll / Parking (GST exempt)', val: `+₹${tollParking.toLocaleString()}`, cls: 'yellow' });
   const calculatedTotal = calculatedWithGST + tollParking;
-
   if (claimed > 0) {
     breakdown.push({ divider: true });
-    // Compare vendor claimed vs calculated+gst+toll
     const diff = claimed - calculatedTotal;
-    breakdown.push({ lbl: 'Vendor Claimed Amount', val: `₹${claimed.toLocaleString()}`, cls: diff > 0 ? 'red' : 'green' });
-    breakdown.push({ lbl: 'Calculated Total (incl. GST + Toll)', val: `₹${calculatedTotal.toLocaleString()}`, cls: 'green' });
-    if (diff > 0) notes.push(`Vendor claimed ₹${diff.toLocaleString()} more than calculated total. Payable is capped at calculated amount.`);
-    if (diff < 0) notes.push(`Vendor claimed ₹${Math.abs(diff).toLocaleString()} less than calculated total. Payable is vendor's claimed amount.`);
-    if (diff === 0) notes.push('Vendor claimed amount matches the calculated total exactly.');
+    breakdown.push({ lbl: 'Vendor Claimed', val: `₹${claimed.toLocaleString()}`, cls: diff > 0 ? 'red' : 'green' });
+    breakdown.push({ lbl: 'Calculated Total', val: `₹${calculatedTotal.toLocaleString()}`, cls: 'green' });
+    if (diff > 0) notes.push(`Vendor claimed ₹${diff.toLocaleString()} more than calculated.`);
+    if (diff < 0) notes.push(`Vendor claimed ₹${Math.abs(diff).toLocaleString()} less than calculated.`);
   }
-
   const payable = claimed > 0 ? Math.min(calculatedTotal, claimed) : calculatedTotal;
-
-  currentCalc = {
-    vendor: getVendorName(),
-    billNo: document.getElementById('billNo').value.trim(),
-    billDate: document.getElementById('billDate').value,
-    passengers: document.getElementById('passengers').value.trim(),
-    destination: document.getElementById('destination').value.trim(),
-    purposeOfVisit: getPurpose(),
-    serviceType: svc,
-    vehicleType: veh,
-    journeyStart: startStr,
-    journeyEnd: endStr,
-    km: svc === 'local'
-          ? (parseFloat(document.getElementById('localKm').value) || 0)
-          : (parseFloat(document.getElementById('outstationKm').value) || 0),
-    hrs: svc === 'local' ? (parseFloat(document.getElementById('localHrs').value) || 0) : null,
-    vendorClaimed: claimed,
-    gstPercent,
-    gstAmount,
-    tollParking,
-    calculatedAmount: calculated,
-    calculatedTotal,
-    payableAmount: payable,
-    breakdown,
-    notes,
-    savedAt: null
-  };
-
+  currentCalc = { vendor: getVendorName(), billNo: document.getElementById('billNo').value.trim(), billDate: document.getElementById('billDate').value, passengers: document.getElementById('passengers').value.trim(), destination: document.getElementById('destination').value.trim(), purposeOfVisit: getPurpose(), serviceType: svc, vehicleType: veh, journeyStart: startStr, journeyEnd: endStr, km: svc === 'local' ? (parseFloat(document.getElementById('localKm').value)||0) : (parseFloat(document.getElementById('outstationKm').value)||0), hrs: svc === 'local' ? (parseFloat(document.getElementById('localHrs').value)||0) : null, vendorClaimed: claimed, gstPercent, gstAmount, tollParking, calculatedAmount: calculated, calculatedTotal, payableAmount: payable, breakdown, notes, savedAt: null };
   showResult(breakdown, payable, notes);
 }
 
 function showResult(breakdown, payable, notes) {
-  const rc = document.getElementById('resultCard');
-  const rl = document.getElementById('resultLines');
-  const nb = document.getElementById('noteBox');
-
-  rc.classList.remove('hidden');
+  document.getElementById('resultCard').classList.remove('hidden');
   document.getElementById('saveBtn').classList.remove('hidden');
   document.getElementById('payableAmount').textContent = '₹' + payable.toLocaleString();
-
+  const rl = document.getElementById('resultLines');
   rl.innerHTML = '';
   breakdown.forEach(b => {
-    if (b.divider) {
-      const hr = document.createElement('hr');
-      hr.className = 'divider-line';
-      rl.appendChild(hr);
-      return;
-    }
-    const row = document.createElement('div');
-    row.className = 'result-line';
+    if (b.divider) { const hr = document.createElement('hr'); hr.className = 'divider-line'; rl.appendChild(hr); return; }
+    const row = document.createElement('div'); row.className = 'result-line';
     row.innerHTML = `<span class="lbl">${b.lbl}</span><span class="val ${b.cls||''}">${b.val}</span>`;
     rl.appendChild(row);
   });
-
-  if (notes.length) {
-    nb.classList.remove('hidden');
-    nb.innerHTML = '<strong>ℹ Notes:</strong><ul>' + notes.map(n => `<li>${n}</li>`).join('') + '</ul>';
-  } else {
-    nb.classList.add('hidden');
-  }
+  const nb = document.getElementById('noteBox');
+  if (notes.length) { nb.classList.remove('hidden'); nb.innerHTML = '<strong>ℹ Notes:</strong><ul>' + notes.map(n=>`<li>${n}</li>`).join('') + '</ul>'; }
+  else nb.classList.add('hidden');
 }
 
-function hideResult() {
-  document.getElementById('resultCard').classList.add('hidden');
-  document.getElementById('saveBtn').classList.add('hidden');
-  currentCalc = null;
-}
+function hideResult() { document.getElementById('resultCard').classList.add('hidden'); document.getElementById('saveBtn').classList.add('hidden'); currentCalc = null; }
 
-// ══════════════════════════════════════════════════════
-//  SAVE ENTRY
-// ══════════════════════════════════════════════════════
 function saveEntry() {
   if (!currentCalc) return;
   const vendorName = getVendorName();
   if (!vendorName) { alert('Please select a vendor.'); return; }
   if (!document.getElementById('billNo').value.trim()) { alert('Please enter a Bill No.'); return; }
   currentCalc.vendor = vendorName;
-
   currentCalc.savedAt = new Date().toISOString();
   currentCalc.id = Date.now();
   entries.unshift(currentCalc);
   localStorage.setItem('travelbill_entries', JSON.stringify(entries));
-
   const btn = document.getElementById('saveBtn');
-
-  // Push to Google Sheets if URL is configured
-  if (GOOGLE_SHEET_URL && GOOGLE_SHEET_URL.trim() !== '') {
-    btn.textContent = '⏳ Saving…';
-    btn.disabled = true;
-
-    fetch(GOOGLE_SHEET_URL, {
-      method: 'POST',
-      body: JSON.stringify(currentCalc),
-      headers: { 'Content-Type': 'application/json' },
-      mode: 'no-cors'  // required for Apps Script
-    })
-    .then(() => {
-      btn.textContent = '✓ Saved to Sheet!';
-      btn.style.background = '#3FCF8E';
-      btn.disabled = false;
-      setTimeout(() => { btn.textContent = '✓ Save Entry'; btn.style.background = ''; }, 3000);
-    })
-    .catch(() => {
-      btn.textContent = '✓ Saved locally (Sheet offline)';
-      btn.style.background = '#F7A24F';
-      btn.disabled = false;
-      setTimeout(() => { btn.textContent = '✓ Save Entry'; btn.style.background = ''; }, 3000);
-    });
-  } else {
-    btn.textContent = '✓ Saved!';
-    btn.style.background = '#3FCF8E';
-    setTimeout(() => { btn.textContent = '✓ Save Entry'; btn.style.background = ''; }, 2000);
-  }
+  if (GOOGLE_SHEET_URL) {
+    btn.textContent = '⏳ Saving…'; btn.disabled = true;
+    fetch(GOOGLE_SHEET_URL, { method:'POST', body:JSON.stringify(currentCalc), headers:{'Content-Type':'application/json'}, mode:'no-cors' })
+    .then(()=>{ btn.textContent='✓ Saved to Sheet!'; btn.style.background=''; btn.disabled=false; setTimeout(()=>{btn.textContent='✓ Save Entry';},3000); })
+    .catch(()=>{ btn.textContent='✓ Saved locally'; btn.disabled=false; setTimeout(()=>{btn.textContent='✓ Save Entry';},3000); });
+  } else { btn.textContent='✓ Saved!'; setTimeout(()=>{btn.textContent='✓ Save Entry';},2000); }
 }
 
 function clearForm() {
-  document.getElementById('purposeOfVisit').value = '';
-  document.getElementById('purposeOther').value = '';
-  document.getElementById('purposeOther').classList.add('hidden');
-  document.getElementById('vendorSelect').value = '';
-  document.getElementById('vendorOther').value = '';
-  document.getElementById('vendorOther').classList.add('hidden');
-  document.getElementById('billNo').value = '';
-  document.getElementById('billDate').value = '';
-  document.getElementById('passengers').value = '';
-  document.getElementById('destination').value = '';
-  document.getElementById('serviceType').value = '';
-  document.getElementById('vehicleType').value = '';
-  document.getElementById('journeyStart').value = '';
-  document.getElementById('journeyEnd').value = '';
-  document.getElementById('localKm').value = '';
-  document.getElementById('localHrs').value = '';
-  document.getElementById('outstationKm').value = '';
-  document.getElementById('vendorClaimed').value = '';
-  document.getElementById('gstPercent').value = '';
-  document.getElementById('tollParking').value = '';
-  document.getElementById('localFields').classList.add('hidden');
-  document.getElementById('outstationFields').classList.add('hidden');
+  ['purposeOfVisit','vendorSelect','billDate','billNo','passengers','destination','serviceType','vehicleType','journeyStart','journeyEnd','localKm','localHrs','outstationKm','vendorClaimed','gstPercent','tollParking'].forEach(id=>document.getElementById(id).value='');
+  ['vendorOther','purposeOther'].forEach(id=>{document.getElementById(id).value='';document.getElementById(id).classList.add('hidden');});
+  ['localFields','outstationFields'].forEach(id=>document.getElementById(id).classList.add('hidden'));
   hideResult();
 }
 
-// ══════════════════════════════════════════════════════
-//  HISTORY
-// ══════════════════════════════════════════════════════
-function svcLabel(s) {
-  if (s === 'local') return 'Local';
-  if (s === 'outstation_plain') return 'Outstation (Plain)';
-  if (s === 'outstation_hilly') return 'Outstation (Hilly)';
-  return s;
-}
-
-function fmtDt(str) {
-  if (!str) return '—';
-  return new Date(str).toLocaleString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-}
+function svcLabel(s) { return {local:'Local',outstation_plain:'Outstation (Plain)',outstation_hilly:'Outstation (Hilly)'}[s]||s; }
+function fmtDt(str) { if(!str) return '—'; return new Date(str).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
 
 function renderHistory() {
   const list = document.getElementById('historyList');
   const badge = document.getElementById('countBadge');
-  badge.innerHTML = `<span>${entries.length}</span> entr${entries.length === 1 ? 'y' : 'ies'} saved`;
-
-  if (!entries.length) {
-    list.innerHTML = `<div class="history-empty"><div class="icon">🗂️</div><div>No entries saved yet.</div><div style="margin-top:8px;font-size:0.82rem;">Calculate and save a bill to see it here.</div></div>`;
-    return;
-  }
-
-  list.innerHTML = '';
-  entries.forEach((e, i) => {
-    const item = document.createElement('div');
-    item.className = 'history-item';
-    item.id = 'hi_' + i;
-
-    const saved = new Date(e.savedAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
-    const diff = e.vendorClaimed ? e.vendorClaimed - e.calculatedAmount : 0;
-    const diffTag = e.vendorClaimed
-      ? (diff > 0 ? `<span class="tag">Saved ₹${diff.toLocaleString()}</span>` : (diff < 0 ? `<span class="tag green">Vendor Under-billed</span>` : ''))
-      : '';
-
-    item.innerHTML = `
+  badge.innerHTML = `<span>${entries.length}</span> entr${entries.length===1?'y':'ies'} saved`;
+  if (!entries.length) { list.innerHTML=`<div class="history-empty"><div class="icon">🚖</div><div>No entries saved yet.</div><div style="margin-top:8px;font-size:0.82rem;">Calculate and save a bill to see it here.</div></div>`; return; }
+  list.innerHTML='';
+  entries.forEach((e,i)=>{
+    const item=document.createElement('div'); item.className='history-item'; item.id='hi_'+i;
+    const saved=new Date(e.savedAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    const diff=e.vendorClaimed?e.vendorClaimed-e.calculatedAmount:0;
+    const diffTag=e.vendorClaimed?(diff>0?`<span class="tag">Saved ₹${diff.toLocaleString()}</span>`:(diff<0?`<span class="tag green">Vendor Under-billed</span>`:'')):'';
+    item.innerHTML=`
       <div class="hi-top" onclick="toggleExpand(${i})">
         <div class="hi-meta">
-          <div class="hi-bill">Bill #${e.billNo || '—'} · ${e.billDate ? new Date(e.billDate).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : saved}</div>
-          <div class="hi-title">${e.vendor || '—'} → ${e.destination || '—'}</div>
+          <div class="hi-bill">🚖 Bill #${e.billNo||'—'} · ${e.billDate?new Date(e.billDate).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):saved}</div>
+          <div class="hi-title">${e.vendor||'—'} → ${e.destination||'—'}</div>
           <div class="hi-tags">
             <span class="tag">${svcLabel(e.serviceType)}</span>
-            <span class="tag">${e.vehicleType === 'sedan' ? '🚗 Sedan' : '🚙 Crysta'}</span>
-            ${e.purposeOfVisit ? `<span class="tag yellow">🎯 ${e.purposeOfVisit}</span>` : ''}
-            ${e.passengers ? `<span class="tag teal">👤 ${e.passengers}</span>` : ''}
+            <span class="tag">${e.vehicleType==='sedan'?'🚗 Sedan':'🚙 Crysta'}</span>
+            ${e.purposeOfVisit?`<span class="tag yellow">🎯 ${e.purposeOfVisit}`:``}
+            ${e.passengers?`<span class="tag teal">👤 ${e.passengers}</span>`:''}
             ${diffTag}
           </div>
         </div>
-        <div class="hi-amount">
-          <div class="payable">₹${e.payableAmount.toLocaleString()}</div>
-          <div class="label">Payable</div>
-        </div>
+        <div class="hi-amount"><div class="payable">₹${e.payableAmount.toLocaleString()}</div><div class="label">Payable</div></div>
       </div>
       <div class="hi-detail" id="hid_${i}">
         <div class="detail-grid">
-          <div class="dg-item"><div class="dg-lbl">Bill No.</div><div class="dg-val">${e.billNo || '—'}</div></div>
-          <div class="dg-item"><div class="dg-lbl">Bill Date</div><div class="dg-val">${e.billDate ? new Date(e.billDate).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—'}</div></div>
-          <div class="dg-item"><div class="dg-lbl">Passengers</div><div class="dg-val">${e.passengers || '—'}</div></div>
-          <div class="dg-item"><div class="dg-lbl">Purpose of Visit</div><div class="dg-val">${e.purposeOfVisit || '—'}</div></div>
-          <div class="dg-item"><div class="dg-lbl">Destination</div><div class="dg-val">${e.destination || '—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Bill No.</div><div class="dg-val">${e.billNo||'—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Bill Date</div><div class="dg-val">${e.billDate?new Date(e.billDate).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Passengers</div><div class="dg-val">${e.passengers||'—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Purpose</div><div class="dg-val">${e.purposeOfVisit||'—'}</div></div>
+          <div class="dg-item"><div class="dg-lbl">Destination</div><div class="dg-val">${e.destination||'—'}</div></div>
           <div class="dg-item"><div class="dg-lbl">Journey Start</div><div class="dg-val">${fmtDt(e.journeyStart)}</div></div>
           <div class="dg-item"><div class="dg-lbl">Journey End</div><div class="dg-val">${fmtDt(e.journeyEnd)}</div></div>
           <div class="dg-item"><div class="dg-lbl">Km Travelled</div><div class="dg-val">${e.km} km</div></div>
-          ${e.hrs !== null ? `<div class="dg-item"><div class="dg-lbl">Hours Used</div><div class="dg-val">${e.hrs} hrs</div></div>` : ''}
-          <div class="dg-item"><div class="dg-lbl">Vendor Claimed</div><div class="dg-val">₹${e.vendorClaimed ? e.vendorClaimed.toLocaleString() : '—'}</div></div>
+          ${e.hrs!==null?`<div class="dg-item"><div class="dg-lbl">Hours Used</div><div class="dg-val">${e.hrs} hrs</div></div>`:''}
+          <div class="dg-item"><div class="dg-lbl">Vendor Claimed</div><div class="dg-val">₹${e.vendorClaimed?e.vendorClaimed.toLocaleString():'—'}</div></div>
           <div class="dg-item"><div class="dg-lbl">Transport Sub-total</div><div class="dg-val">₹${e.calculatedAmount.toLocaleString()}</div></div>
-          ${e.gstPercent ? `<div class="dg-item"><div class="dg-lbl">GST (${e.gstPercent}%)</div><div class="dg-val">₹${(e.gstAmount||0).toLocaleString()}</div></div>` : ''}
-          ${e.tollParking ? `<div class="dg-item"><div class="dg-lbl">Toll / Parking</div><div class="dg-val">₹${e.tollParking.toLocaleString()}</div></div>` : ''}
+          ${e.gstPercent?`<div class="dg-item"><div class="dg-lbl">GST (${e.gstPercent}%)</div><div class="dg-val">₹${(e.gstAmount||0).toLocaleString()}</div></div>`:''}
+          ${e.tollParking?`<div class="dg-item"><div class="dg-lbl">Toll / Parking</div><div class="dg-val">₹${e.tollParking.toLocaleString()}</div></div>`:''}
           <div class="dg-item"><div class="dg-lbl">Calculated Total</div><div class="dg-val">₹${(e.calculatedTotal||e.calculatedAmount).toLocaleString()}</div></div>
-          <div class="dg-item"><div class="dg-lbl" style="color:var(--green)">Amount Payable</div><div class="dg-val" style="color:var(--green);font-size:1.1rem;">₹${e.payableAmount.toLocaleString()}</div></div>
+          <div class="dg-item"><div class="dg-lbl" style="color:#F7C700">Amount Payable</div><div class="dg-val" style="color:#F7C700;font-size:1.1rem;">₹${e.payableAmount.toLocaleString()}</div></div>
         </div>
-        ${e.notes && e.notes.length ? `<div class="note-box" style="margin-top:12px;">${e.notes.map(n=>`• ${n}`).join('<br/>')}</div>` : ''}
-        <div class="hi-actions">
-          <button class="btn btn-danger" onclick="deleteEntry(${i})">🗑 Delete</button>
-        </div>
-      </div>
-    `;
+        ${e.notes&&e.notes.length?`<div class="note-box" style="margin-top:12px;">${e.notes.map(n=>`• ${n}`).join('<br/>')}</div>`:''}
+        <div class="hi-actions"><button class="btn btn-danger" onclick="deleteEntry(${i})">🗑 Delete</button></div>
+      </div>`;
     list.appendChild(item);
   });
 }
 
 function toggleExpand(i) {
-  const detail = document.getElementById('hid_' + i);
-  const item = document.getElementById('hi_' + i);
-  const isOpen = detail.classList.contains('show');
-  document.querySelectorAll('.hi-detail').forEach(d => d.classList.remove('show'));
-  document.querySelectorAll('.history-item').forEach(d => d.classList.remove('expanded'));
-  if (!isOpen) {
-    detail.classList.add('show');
-    item.classList.add('expanded');
-  }
+  const detail=document.getElementById('hid_'+i), item=document.getElementById('hi_'+i);
+  const isOpen=detail.classList.contains('show');
+  document.querySelectorAll('.hi-detail').forEach(d=>d.classList.remove('show'));
+  document.querySelectorAll('.history-item').forEach(d=>d.classList.remove('expanded'));
+  if(!isOpen){detail.classList.add('show');item.classList.add('expanded');}
 }
-
-function deleteEntry(i) {
-  if (!confirm('Delete this entry?')) return;
-  entries.splice(i, 1);
-  localStorage.setItem('travelbill_entries', JSON.stringify(entries));
-  renderHistory();
-}
-
-// ══════════════════════════════════════════════════════
-//  EXPORT
-// ══════════════════════════════════════════════════════
+function deleteEntry(i) { if(!confirm('Delete this entry?')) return; entries.splice(i,1); localStorage.setItem('travelbill_entries',JSON.stringify(entries)); renderHistory(); }
 function exportCSV() {
-  if (!entries.length) { alert('No entries to export.'); return; }
-  const headers = ['ID','Saved Date','Vendor','Bill No','Bill Date','Passengers','Purpose of Visit','Destination','Service','Vehicle','Journey Start','Journey End','Km','Hours','Vendor Claimed','Transport Sub-total','GST %','GST Amount','Toll/Parking','Calculated Total','Payable Amount'];
-  const rows = entries.map(e => [
-    e.id, new Date(e.savedAt).toLocaleString('en-IN'), e.vendor, e.billNo,
-    e.billDate || '', e.passengers, e.purposeOfVisit || '', e.destination, svcLabel(e.serviceType),
-    e.vehicleType === 'sedan' ? 'Sedan' : 'Crysta',
-    fmtDt(e.journeyStart), fmtDt(e.journeyEnd),
-    e.km, e.hrs ?? '', e.vendorClaimed, e.calculatedAmount,
-    e.gstPercent ?? 0, e.gstAmount ?? 0, e.tollParking ?? 0,
-    e.calculatedTotal ?? e.calculatedAmount, e.payableAmount
-  ].map(v => `"${String(v ?? '').replace(/"/g,'""')}"`));
-  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-  download('travelbill_export.csv', csv, 'text/csv');
+  if(!entries.length){alert('No entries to export.');return;}
+  const headers=['ID','Saved Date','Vendor','Bill No','Bill Date','Passengers','Purpose','Destination','Service','Vehicle','Journey Start','Journey End','Km','Hours','Vendor Claimed','Transport Sub-total','GST %','GST Amount','Toll/Parking','Calculated Total','Payable Amount'];
+  const rows=entries.map(e=>[e.id,new Date(e.savedAt).toLocaleString('en-IN'),e.vendor,e.billNo,e.billDate||'',e.passengers,e.purposeOfVisit||'',e.destination,svcLabel(e.serviceType),e.vehicleType==='sedan'?'Sedan':'Crysta',fmtDt(e.journeyStart),fmtDt(e.journeyEnd),e.km,e.hrs??'',e.vendorClaimed,e.calculatedAmount,e.gstPercent??0,e.gstAmount??0,e.tollParking??0,e.calculatedTotal??e.calculatedAmount,e.payableAmount].map(v=>`"${String(v??'').replace(/"/g,'""')}"`));
+  const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='travelbill_export.csv'; a.click();
 }
+function exportJSON() { if(!entries.length){alert('No entries to export.');return;} const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(entries,null,2)],{type:'application/json'})); a.download='travelbill_export.json'; a.click(); }
+</script>
 
-function exportJSON() {
-  if (!entries.length) { alert('No entries to export.'); return; }
-  download('travelbill_export.json', JSON.stringify(entries, null, 2), 'application/json');
+<script>
+// YELLOW TAXI PARTICLE CONSTELLATION
+const pc=document.getElementById('particleCanvas'),cx=pc.getContext('2d');
+let PW,PH,pts=[];
+function rz(){PW=pc.width=window.innerWidth;PH=pc.height=window.innerHeight;}
+rz();window.addEventListener('resize',rz);
+class Pt{
+  constructor(){this.reset();}
+  reset(){this.x=Math.random()*PW;this.y=Math.random()*PH*(0.75);this.r=Math.random()*1.5+0.3;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.2;this.a=Math.random()*.45+0.1;this.c=['#F7C700','#f59e0b','#fbbf24','#fff7aa','#fffde0'][Math.floor(Math.random()*5)];}
+  update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>PW||this.y<0||this.y>PH)this.reset();}
+  draw(){cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fillStyle=this.c;cx.globalAlpha=this.a;cx.fill();cx.globalAlpha=1;}
 }
-
-function download(filename, content, type) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], { type }));
-  a.download = filename;
-  a.click();
+for(let i=0;i<120;i++)pts.push(new Pt());
+function anim(){
+  cx.clearRect(0,0,PW,PH);
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<100){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle='#F7C700';cx.globalAlpha=(1-d/100)*.06;cx.lineWidth=.5;cx.stroke();cx.globalAlpha=1;}
+  }
+  pts.forEach(p=>{p.update();p.draw();});
+  requestAnimationFrame(anim);
 }
+anim();
 </script>
 </body>
 </html>
