@@ -223,7 +223,7 @@ input::placeholder{color:#cbd5e1;}
 </div>
 
 <script>
-const SHEET_URL='https://script.google.com/macros/s/AKfycbxPhrFcv4qZiQn2t8O5EifsZ9m6wBGygGgjH73wab2tVVceMOfKwQCfVtQLisF1Vjky/exec';
+const SHEET_URL='https://script.google.com/macros/s/AKfycbyOyOcN3uCi2Igug1EHQ5dslfjHSqWIS7vG4V4zRGLutqhAa1VU7BLwmtUrh8HOg34R8Q/exec';
 let orders=JSON.parse(localStorage.getItem('product_orders')||'[]');
 let sheetLoaded=false;
 
@@ -250,20 +250,20 @@ function loadFromSheet(){
     finish('✅ Synced '+data.length+' orders','#10b981',data);
   };
   script.addEventListener('error',()=>finish('❌ Script error','#ef4444',null));
-  script.src=SHEET_URL+'?action=getAll&callback='+cbName;
+  script.src=SHEET_URL+'?module=product&action=getAll&callback='+cbName;
   document.head.appendChild(script);
 }
 
 // ── POST TO SHEET ──
 function postToSheet(entry,btn,origHTML){
-  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({action:'save',...entry}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
+  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({module:'product',action:'save',...entry}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
   .then(()=>{btn.innerHTML='✅ Sent to Sheet!';btn.style.background='linear-gradient(135deg,#f59e0b,#ea580c)';setTimeout(()=>{btn.innerHTML=origHTML;btn.style.background='';btn.disabled=false;},3000);})
   .catch(()=>{btn.innerHTML='💾 Saved locally';setTimeout(()=>{btn.innerHTML=origHTML;btn.style.background='';btn.disabled=false;},2500);});
 }
 
 // ── UPDATE STATUS IN SHEET ──
 function updateStatus(order,deliveryStatus,paymentStatus){
-  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({action:'update',contractNo:order.contractNo,orderDate:order.orderDate,deliveryStatus,paymentStatus}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
+  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({module:'product',action:'update',contractNo:order.contractNo,orderDate:order.orderDate,deliveryStatus,paymentStatus}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
   .catch(()=>{});
 }
 

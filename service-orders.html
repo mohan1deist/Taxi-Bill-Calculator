@@ -255,7 +255,7 @@ textarea{resize:vertical;min-height:80px;}
 </div>
 
 <script>
-const SHEET_URL='https://script.google.com/macros/s/AKfycbzK-H-Od7OIRDHNsRfjRp5adjm0SsrZmjgrlBtnsiyvKqTeZCyWkxu8dPm9Zxca3qvw/exec';
+const SHEET_URL='https://script.google.com/macros/s/AKfycbyOyOcN3uCi2Igug1EHQ5dslfjHSqWIS7vG4V4zRGLutqhAa1VU7BLwmtUrh8HOg34R8Q/exec';
 let contracts=JSON.parse(localStorage.getItem('service_contracts')||'[]');
 let currentFilter='all';
 let sheetLoaded=false;
@@ -283,13 +283,13 @@ function loadFromSheet(){
     finish('✅ Synced '+data.length+' contracts','#10b981',data);
   };
   script.addEventListener('error',()=>finish('❌ Script error — check Apps Script','#ef4444',null));
-  script.src=SHEET_URL+'?action=getAll&callback='+cbName;
+  script.src=SHEET_URL+'?module=service&action=getAll&callback='+cbName;
   document.head.appendChild(script);
 }
 
 // ── POST TO SHEET ──
 function postToSheet(entry,btn,origHTML){
-  fetch(SHEET_URL,{method:'POST',body:JSON.stringify(entry),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
+  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({module:'service',action:'save',...entry}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
   .then(()=>{btn.innerHTML='✅ Sent to Sheet!';btn.style.background='linear-gradient(135deg,#059669,#0d9488)';setTimeout(()=>{btn.innerHTML=origHTML;btn.style.background='';btn.disabled=false;},3000);})
   .catch(()=>{btn.innerHTML='💾 Saved locally';setTimeout(()=>{btn.innerHTML=origHTML;btn.style.background='';btn.disabled=false;},2500);});
 }

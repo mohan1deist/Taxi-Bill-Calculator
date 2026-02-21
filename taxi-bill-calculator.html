@@ -375,7 +375,7 @@ function saveEntry(){
   if(!currentCalc)return;
   entries.unshift(currentCalc);
   localStorage.setItem('travelbill_entries',JSON.stringify(entries));
-  if(GOOGLE_SHEET_URL){fetch(GOOGLE_SHEET_URL,{method:'POST',body:JSON.stringify(currentCalc),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'}).catch(()=>{});}
+  if(GOOGLE_SHEET_URL){fetch(GOOGLE_SHEET_URL,{method:'POST',body:JSON.stringify({module:'taxi',...currentCalc}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'}).catch(()=>{});}
   const btn=document.getElementById('saveBtn');
   btn.innerHTML='✅ Saved!';btn.style.background='linear-gradient(135deg,#059669,#0d9488)';
   setTimeout(()=>{btn.innerHTML='✓ Save Entry';btn.style.background='';},2500);
