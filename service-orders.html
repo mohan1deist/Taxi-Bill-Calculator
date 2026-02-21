@@ -289,9 +289,20 @@ function loadFromSheet(){
 
 // ── POST TO SHEET ──
 function postToSheet(entry,btn,origHTML){
-  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({module:'service',action:'save',...entry}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
+  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({module:'service',action:'save',paymentStatus:'Pending',...entry}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
   .then(()=>{btn.innerHTML='✅ Sent to Sheet!';btn.style.background='linear-gradient(135deg,#059669,#0d9488)';setTimeout(()=>{btn.innerHTML=origHTML;btn.style.background='';btn.disabled=false;},3000);})
   .catch(()=>{btn.innerHTML='💾 Saved locally';setTimeout(()=>{btn.innerHTML=origHTML;btn.style.background='';btn.disabled=false;},2500);});
+}
+
+// ── UPDATE PAYMENT STATUS ──
+function updatePaymentStatus(id,newStatus){
+  const contract=contracts.find(c=>String(c.id)===String(id));
+  if(!contract)return;
+  contract.paymentStatus=newStatus;
+  localStorage.setItem('service_contracts',JSON.stringify(contracts));
+  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({module:'service',action:'updatePayment',gemNumber:contract.gemNumber,startDate:contract.startDate,paymentStatus:newStatus}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
+  .catch(()=>{});
+  renderContracts();
 }
 
 function showTab(name,el){
@@ -407,7 +418,15 @@ function renderContracts(){
           <div class="dg-item"><div class="dg-lbl">Added On</div><div class="dg-val">${new Date(c.savedAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</div></div>
         </div>
         ${c.remarks?`<div class="remarks-box"><div class="dg-lbl">Remarks</div><div class="remarks-text">${c.remarks}</div></div>`:''}
-        <div class="ci-actions"><button class="btn btn-danger" onclick="deleteContract('${c.id}')">🗑 Delete</button></div>
+        <div class="ci-actions">
+          <select id="pay_${c.id}" style="font-size:0.8rem;padding:7px 12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;" onchange="updatePaymentStatus('${c.id}',this.value)">
+            <option value="" disabled ${!c.paymentStatus?'selected':''}>Payment Status</option>
+            <option value="Pending" ${c.paymentStatus==='Pending'?'selected':''}>Pending</option>
+            <option value="Sent to DDO" ${c.paymentStatus==='Sent to DDO'?'selected':''}>Sent to DDO for payment</option>
+            <option value="Offline Payment" ${c.paymentStatus==='Offline Payment'?'selected':''}>Offline Payment processed</option>
+          </select>
+          <button class="btn btn-danger" onclick="deleteContract('${c.id}')">🗑 Delete</button>
+        </div>
       </div>`;
     list.appendChild(item);
   });

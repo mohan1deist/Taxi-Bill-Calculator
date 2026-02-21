@@ -375,7 +375,8 @@ function renderOrders(){
           <select id="pay_${o.id}" style="font-size:0.8rem;padding:7px 12px;" onchange="updatePaymentStatus('${o.id}',this.value)">
             <option value="" disabled selected>Payment Status</option>
             <option value="Pending" ${o.paymentStatus==='Pending'?'selected':''}>Pending</option>
-            <option value="Paid" ${o.paymentStatus==='Paid'?'selected':''}>Paid</option>
+            <option value="Sent to DDO" ${o.paymentStatus==='Sent to DDO'?'selected':''}>Sent to DDO for payment</option>
+            <option value="Offline Payment" ${o.paymentStatus==='Offline Payment'?'selected':''}>Offline Payment processed</option>
           </select>
         </div>
       </div>`;
