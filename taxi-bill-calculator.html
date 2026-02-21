@@ -217,8 +217,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </div>
     </div>
     <div class="form-row col2">
-      <div><label>Journey Start (Date &amp; Time)</label><input type="datetime-local" id="journeyStart" onchange="recalculate()"/></div>
-      <div><label>Journey End (Date &amp; Time)</label><input type="datetime-local" id="journeyEnd" onchange="recalculate()"/></div>
+      <div><label>Journey Start Date</label><input type="date" id="journeyStartDate" onchange="recalculate()"/></div>
+      <div><label>Journey Start Time <span class="hint">Optional</span></label><input type="time" id="journeyStartTime" onchange="recalculate()"/></div>
+    </div>
+    <div class="form-row col2">
+      <div><label>Journey End Date</label><input type="date" id="journeyEndDate" onchange="recalculate()"/></div>
+      <div><label>Journey End Time <span class="hint">Optional</span></label><input type="time" id="journeyEndTime" onchange="recalculate()"/></div>
     </div>
     <div id="localFields" class="hidden">
       <div class="form-row col2">
@@ -295,8 +299,15 @@ function recalculate(){
   const svc=document.getElementById('serviceType').value;
   const veh=document.getElementById('vehicleType').value;
   const claimed=parseFloat(document.getElementById('vendorClaimed').value)||0;
-  const startStr=document.getElementById('journeyStart').value;
-  const endStr=document.getElementById('journeyEnd').value;
+  
+  // Combine date + time inputs
+  const startDate=document.getElementById('journeyStartDate').value;
+  const startTime=document.getElementById('journeyStartTime').value||'00:00';
+  const endDate=document.getElementById('journeyEndDate').value;
+  const endTime=document.getElementById('journeyEndTime').value||'23:59';
+  const startStr=startDate?(startDate+'T'+startTime):'';
+  const endStr=endDate?(endDate+'T'+endTime):'';
+  
   if(!svc||!veh){hideResult();return;}
   let breakdown=[],calculated=0,notes=[];
   if(svc==='local'){
@@ -306,7 +317,7 @@ function recalculate(){
     const baseKm=80,baseHrs=8;
     let baseRate,extraKmRate,extraHrRate;
     if(veh==='sedan'){baseRate=2100;extraKmRate=18;extraHrRate=150;}
-    else{baseRate=2500;extraKmRate=24;extraHrRate=225;}
+    else{baseRate=2500;extraKmRate=24;extraHrRate=225;} // Crysta: 225/hr
     breakdown.push({lbl:`Base Package (${baseHrs} hrs / ${baseKm} km)`,val:`₹${baseRate.toLocaleString()}`});
     calculated+=baseRate;
     const extraKm=Math.max(0,km-baseKm);
@@ -371,7 +382,7 @@ function saveEntry(){
   clearForm();
 }
 
-function clearForm(){['purposeOfVisit','vendorSelect','billDate','billNo','passengers','destination','serviceType','vehicleType','journeyStart','journeyEnd','localKm','localHrs','outstationKm','vendorClaimed','gstPercent','tollParking'].forEach(id=>document.getElementById(id).value='');['vendorOther','purposeOther'].forEach(id=>{document.getElementById(id).value='';document.getElementById(id).classList.add('hidden');});['localFields','outstationFields'].forEach(id=>document.getElementById(id).classList.add('hidden'));hideResult();}
+function clearForm(){['purposeOfVisit','vendorSelect','billDate','billNo','passengers','destination','serviceType','vehicleType','journeyStartDate','journeyStartTime','journeyEndDate','journeyEndTime','localKm','localHrs','outstationKm','vendorClaimed','gstPercent','tollParking'].forEach(id=>document.getElementById(id).value='');['vendorOther','purposeOther'].forEach(id=>{document.getElementById(id).value='';document.getElementById(id).classList.add('hidden');});['localFields','outstationFields'].forEach(id=>document.getElementById(id).classList.add('hidden'));hideResult();}
 
 function svcLabel(s){return{local:'Local',outstation_plain:'Outstation (Plain)',outstation_hilly:'Outstation (Hilly)'}[s]||s;}
 function fmtDt(str){if(!str)return'—';return new Date(str).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
