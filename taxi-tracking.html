@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Taxi Tracking System</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fffbeb;color:#1e293b;min-height:100vh;overflow-x:hidden;}
+.hidden{display:none!important;}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:#fff;border-bottom:1.5px solid #fde68a;position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:0 4px 12px rgba(245,158,11,0.3);}
+.nav-title{font-size:1rem;font-weight:800;color:#1e293b;}
+.tab-pills{display:flex;gap:4px;background:#fffbeb;border:1.5px solid #fde68a;padding:4px;border-radius:12px;}
+.tab-btn{background:none;border:none;color:#78350f;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:700;padding:8px 20px;border-radius:9px;cursor:pointer;transition:all 0.2s;}
+.tab-btn.active{background:#fff;color:#b45309;box-shadow:0 1px 6px rgba(0,0,0,0.08);}
+
+/* ── LAYOUT ── */
+.page{display:none;max-width:1200px;margin:0 auto;padding:36px 24px 80px;}
+.page.active{display:block;animation:fadeUp 0.3s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION HEADER ── */
+.section-header{background:#fff;border:1.5px solid #fde68a;border-radius:18px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(245,158,11,0.07);}
+.sh-icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;box-shadow:0 4px 12px rgba(245,158,11,0.25);}
+.sh-title{font-size:1.15rem;font-weight:800;color:#1e293b;margin-bottom:3px;}
+.sh-sub{font-size:0.82rem;color:#64748b;}
+
+/* ── CARD ── */
+.card{background:#fff;border:1.5px solid #e2e8f0;border-radius:18px;padding:24px 26px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+.section-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#b45309;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #ffedd5;display:flex;align-items:center;gap:8px;}
+
+/* ── FORM ── */
+.form-row{display:grid;gap:14px;margin-bottom:14px;}
+.form-row.col2{grid-template-columns:1fr 1fr;}
+.form-row.col1{grid-template-columns:1fr;}
+label{font-size:0.76rem;font-weight:700;color:#374151;display:block;margin-bottom:5px;}
+input,select{width:100%;background:#f8fafc;border:1.5px solid #e2e8f0;color:#1e293b;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;padding:11px 14px;border-radius:10px;outline:none;transition:all 0.2s;}
+input:focus,select:focus{border-color:#f59e0b;background:#fff7ed;box-shadow:0 0 0 3px rgba(245,158,11,0.1);}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:10px;margin-top:4px;}
+.btn{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:0.88rem;padding:11px 24px;border-radius:10px;border:none;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:7px;}
+.btn-primary{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 4px 14px rgba(245,158,11,0.35);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,158,11,0.45);}
+.btn-outline{background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b;}
+
+/* ── ANALYTICS GRID ── */
+.analytics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:20px;}
+.stat-box{background:#fff;border:1.5px solid #e2e8f0;border-radius:16px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:relative;overflow:hidden;}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.stat-label{font-size:0.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:800;color:#d97706;line-height:1;}
+.stat-unit{font-size:0.85rem;color:#64748b;margin-top:4px;}
+
+/* ── SUMMARY CARDS ── */
+.summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.summary-card{background:linear-gradient(135deg,#fff7ed,#fffbeb);border:1.5px solid #fed7aa;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(245,158,11,0.1);}
+.summary-title{font-size:0.7rem;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.summary-amount{font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:900;color:#d97706;line-height:1;}
+
+@media(max-width:640px){
+  nav{padding:0 16px;}
+  .page{padding:24px 16px 60px;}
+  .form-row.col2{grid-template-columns:1fr;}
+  .summary-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#fff7ed;border:1.5px solid #fed7aa;color:#c2410c;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:700;padding:7px 16px;border-radius:10px;text-decoration:none;">← Home</a>
+    <div class="nav-logo">
+      <div class="logo-icon">🚖</div>
+      <span class="nav-title">Taxi Tracking System</span>
+    </div>
+  </div>
+  <div class="tab-pills">
+    <button class="tab-btn active" onclick="showTab('entry',this)">➕ New Entry</button>
+    <button class="tab-btn" onclick="showTab('dashboard',this)">📊 Dashboard</button>
+  </div>
+</nav>
+
+<!-- ENTRY PAGE -->
+<div class="page active" id="tab-entry">
+  <div class="section-header">
+    <div class="sh-icon">📝</div>
+    <div>
+      <div class="sh-title">New Taxi Entry</div>
+      <div class="sh-sub">Enter taxi journey details for tracking and analytics</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">🚖 Journey Type</div>
+    <div class="form-row col2">
+      <div>
+        <label>Journey Type</label>
+        <select id="journeyType" onchange="handleJourneyTypeChange()">
+          <option value="">— Select Type —</option>
+          <option value="local">Local</option>
+          <option value="outstation">Outstation</option>
+        </select>
+      </div>
+      <div id="terrainField" class="hidden">
+        <label>Terrain Type</label>
+        <select id="terrainType" onchange="calculateAmount()">
+          <option value="">— Select Terrain —</option>
+          <option value="plain">Plain</option>
+          <option value="hilly">Hilly</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCAL FIELDS -->
+  <div id="localFields" class="card hidden">
+    <div class="section-label">📍 Local Journey Details</div>
+    <div class="form-row col2">
+      <div>
+        <label>Number of Km</label>
+        <input type="number" id="localKm" min="0" placeholder="e.g. 95" oninput="calculateAmount()"/>
+      </div>
+      <div>
+        <label>Extra Km</label>
+        <input type="number" id="extraKm" min="0" placeholder="e.g. 15" oninput="calculateAmount()"/>
+      </div>
+    </div>
+    <div class="form-row col2">
+      <div>
+        <label>Extra Hours</label>
+        <input type="number" id="extraHrs" min="0" step="0.5" placeholder="e.g. 2" oninput="calculateAmount()"/>
+      </div>
+      <div>
+        <label>Amount Payable (₹)</label>
+        <input type="number" id="localAmount" placeholder="Auto-calculated or enter manually" oninput="markManual()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTSTATION FIELDS -->
+  <div id="outstationFields" class="card hidden">
+    <div class="section-label">🗺️ Outstation Journey Details</div>
+    <div class="form-row col2">
+      <div>
+        <label>Number of Km</label>
+        <input type="number" id="outstationKm" min="0" placeholder="e.g. 320" oninput="calculateAmount()"/>
+      </div>
+      <div>
+        <label>Night Charges Days</label>
+        <input type="number" id="nightCharges" min="0" placeholder="e.g. 2" oninput="calculateAmount()"/>
+      </div>
+    </div>
+    <div class="form-row col2">
+      <div>
+        <label>Driver Allowance Days</label>
+        <input type="number" id="driverAllowance" min="0" placeholder="e.g. 2" oninput="calculateAmount()"/>
+      </div>
+      <div>
+        <label>Amount Payable (₹)</label>
+        <input type="number" id="outstationAmount" placeholder="Auto-calculated or enter manually" oninput="markManual()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAM DETAILS -->
+  <div id="examCard" class="card hidden">
+    <div class="section-label">📚 Exam Details</div>
+    <div class="form-row col1">
+      <div>
+        <label>Name of Exam</label>
+        <select id="examName">
+          <option value="">— Select Exam —</option>
+          <option value="MTS">MTS</option>
+          <option value="CHSL Tier-I">CHSL Tier-I</option>
+          <option value="CHSL Tier-II">CHSL Tier-II</option>
+          <option value="CGLE Tier-I">CGLE Tier-I</option>
+          <option value="CGLE Tier-II">CGLE Tier-II</option>
+          <option value="Delhi Police">Delhi Police</option>
+          <option value="Selection Post">Selection Post</option>
+          <option value="Stenographer">Stenographer</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row" id="saveRow" style="display:none;">
+    <button class="btn btn-primary" onclick="saveEntry()">✓ Save Entry</button>
+    <button class="btn btn-outline" onclick="clearForm()">✕ Clear</button>
+  </div>
+</div>
+
+<!-- DASHBOARD PAGE -->
+<div class="page" id="tab-dashboard">
+  <div class="section-header">
+    <div class="sh-icon">📊</div>
+    <div>
+      <div class="sh-title">Analytics Dashboard</div>
+      <div class="sh-sub">Comprehensive taxi usage statistics and insights</div>
+    </div>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-title">Total Local</div>
+      <div class="summary-amount" id="totalLocalAmount">₹0</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-title">Total Outstation Plain</div>
+      <div class="summary-amount" id="totalPlainAmount">₹0</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-title">Total Outstation Hilly</div>
+      <div class="summary-amount" id="totalHillyAmount">₹0</div>
+    </div>
+  </div>
+
+  <div class="analytics-grid">
+    <div class="stat-box">
+      <div class="stat-label">Total Local Cabs</div>
+      <div class="stat-value" id="totalLocalCabs">0</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Total Extra Km (Local)</div>
+      <div class="stat-value" id="totalExtraKm">0</div>
+      <div class="stat-unit">kilometers</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Total Extra Hours (Local)</div>
+      <div class="stat-value" id="totalExtraHrs">0</div>
+      <div class="stat-unit">hours</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Total Km (Outstation Plain)</div>
+      <div class="stat-value" id="totalPlainKm">0</div>
+      <div class="stat-unit">kilometers</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Total Km (Outstation Hilly)</div>
+      <div class="stat-value" id="totalHillyKm">0</div>
+      <div class="stat-unit">kilometers</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Total Night Charges Days</div>
+      <div class="stat-value" id="totalNightDays">0</div>
+      <div class="stat-unit">days</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Total Driver Allowance Days</div>
+      <div class="stat-value" id="totalDriverDays">0</div>
+      <div class="stat-unit">days</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:20px;">
+    <button class="btn btn-outline" onclick="loadFromSheet()">↻ Sync from Google Sheet</button>
+  </div>
+</div>
+
+<script>
+const SHEET_URL='https://script.google.com/macros/s/AKfycbyyyW9NfS9MK8U31ce8O4WquoLAVs4lqjz6YW70njkF7hnDRnMa5IwULstQ8H0lmzRy/exec';
+let entries=JSON.parse(localStorage.getItem('taxi_tracking_entries')||'[]');
+let manualAmount=false;
+
+function showTab(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(el)el.classList.add('active');
+  if(name==='dashboard')updateDashboard();
+}
+
+function handleJourneyTypeChange(){
+  const type=document.getElementById('journeyType').value;
+  document.getElementById('terrainField').classList.toggle('hidden',type!=='outstation');
+  document.getElementById('localFields').classList.toggle('hidden',type!=='local');
+  document.getElementById('outstationFields').classList.toggle('hidden',type!=='outstation');
+  document.getElementById('examCard').classList.toggle('hidden',!type);
+  document.getElementById('saveRow').style.display=type?'flex':'none';
+  calculateAmount();
+}
+
+function markManual(){manualAmount=true;}
+
+function calculateAmount(){
+  if(manualAmount)return;
+  const type=document.getElementById('journeyType').value;
+  
+  if(type==='local'){
+    const km=parseFloat(document.getElementById('localKm').value)||0;
+    const extraKm=parseFloat(document.getElementById('extraKm').value)||0;
+    const extraHrs=parseFloat(document.getElementById('extraHrs').value)||0;
+    
+    const baseRate=2100;
+    const extraKmRate=18;
+    const extraHrRate=150;
+    
+    const amount=baseRate+(extraKm*extraKmRate)+(extraHrs*extraHrRate);
+    document.getElementById('localAmount').value=amount>0?amount:'';
+    
+  } else if(type==='outstation'){
+    const terrain=document.getElementById('terrainType').value;
+    const km=parseFloat(document.getElementById('outstationKm').value)||0;
+    const nightDays=parseFloat(document.getElementById('nightCharges').value)||0;
+    const driverDays=parseFloat(document.getElementById('driverAllowance').value)||0;
+    
+    if(!terrain)return;
+    
+    const ratePerKm=terrain==='plain'?18:21;
+    const nightRate=300;
+    const driverRate=300;
+    
+    const amount=(km*ratePerKm)+(nightDays*nightRate)+(driverDays*driverRate);
+    document.getElementById('outstationAmount').value=amount>0?amount:'';
+  }
+}
+
+function saveEntry(){
+  const type=document.getElementById('journeyType').value;
+  const examName=document.getElementById('examName').value;
+  
+  if(!type){alert('Please select journey type');return;}
+  if(!examName){alert('Please select exam name');return;}
+  
+  const entry={
+    id:Date.now(),
+    savedAt:new Date().toISOString(),
+    journeyType:type,
+    examName:examName
+  };
+  
+  if(type==='local'){
+    const km=parseFloat(document.getElementById('localKm').value)||0;
+    const extraKm=parseFloat(document.getElementById('extraKm').value)||0;
+    const extraHrs=parseFloat(document.getElementById('extraHrs').value)||0;
+    const amount=parseFloat(document.getElementById('localAmount').value)||0;
+    
+    if(!km&&!extraKm){alert('Please enter km details');return;}
+    if(!amount){alert('Please enter amount payable');return;}
+    
+    entry.km=km;
+    entry.extraKm=extraKm;
+    entry.extraHrs=extraHrs;
+    entry.amount=amount;
+    
+  } else {
+    const terrain=document.getElementById('terrainType').value;
+    const km=parseFloat(document.getElementById('outstationKm').value)||0;
+    const nightDays=parseFloat(document.getElementById('nightCharges').value)||0;
+    const driverDays=parseFloat(document.getElementById('driverAllowance').value)||0;
+    const amount=parseFloat(document.getElementById('outstationAmount').value)||0;
+    
+    if(!terrain){alert('Please select terrain type');return;}
+    if(!km){alert('Please enter km');return;}
+    if(!amount){alert('Please enter amount payable');return;}
+    
+    entry.terrainType=terrain;
+    entry.km=km;
+    entry.nightCharges=nightDays;
+    entry.driverAllowance=driverDays;
+    entry.amount=amount;
+  }
+  
+  entries.unshift(entry);
+  localStorage.setItem('taxi_tracking_entries',JSON.stringify(entries));
+  
+  // Post to sheet
+  fetch(SHEET_URL,{method:'POST',body:JSON.stringify({module:'taxi_tracking',action:'save',...entry}),headers:{'Content-Type':'text/plain;charset=utf-8'},mode:'no-cors'})
+  .catch(()=>{});
+  
+  alert('✅ Entry saved successfully!');
+  clearForm();
+  updateDashboard();
+}
+
+function clearForm(){
+  ['journeyType','terrainType','localKm','extraKm','extraHrs','localAmount','outstationKm','nightCharges','driverAllowance','outstationAmount','examName'].forEach(id=>document.getElementById(id).value='');
+  ['terrainField','localFields','outstationFields','examCard'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  document.getElementById('saveRow').style.display='none';
+  manualAmount=false;
+}
+
+function updateDashboard(){
+  const local=entries.filter(e=>e.journeyType==='local');
+  const plain=entries.filter(e=>e.journeyType==='outstation'&&e.terrainType==='plain');
+  const hilly=entries.filter(e=>e.journeyType==='outstation'&&e.terrainType==='hilly');
+  
+  document.getElementById('totalLocalCabs').textContent=local.length;
+  document.getElementById('totalExtraKm').textContent=local.reduce((sum,e)=>sum+(e.extraKm||0),0);
+  document.getElementById('totalExtraHrs').textContent=local.reduce((sum,e)=>sum+(e.extraHrs||0),0);
+  document.getElementById('totalPlainKm').textContent=plain.reduce((sum,e)=>sum+(e.km||0),0);
+  document.getElementById('totalHillyKm').textContent=hilly.reduce((sum,e)=>sum+(e.km||0),0);
+  document.getElementById('totalNightDays').textContent=entries.filter(e=>e.journeyType==='outstation').reduce((sum,e)=>sum+(e.nightCharges||0),0);
+  document.getElementById('totalDriverDays').textContent=entries.filter(e=>e.journeyType==='outstation').reduce((sum,e)=>sum+(e.driverAllowance||0),0);
+  
+  const localAmt=local.reduce((sum,e)=>sum+(e.amount||0),0);
+  const plainAmt=plain.reduce((sum,e)=>sum+(e.amount||0),0);
+  const hillyAmt=hilly.reduce((sum,e)=>sum+(e.amount||0),0);
+  
+  document.getElementById('totalLocalAmount').textContent='₹'+localAmt.toLocaleString('en-IN');
+  document.getElementById('totalPlainAmount').textContent='₹'+plainAmt.toLocaleString('en-IN');
+  document.getElementById('totalHillyAmount').textContent='₹'+hillyAmt.toLocaleString('en-IN');
+}
+
+function loadFromSheet(){
+  const cbName='_cb'+Date.now();
+  const script=document.createElement('script');
+  let done=false;
+  const cleanup=()=>{try{delete window[cbName];}catch(e){}try{if(script.parentNode)document.head.removeChild(script);}catch(e){}};
+  const finish=(data)=>{
+    if(done)return;done=true;cleanup();
+    if(data&&Array.isArray(data)&&data.length>0){
+      entries=data;
+      localStorage.setItem('taxi_tracking_entries',JSON.stringify(entries));
+      updateDashboard();
+      alert('✅ Synced '+data.length+' entries from sheet');
+    }else{
+      alert('📋 Sheet is empty or no data found');
+    }
+  };
+  window[cbName]=function(data){finish(data);};
+  script.addEventListener('error',()=>{cleanup();alert('❌ Error loading from sheet');});
+  script.src=SHEET_URL+'?module=taxi_tracking&action=getAll&callback='+cbName;
+  document.head.appendChild(script);
+}
+
+window.addEventListener('DOMContentLoaded',()=>updateDashboard());
+</script>
+</body>
+</html>
